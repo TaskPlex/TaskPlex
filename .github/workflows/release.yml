@@ -67,7 +67,7 @@ jobs:
           chmod +x scripts/build-backend-linux.sh
           ./scripts/build-backend-linux.sh
 
-      # Si c'est un TAG -> On build ET on release
+      # --- CAS 1 : TAG (Release officielle) ---
       - name: Build and Release Tauri App
         if: startsWith(github.ref, 'refs/tags/v')
         uses: tauri-apps/tauri-action@v0
@@ -83,13 +83,18 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
 
-      # Si c'est MAIN (pas un tag) -> On build juste pour tester (sans release)
+      # --- CAS 2 : MAIN (Build de test + Artefact temporaire) ---
       - name: Build Tauri App (CI only)
         if: github.ref == 'refs/heads/main'
         run: |
           cd frontend
-          # On lance juste le build, tauri-action le fait aussi mais gère l'upload.
-          # Ici on veut juste vérifier que ça compile.
-          # On doit set l'env var pour l'AppImage si on est sur un runner récent
           export APPIMAGE_EXTRACT_AND_RUN=1
           npm run tauri build
+
+      - name: Upload Build Artifacts (Main Branch)
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: taskplex-linux-binaries
+          path: frontend/src-tauri/target/release/bundle/
+          retention-days: 5
