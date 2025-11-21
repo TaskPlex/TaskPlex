@@ -110,4 +110,4 @@ The executables will be available in `frontend/src-tauri/target/release/bundle/`
 
 ## 📄 License
 
-MIT License - Created by Slyfird.
+MIT License - Created by Tangjuyo.
