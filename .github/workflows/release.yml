@@ -1,0 +1,98 @@
+name: Release TaskPlex
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'ubuntu-22.04' # Utiliser 22.04 pour meilleure compatibilité AppImage/Glibc
+            args: ''
+          # - platform: 'windows-latest' # Décommenter pour activer le build Windows plus tard
+          #   args: ''
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'ubuntu-22.04' && 'x86_64-unknown-linux-gnu' || 'x86_64-pc-windows-msvc' }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11' 
+
+      - name: Install Linux Dependencies
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.0-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libssl-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libsoup-3.0-dev \
+            libjavascriptcoregtk-4.1-dev \
+            libwebkit2gtk-4.1-dev
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # --- Build Python Sidecar ---
+
+      - name: Build Backend (Linux)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          chmod +x scripts/build-backend-linux.sh
+          ./scripts/build-backend-linux.sh
+
+      # - name: Build Backend (Windows)
+      #   if: matrix.platform == 'windows-latest'
+      #   run: |
+      #     # Commande équivalente pour Windows (à faire)
+      #     cd backend
+      #     pip install -r requirements.txt
+      #     pip install pyinstaller
+      #     pyinstaller --clean --noconfirm --onefile --name taskplex-backend --hidden-import=uvicorn.loops.auto --collect-all=ffmpeg_python run.py
+      #     mkdir -p ../frontend/src-tauri/binaries
+      #     mv dist/taskplex-backend.exe ../frontend/src-tauri/binaries/taskplex-backend-x86_64-pc-windows-msvc.exe
+
+      # --- Build Tauri App ---
+
+      - name: Build Tauri App
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPIMAGE_EXTRACT_AND_RUN: 1 # Fix pour Fedora/CI parfois
+        with:
+          projectPath: "./frontend"
+          tagName: ${{ github.ref_name }}
+          releaseName: 'TaskPlex ${{ github.ref_name }}'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
+
