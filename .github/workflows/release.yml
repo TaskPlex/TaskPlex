@@ -1,23 +1,23 @@
-name: Release TaskPlex
+name: Build and Release TaskPlex
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
 
 jobs:
-  release:
+  build-and-release:
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: 'ubuntu-22.04' # Utiliser 22.04 pour meilleure compatibilité AppImage/Glibc
+          - platform: 'ubuntu-22.04'
             args: ''
-          # - platform: 'windows-latest' # Décommenter pour activer le build Windows plus tard
-          #   args: ''
 
     runs-on: ${{ matrix.platform }}
 
@@ -61,32 +61,19 @@ jobs:
           cd frontend
           npm install
 
-      # --- Build Python Sidecar ---
-
       - name: Build Backend (Linux)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           chmod +x scripts/build-backend-linux.sh
           ./scripts/build-backend-linux.sh
 
-      # - name: Build Backend (Windows)
-      #   if: matrix.platform == 'windows-latest'
-      #   run: |
-      #     # Commande équivalente pour Windows (à faire)
-      #     cd backend
-      #     pip install -r requirements.txt
-      #     pip install pyinstaller
-      #     pyinstaller --clean --noconfirm --onefile --name taskplex-backend --hidden-import=uvicorn.loops.auto --collect-all=ffmpeg_python run.py
-      #     mkdir -p ../frontend/src-tauri/binaries
-      #     mv dist/taskplex-backend.exe ../frontend/src-tauri/binaries/taskplex-backend-x86_64-pc-windows-msvc.exe
-
-      # --- Build Tauri App ---
-
-      - name: Build Tauri App
+      # Si c'est un TAG -> On build ET on release
+      - name: Build and Release Tauri App
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          APPIMAGE_EXTRACT_AND_RUN: 1 # Fix pour Fedora/CI parfois
+          APPIMAGE_EXTRACT_AND_RUN: 1
         with:
           projectPath: "./frontend"
           tagName: ${{ github.ref_name }}
@@ -96,3 +83,13 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
 
+      # Si c'est MAIN (pas un tag) -> On build juste pour tester (sans release)
+      - name: Build Tauri App (CI only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd frontend
+          # On lance juste le build, tauri-action le fait aussi mais gère l'upload.
+          # Ici on veut juste vérifier que ça compile.
+          # On doit set l'env var pour l'AppImage si on est sur un runner récent
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          npm run tauri build
