@@ -1,7 +1,8 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UnitsScreen } from './UnitsScreen';
 import { ApiService } from '../services/api';
+import { renderWithProviders } from '../test-utils';
 
 // Mock ApiService
 vi.mock('../services/api', () => ({
@@ -16,7 +17,7 @@ describe('UnitsScreen', () => {
   });
 
   it('renders properly', () => {
-    render(<UnitsScreen />);
+    renderWithProviders(<UnitsScreen />);
     expect(screen.getByText('Unit Converter')).toBeInTheDocument();
     expect(screen.getByText('Length')).toBeInTheDocument();
     expect(screen.getByText('Mass')).toBeInTheDocument();
@@ -25,7 +26,7 @@ describe('UnitsScreen', () => {
   it('calls API when input changes', async () => {
     vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, converted_value: 1000, converted_unit: 'meter' });
     
-    render(<UnitsScreen />);
+    renderWithProviders(<UnitsScreen />);
     
     const inputs = screen.getAllByPlaceholderText('0');
     const fromInput = inputs[0];
@@ -40,7 +41,7 @@ describe('UnitsScreen', () => {
   it('updates result on success', async () => {
     vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, converted_value: 0.001, converted_unit: 'kilometer' });
     
-    render(<UnitsScreen />);
+    renderWithProviders(<UnitsScreen />);
     
     const inputs = screen.getAllByPlaceholderText('0');
     const fromInput = inputs[0];
@@ -53,7 +54,7 @@ describe('UnitsScreen', () => {
   });
 
   it('swaps units correctly', () => {
-    render(<UnitsScreen />);
+    renderWithProviders(<UnitsScreen />);
     
     const selects = screen.getAllByRole('combobox');
     // Default: meter -> kilometer

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Calculator, ArrowRightLeft, Scale, Ruler, Thermometer, Clock, HardDrive, Activity } from 'lucide-react';
-import { ApiService } from '../services/api';
+import { useConvertUnits } from '../hooks/useUnits';
 
 const UNIT_CATEGORIES = [
   {
@@ -47,8 +47,10 @@ export const UnitsScreen: React.FC = () => {
   const [toUnit, setToUnit] = useState(UNIT_CATEGORIES[0].units[1]);
   const [fromValue, setFromValue] = useState<string>('1');
   const [toValue, setToValue] = useState<string>('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // React Query Hook
+  const { mutate: convert, isPending: loading } = useConvertUnits();
 
   // Update units when category changes
   useEffect(() => {
@@ -59,31 +61,32 @@ export const UnitsScreen: React.FC = () => {
     setError(null);
   }, [category]);
 
-  const handleConvert = useCallback(async () => {
+  const handleConvert = useCallback(() => {
     if (!fromValue || isNaN(Number(fromValue))) {
       setToValue('');
       return;
     }
 
-    setLoading(true);
     setError(null);
-    try {
-      const res = await ApiService.convertUnits(Number(fromValue), fromUnit, toUnit);
-      if (res.success) {
-        // Format number to avoid long decimals
-        const val = res.converted_value;
-        const formatted = Number.isInteger(val) ? val.toString() : val.toFixed(6).replace(/\.?0+$/, '');
-        setToValue(formatted);
-      } else {
-        setError(res.error || 'Conversion failed');
+    convert(
+      { value: Number(fromValue), fromUnit, toUnit },
+      {
+        onSuccess: (res) => {
+          if (res.success) {
+            const val = res.converted_value;
+            const formatted = Number.isInteger(val) ? val.toString() : val.toFixed(6).replace(/\.?0+$/, '');
+            setToValue(formatted);
+          } else {
+            setError(res.error || 'Conversion failed');
+          }
+        },
+        onError: (err) => {
+          console.error(err);
+          setError('Failed to convert. Check backend.');
+        }
       }
-    } catch (err) {
-      console.error(err);
-      setError('Failed to convert. Check backend.');
-    } finally {
-      setLoading(false);
-    }
-  }, [fromValue, fromUnit, toUnit]);
+    );
+  }, [fromValue, fromUnit, toUnit, convert]);
 
   // Auto-convert when inputs change (debounced)
   useEffect(() => {
@@ -96,8 +99,8 @@ export const UnitsScreen: React.FC = () => {
   const handleSwap = () => {
     setFromUnit(toUnit);
     setToUnit(fromUnit);
-    setFromValue(toValue); // Swap values too? Usually we keep the input value but swap units
-    // Let's just swap units and re-trigger conversion of the current input value
+    // Trigger conversion will happen via useEffect since deps changed? 
+    // No, handleConvert depends on fromUnit/toUnit so useEffect[handleConvert] will trigger
   };
 
   return (
@@ -211,4 +214,3 @@ export const UnitsScreen: React.FC = () => {
     </div>
   );
 };
-
