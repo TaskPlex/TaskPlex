@@ -12,14 +12,6 @@ import { PDFMerge } from './pages/pdf/PDFMerge';
 import { PDFSplit } from './pages/pdf/PDFSplit';
 import { PDFReorganize } from './pages/pdf/PDFReorganize';
 
-// Placeholders for other screens
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="p-10 text-center text-gray-400">
-    <h2 className="text-2xl font-bold mb-2">{title}</h2>
-    <p>Coming soon...</p>
-  </div>
-);
-
 function App() {
   return (
     <BrowserRouter>
