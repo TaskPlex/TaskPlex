@@ -23,7 +23,7 @@ describe('RegexScreen', () => {
   });
 
   it('calls API when inputs are filled', async () => {
-    (ApiService.testRegex as any).mockResolvedValue({ success: true, matches: [], count: 0 }); // Mock return
+    vi.mocked(ApiService.testRegex).mockResolvedValue({ success: true, matches: [], count: 0 });
     render(<RegexScreen />);
     
     const patternInput = screen.getByPlaceholderText('e.g. [a-z]+');
@@ -47,7 +47,7 @@ describe('RegexScreen', () => {
         { match: '123', start: 0, end: 3, groups: [], named_groups: {} }
       ]
     };
-    (ApiService.testRegex as any).mockResolvedValue(mockResponse);
+    vi.mocked(ApiService.testRegex).mockResolvedValue(mockResponse);
 
     render(<RegexScreen />);
     
@@ -67,7 +67,7 @@ describe('RegexScreen', () => {
       count: 0,
       error: 'bad pattern'
     };
-    (ApiService.testRegex as any).mockResolvedValue(mockResponse);
+    vi.mocked(ApiService.testRegex).mockResolvedValue(mockResponse);
 
     render(<RegexScreen />);
     
@@ -79,4 +79,3 @@ describe('RegexScreen', () => {
     }, { timeout: 1000 });
   });
 });
-

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Regex, Flag, AlertCircle, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Regex, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { ApiService } from '../services/api';
-import type { RegexResponse, RegexMatch } from '../services/api';
+import type { RegexResponse } from '../services/api';
 
 export const RegexScreen: React.FC = () => {
   const [pattern, setPattern] = useState('');
@@ -11,21 +11,7 @@ export const RegexScreen: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Debounce pattern testing
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (pattern && text) {
-        handleTest();
-      } else {
-        setResult(null);
-        setError(null);
-      }
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [pattern, text, flags]);
-
-  const handleTest = async () => {
+  const handleTest = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -43,7 +29,21 @@ export const RegexScreen: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [pattern, text, flags]);
+
+  // Debounce pattern testing
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (pattern && text) {
+        handleTest();
+      } else {
+        setResult(null);
+        setError(null);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [pattern, text, handleTest]);
 
   const toggleFlag = (flag: string) => {
     setFlags(prev => 
@@ -190,7 +190,8 @@ export const RegexScreen: React.FC = () => {
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 min-h-[200px] flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <label className="block text-sm font-medium text-gray-700">Match Results</label>
-              {result && (
+              {loading && <span className="text-xs text-purple-600 font-medium animate-pulse">Testing...</span>}
+              {result && !loading && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <CheckCircle2 size={12} />
                   {result.count} matches found
