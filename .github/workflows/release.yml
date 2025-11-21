@@ -1,15 +1,13 @@
-name: Build and Release TaskPlex
+name: Release TaskPlex
 
 on:
   push:
-    #branches:
-    #  - main
     tags:
       - 'v*'
   workflow_dispatch:
 
 jobs:
-  build-and-release:
+  release:
     permissions:
       contents: write
     strategy:
@@ -67,9 +65,7 @@ jobs:
           chmod +x scripts/build-backend-linux.sh
           ./scripts/build-backend-linux.sh
 
-      # --- CAS 1 : TAG (Release officielle) ---
       - name: Build and Release Tauri App
-        if: startsWith(github.ref, 'refs/tags/v')
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -82,19 +78,3 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
-
-      # --- CAS 2 : MAIN (Build de test + Artefact temporaire) ---
-      #- name: Build Tauri App (CI only)
-      #  if: github.ref == 'refs/heads/main'
-      #  run: |
-      #    cd frontend
-      #    export APPIMAGE_EXTRACT_AND_RUN=1
-      #    npm run tauri build
-
-      #- name: Upload Build Artifacts (Main Branch)
-      #  if: github.ref == 'refs/heads/main'
-      #  uses: actions/upload-artifact@v4
-      #  with:
-      #    name: taskplex-linux-binaries
-      #    path: frontend/src-tauri/target/release/bundle/
-      #    retention-days: 5

@@ -2,13 +2,45 @@
 PDF processing service using PyPDF2 and PyMuPDF
 """
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Dict
 import PyPDF2
 import fitz  # PyMuPDF
 from app.utils.file_handler import get_file_size
-from app.models.pdf import PDFProcessingResponse
+from app.models.pdf import PDFProcessingResponse, PDFInfoResponse
 
 
+def get_pdf_info(input_path: Path) -> Optional[PDFInfoResponse]:
+    """
+    Get information about a PDF file
+    """
+    try:
+        file_size = get_file_size(input_path)
+        
+        with open(input_path, 'rb') as f:
+            reader = PyPDF2.PdfReader(f)
+            page_count = len(reader.pages)
+            encrypted = reader.is_encrypted
+            metadata = reader.metadata
+            
+            # Convert metadata to simple dict if present
+            meta_dict = {}
+            if metadata:
+                for key, value in metadata.items():
+                    if isinstance(value, str):
+                        meta_dict[key.replace('/', '')] = value
+                        
+        return PDFInfoResponse(
+            filename=input_path.name,
+            page_count=page_count,
+            file_size=file_size,
+            encrypted=encrypted,
+            metadata=meta_dict
+        )
+    except Exception as e:
+        print(f"Error reading PDF info: {e}")
+        return None
+
+# ... (rest of the functions: merge_pdfs, compress_pdf, split_pdf, reorganize_pdf - keep existing)
 def merge_pdfs(input_paths: List[Path], output_path: Path) -> PDFProcessingResponse:
     """
     Merge multiple PDF files into one
@@ -238,4 +270,3 @@ def reorganize_pdf(input_path: Path, output_path: Path, page_order: List[int]) -
             message=f"Error reorganizing PDF: {str(e)}",
             filename=output_path.name if output_path else None
         )
-
