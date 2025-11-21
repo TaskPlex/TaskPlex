@@ -16,6 +16,8 @@ jobs:
         include:
           - platform: 'ubuntu-22.04'
             args: ''
+          - platform: 'windows-latest'
+            args: ''
 
     runs-on: ${{ matrix.platform }}
 
@@ -64,6 +66,12 @@ jobs:
         run: |
           chmod +x scripts/build-backend-linux.sh
           ./scripts/build-backend-linux.sh
+      
+      - name: Build Backend (Windows)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          chmod +x scripts/build-backend-windows.ps1
+          ./scripts/build-backend-windows.ps1
 
       - name: Build and Release Tauri App
         uses: tauri-apps/tauri-action@v0
