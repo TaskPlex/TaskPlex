@@ -71,7 +71,7 @@ export const RegexScreen: React.FC = () => {
     const sortedMatches = [...result.matches].sort((a, b) => a.start - b.start);
     
     let lastIndex = 0;
-    const elements: JSX.Element[] = [];
+    const elements: React.ReactNode[] = [];
 
     sortedMatches.forEach((match, i) => {
       // Text before match
