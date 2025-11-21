@@ -2,8 +2,8 @@ name: Build and Release TaskPlex
 
 on:
   push:
-    branches:
-      - main
+    #branches:
+    #  - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -84,17 +84,17 @@ jobs:
           args: ${{ matrix.args }}
 
       # --- CAS 2 : MAIN (Build de test + Artefact temporaire) ---
-      - name: Build Tauri App (CI only)
-        if: github.ref == 'refs/heads/main'
-        run: |
-          cd frontend
-          export APPIMAGE_EXTRACT_AND_RUN=1
-          npm run tauri build
+      #- name: Build Tauri App (CI only)
+      #  if: github.ref == 'refs/heads/main'
+      #  run: |
+      #    cd frontend
+      #    export APPIMAGE_EXTRACT_AND_RUN=1
+      #    npm run tauri build
 
-      - name: Upload Build Artifacts (Main Branch)
-        if: github.ref == 'refs/heads/main'
-        uses: actions/upload-artifact@v4
-        with:
-          name: taskplex-linux-binaries
-          path: frontend/src-tauri/target/release/bundle/
-          retention-days: 5
+      #- name: Upload Build Artifacts (Main Branch)
+      #  if: github.ref == 'refs/heads/main'
+      #  uses: actions/upload-artifact@v4
+      #  with:
+      #    name: taskplex-linux-binaries
+      #    path: frontend/src-tauri/target/release/bundle/
+      #    retention-days: 5
