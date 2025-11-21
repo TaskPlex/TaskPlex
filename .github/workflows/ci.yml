@@ -43,6 +43,11 @@ jobs:
           cd frontend
           npm install
 
+      - name: Run Frontend Tests
+        run: |
+          cd frontend
+          npm run test -- --run # --run pour lancer une fois et quitter (pas de watch)
+
       - name: Lint Frontend
         run: |
           cd frontend
@@ -52,4 +57,3 @@ jobs:
         run: |
           cd frontend
           npm run build
-
