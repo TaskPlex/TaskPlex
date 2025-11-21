@@ -4,20 +4,13 @@ import { HomeDashboard } from './pages/HomeDashboard';
 import { VideoScreen } from './pages/VideoScreen';
 import { ImageScreen } from './pages/ImageScreen';
 import { RegexScreen } from './pages/RegexScreen';
+import { UnitsScreen } from './pages/UnitsScreen';
 // PDF Module
 import { PDFDashboard } from './pages/pdf/PDFDashboard';
 import { PDFCompress } from './pages/pdf/PDFCompress';
 import { PDFMerge } from './pages/pdf/PDFMerge';
 import { PDFSplit } from './pages/pdf/PDFSplit';
 import { PDFReorganize } from './pages/pdf/PDFReorganize';
-
-// Placeholders for other screens
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="p-10 text-center text-gray-400">
-    <h2 className="text-2xl font-bold mb-2">{title}</h2>
-    <p>Coming soon...</p>
-  </div>
-);
 
 function App() {
   return (
@@ -38,7 +31,7 @@ function App() {
           </Route>
 
           <Route path="regex" element={<RegexScreen />} />
-          <Route path="units" element={<Placeholder title="Unit Converter" />} />
+          <Route path="units" element={<UnitsScreen />} />
         </Route>
       </Routes>
     </BrowserRouter>
