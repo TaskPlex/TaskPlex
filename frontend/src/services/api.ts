@@ -57,8 +57,11 @@ export interface RegexResponse {
 
 export interface UnitConversionResponse {
   success: boolean;
-  value: number;
-  unit: string;
+  converted_value: number;
+  converted_unit: string;
+  original_value?: number;
+  original_unit?: string;
+  conversion_formula?: string;
   message?: string;
   error?: string;
 }

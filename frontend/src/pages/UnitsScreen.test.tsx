@@ -23,7 +23,7 @@ describe('UnitsScreen', () => {
   });
 
   it('calls API when input changes', async () => {
-    vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, value: 1000, unit: 'meter' });
+    vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, converted_value: 1000, converted_unit: 'meter' });
     
     render(<UnitsScreen />);
     
@@ -38,7 +38,7 @@ describe('UnitsScreen', () => {
   });
 
   it('updates result on success', async () => {
-    vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, value: 0.001, unit: 'kilometer' });
+    vi.mocked(ApiService.convertUnits).mockResolvedValue({ success: true, converted_value: 0.001, converted_unit: 'kilometer' });
     
     render(<UnitsScreen />);
     

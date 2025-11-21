@@ -71,7 +71,7 @@ export const UnitsScreen: React.FC = () => {
       const res = await ApiService.convertUnits(Number(fromValue), fromUnit, toUnit);
       if (res.success) {
         // Format number to avoid long decimals
-        const val = res.value;
+        const val = res.converted_value;
         const formatted = Number.isInteger(val) ? val.toString() : val.toFixed(6).replace(/\.?0+$/, '');
         setToValue(formatted);
       } else {
