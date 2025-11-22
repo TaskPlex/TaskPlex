@@ -6,12 +6,13 @@ import type { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, rectSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ApiService } from '../../services/api';
-import type { PDFProcessingResponse } from '../../services/api';
+import { useReorganizePDF } from '../../hooks/usePDF';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Configure PDF.js worker locally
-pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+// Configure PDF.js worker using CDN to ensure correct version and MIME type
+// This avoids issues with local Nginx configuration or bundler paths
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFPage {
   id: string;
@@ -46,9 +47,9 @@ const SortablePage = ({ page }: { page: PDFPage }) => {
 
 export const PDFReorganize: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<PDFProcessingResponse | null>(null);
   const [pages, setPages] = useState<PDFPage[]>([]);
+
+  const { mutate, isPending: loading, data: result, error, reset } = useReorganizePDF();
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -71,7 +72,7 @@ export const PDFReorganize: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
-      setResult(null);
+      reset();
       setPages([]);
     }
   };
@@ -95,19 +96,13 @@ export const PDFReorganize: React.FC = () => {
     }
   };
 
-  const handleReorganize = async () => {
+  const handleReorganize = () => {
     if (!file) return;
-    setLoading(true);
-    try {
-      const order = pages.map(p => p.originalIndex + 1).join(',');
-      const res = await ApiService.reorganizePDF(file, order);
-      setResult(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    const order = pages.map(p => p.originalIndex + 1).join(',');
+    mutate({ file, pageOrder: order });
   };
+
+  const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
 
   return (
     <div className="p-8 max-w-6xl mx-auto h-screen flex flex-col">
@@ -147,9 +142,10 @@ export const PDFReorganize: React.FC = () => {
                 <span className="font-medium text-gray-900">{file.name}</span>
                 <span className="text-sm text-gray-500">({pages.length} pages)</span>
               </div>
-              <div className="flex gap-3">
+              <div className="flex gap-3 items-center">
+                {errorMessage && <span className="text-red-600 text-sm mr-2">{errorMessage}</span>}
                 <button 
-                  onClick={() => { setFile(null); setResult(null); }}
+                  onClick={() => { setFile(null); reset(); }}
                   className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   Cancel
@@ -180,6 +176,7 @@ export const PDFReorganize: React.FC = () => {
                     onLoadSuccess={onDocumentLoadSuccess}
                     className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 max-w-5xl mx-auto"
                     loading={<div className="col-span-full text-center py-12 text-gray-400">Loading PDF Preview...</div>}
+                    error={<div className="col-span-full text-center py-12 text-red-500">Failed to load PDF file. Please ensure you are connected to internet for the worker to load.</div>}
                   >
                     {pages.map((page) => (
                       <SortablePage key={page.id} page={page} />

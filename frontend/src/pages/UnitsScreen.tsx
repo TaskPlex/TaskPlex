@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Calculator, ArrowRightLeft, Scale, Ruler, Thermometer, Clock, HardDrive, Activity } from 'lucide-react';
-import { ApiService } from '../services/api';
+import { useConvertUnits } from '../hooks/useUnits';
 
 const UNIT_CATEGORIES = [
   {
@@ -47,43 +47,42 @@ export const UnitsScreen: React.FC = () => {
   const [toUnit, setToUnit] = useState(UNIT_CATEGORIES[0].units[1]);
   const [fromValue, setFromValue] = useState<string>('1');
   const [toValue, setToValue] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Update units when category changes
-  useEffect(() => {
-    setFromUnit(category.units[0]);
-    setToUnit(category.units[1] || category.units[0]);
+  // React Query Hook
+  // On récupère directement loading et error depuis le hook !
+  const { mutate: convert, isPending: loading, error } = useConvertUnits();
+
+  // Update units when category changes - use derived state instead of setState in effect
+  const handleCategoryChange = (newCategory: typeof UNIT_CATEGORIES[0]) => {
+    setCategory(newCategory);
+    setFromUnit(newCategory.units[0]);
+    setToUnit(newCategory.units[1] || newCategory.units[0]);
     setFromValue('1');
     setToValue('');
-    setError(null);
-  }, [category]);
+  };
 
-  const handleConvert = useCallback(async () => {
+  const handleConvert = useCallback(() => {
     if (!fromValue || isNaN(Number(fromValue))) {
       setToValue('');
       return;
     }
 
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await ApiService.convertUnits(Number(fromValue), fromUnit, toUnit);
-      if (res.success) {
-        // Format number to avoid long decimals
-        const val = res.converted_value;
-        const formatted = Number.isInteger(val) ? val.toString() : val.toFixed(6).replace(/\.?0+$/, '');
-        setToValue(formatted);
-      } else {
-        setError(res.error || 'Conversion failed');
+    convert(
+      { value: Number(fromValue), fromUnit, toUnit },
+      {
+        onSuccess: (res) => {
+          if (res.success) {
+            const val = res.converted_value;
+            const formatted = Number.isInteger(val) ? val.toString() : val.toFixed(6).replace(/\.?0+$/, '');
+            setToValue(formatted);
+          }
+          // Si res.success est false, on pourrait lever une erreur ici pour que React Query l'attrape,
+          // ou gérer un state d'erreur "business" local si on veut être puriste.
+          // Pour simplifier, on assume que le backend renvoie 400 si erreur, donc 'error' du hook sera set.
+        }
       }
-    } catch (err) {
-      console.error(err);
-      setError('Failed to convert. Check backend.');
-    } finally {
-      setLoading(false);
-    }
-  }, [fromValue, fromUnit, toUnit]);
+    );
+  }, [fromValue, fromUnit, toUnit, convert]);
 
   // Auto-convert when inputs change (debounced)
   useEffect(() => {
@@ -96,8 +95,6 @@ export const UnitsScreen: React.FC = () => {
   const handleSwap = () => {
     setFromUnit(toUnit);
     setToUnit(fromUnit);
-    setFromValue(toValue); // Swap values too? Usually we keep the input value but swap units
-    // Let's just swap units and re-trigger conversion of the current input value
   };
 
   return (
@@ -115,7 +112,7 @@ export const UnitsScreen: React.FC = () => {
         {UNIT_CATEGORIES.map((cat) => (
           <button
             key={cat.id}
-            onClick={() => setCategory(cat)}
+            onClick={() => handleCategoryChange(cat)}
             className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-200 ${
               category.id === cat.id
                 ? 'bg-blue-600 text-white shadow-lg scale-105'
@@ -195,7 +192,8 @@ export const UnitsScreen: React.FC = () => {
 
           {error && (
             <div className="mt-8 p-4 bg-red-50 text-red-600 rounded-xl text-center font-medium">
-              {error}
+              {/* Error is an object, we need its message */}
+              {error instanceof Error ? error.message : 'Conversion failed'}
             </div>
           )}
         </div>
@@ -211,4 +209,3 @@ export const UnitsScreen: React.FC = () => {
     </div>
   );
 };
-

@@ -1,44 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Video, FileVideo, Download, Play, Upload } from 'lucide-react';
 import { ApiService } from '../services/api';
-import type { VideoProcessingResponse } from '../services/api';
+import { useCompressVideo, useConvertVideo } from '../hooks/useVideo';
 
 export const VideoScreen: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [operation, setOperation] = useState<'compress' | 'convert'>('compress');
   const [quality, setQuality] = useState('medium');
   const [format, setFormat] = useState('mp4');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<VideoProcessingResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const compressMutation = useCompressVideo();
+  const convertMutation = useConvertVideo();
+
+  // Unified state
+  const loading = compressMutation.isPending || convertMutation.isPending;
+  const result = compressMutation.data || convertMutation.data;
+  const error = compressMutation.error || convertMutation.error;
+
+  // Reset mutations when operation changes or file changes
+  useEffect(() => {
+    compressMutation.reset();
+    convertMutation.reset();
+  }, [operation, file, compressMutation, convertMutation]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-      setResult(null);
-      setError(null);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!file) return;
-    setLoading(true);
-    setError(null);
-    try {
-      let res;
-      if (operation === 'compress') {
-        res = await ApiService.compressVideo(file, quality);
-      } else {
-        res = await ApiService.convertVideo(file, format, quality);
-      }
-      setResult(res);
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred during processing.');
-    } finally {
-      setLoading(false);
+    
+    // Reset previous results
+    if (operation === 'compress') {
+      convertMutation.reset();
+      compressMutation.mutate({ file, quality });
+    } else {
+      compressMutation.reset();
+      convertMutation.mutate({ file, outputFormat: format, quality });
     }
   };
+
+  const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -57,7 +61,7 @@ export const VideoScreen: React.FC = () => {
               {(['compress', 'convert'] as const).map((op) => (
                 <button
                   key={op}
-                  onClick={() => { setOperation(op); setResult(null); }}
+                  onClick={() => setOperation(op)}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
                     operation === op
                       ? 'bg-white text-purple-700 shadow-sm'
@@ -143,9 +147,9 @@ export const VideoScreen: React.FC = () => {
             {loading ? 'Processing...' : `${operation === 'compress' ? 'Compress' : 'Convert'} Video`}
           </button>
           
-          {error && (
+          {errorMessage && (
             <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-100">
-              {error}
+              {errorMessage}
             </div>
           )}
         </div>
@@ -154,7 +158,7 @@ export const VideoScreen: React.FC = () => {
         <div className="space-y-6">
           <h2 className="text-lg font-semibold text-gray-800">Result</h2>
           
-          {result ? (
+          {result && result.success ? (
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 animate-in fade-in duration-500">
               <div className="aspect-video bg-black rounded-lg overflow-hidden mb-4 relative group">
                  {result.download_url && (

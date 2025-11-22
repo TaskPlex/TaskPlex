@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image as ImageIcon, FileImage, Download, Upload, ArrowRight, ImageMinus } from 'lucide-react';
 import { ApiService } from '../services/api';
-import type { ImageProcessingResponse } from '../services/api';
+import { useCompressImage, useConvertImage } from '../hooks/useImage';
 
 export const ImageScreen: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -9,39 +9,40 @@ export const ImageScreen: React.FC = () => {
   const [operation, setOperation] = useState<'compress' | 'convert'>('compress');
   const [quality, setQuality] = useState('medium');
   const [format, setFormat] = useState('png');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<ImageProcessingResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
+
+  const compressMutation = useCompressImage();
+  const convertMutation = useConvertImage();
+
+  const loading = compressMutation.isPending || convertMutation.isPending;
+  const result = compressMutation.data || convertMutation.data;
+  const error = compressMutation.error || convertMutation.error;
+
+  useEffect(() => {
+    compressMutation.reset();
+    convertMutation.reset();
+  }, [operation, file, compressMutation, convertMutation]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
       setFile(selectedFile);
       setPreviewUrl(URL.createObjectURL(selectedFile));
-      setResult(null);
-      setError(null);
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!file) return;
-    setLoading(true);
-    setError(null);
-    try {
-      let res;
-      if (operation === 'compress') {
-        res = await ApiService.compressImage(file, quality);
-      } else {
-        res = await ApiService.convertImage(file, format, quality);
-      }
-      setResult(res);
-    } catch (err) {
-      console.error(err);
-      setError('An error occurred during processing.');
-    } finally {
-      setLoading(false);
+    
+    if (operation === 'compress') {
+      convertMutation.reset();
+      compressMutation.mutate({ file, quality });
+    } else {
+      compressMutation.reset();
+      convertMutation.mutate({ file, outputFormat: format, quality });
     }
   };
+
+  const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -59,7 +60,7 @@ export const ImageScreen: React.FC = () => {
               {(['compress', 'convert'] as const).map((op) => (
                 <button
                   key={op}
-                  onClick={() => { setOperation(op); setResult(null); }}
+                  onClick={() => setOperation(op)}
                   className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
                     operation === op
                       ? 'bg-white text-blue-700 shadow-sm'
@@ -141,9 +142,9 @@ export const ImageScreen: React.FC = () => {
             {loading ? 'Processing...' : `${operation === 'compress' ? 'Compress' : 'Convert'} Image`}
           </button>
 
-          {error && (
+          {errorMessage && (
             <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-100 text-sm">
-              {error}
+              {errorMessage}
             </div>
           )}
         </div>
@@ -173,7 +174,7 @@ export const ImageScreen: React.FC = () => {
             <div className="space-y-2">
               <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider flex items-center justify-between">
                 Result
-                {result && <span className="text-green-600 font-bold">Done!</span>}
+                {result && result.success && <span className="text-green-600 font-bold">Done!</span>}
               </h3>
               <div className="bg-gray-100 rounded-xl border border-gray-200 overflow-hidden aspect-square flex items-center justify-center relative">
                 {result?.download_url ? (
@@ -205,7 +206,7 @@ export const ImageScreen: React.FC = () => {
           </div>
 
           {/* Results & Download */}
-          {result && (
+          {result && result.success && (
             <div className="bg-white p-6 rounded-xl shadow-sm border border-green-100 bg-green-50 animate-in slide-in-from-bottom-4 duration-500">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -235,8 +236,3 @@ export const ImageScreen: React.FC = () => {
     </div>
   );
 };
-
-
-
-
-

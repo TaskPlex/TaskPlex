@@ -1,49 +1,33 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Regex, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { ApiService } from '../services/api';
-import type { RegexResponse } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { Regex, AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
+import { useRegex } from '../hooks/useRegex';
 
 export const RegexScreen: React.FC = () => {
   const [pattern, setPattern] = useState('');
   const [text, setText] = useState('');
   const [flags, setFlags] = useState<string[]>(['g']); // Default Global
-  const [result, setResult] = useState<RegexResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleTest = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await ApiService.testRegex(pattern, text, flags.join(''));
-      if (res.success) {
-        setResult(res);
-      } else {
-        setResult(null);
-        setError(res.error || 'Invalid regex pattern');
-      }
-    } catch (err) {
-      setResult(null);
-      setError('Failed to test regex. Check backend connection.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [pattern, text, flags]);
+  // Custom Hook
+  const { mutate, data: apiData, isPending: loading, error: apiError, reset } = useRegex();
+
+  // Derived state
+  const result = apiData?.success ? apiData : null;
+  const error = apiError 
+    ? (apiError instanceof Error ? apiError.message : 'An error occurred') 
+    : (apiData && !apiData.success ? (apiData.error || 'Invalid regex pattern') : null);
 
   // Debounce pattern testing
   useEffect(() => {
     const timer = setTimeout(() => {
       if (pattern && text) {
-        handleTest();
+        mutate({ pattern, text, flags: flags.join('') });
       } else {
-        setResult(null);
-        setError(null);
+        reset();
       }
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [pattern, text, handleTest]);
+  }, [pattern, text, flags, mutate, reset]);
 
   const toggleFlag = (flag: string) => {
     setFlags(prev => 
@@ -66,7 +50,6 @@ export const RegexScreen: React.FC = () => {
     }
 
     // Create segments of text (matched vs unmatched)
-    // Since matches can overlap or be complex, we'll keep it simple:
     // Sort matches by start index
     const sortedMatches = [...result.matches].sort((a, b) => a.start - b.start);
     
@@ -190,7 +173,7 @@ export const RegexScreen: React.FC = () => {
           <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 min-h-[200px] flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <label className="block text-sm font-medium text-gray-700">Match Results</label>
-              {loading && <span className="text-xs text-purple-600 font-medium animate-pulse">Testing...</span>}
+              {loading && <div className="flex items-center gap-2 text-purple-600"><Loader2 size={16} className="animate-spin" /><span className="text-xs font-medium">Testing...</span></div>}
               {result && !loading && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                   <CheckCircle2 size={12} />
@@ -214,4 +197,3 @@ export const RegexScreen: React.FC = () => {
     </div>
   );
 };
-

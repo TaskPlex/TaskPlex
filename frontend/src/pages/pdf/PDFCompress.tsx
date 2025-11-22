@@ -1,32 +1,26 @@
 import React, { useState } from 'react';
 import { Minimize2, Upload, Download, FileText } from 'lucide-react';
 import { ApiService } from '../../services/api';
-import type { PDFProcessingResponse } from '../../services/api';
+import { useCompressPDF } from '../../hooks/usePDF';
 
 export const PDFCompress: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<PDFProcessingResponse | null>(null);
+  
+  const { mutate, isPending: loading, data: result, error, reset } = useCompressPDF();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-      setResult(null);
+      reset();
     }
   };
 
-  const handleCompress = async () => {
+  const handleCompress = () => {
     if (!file) return;
-    setLoading(true);
-    try {
-      const res = await ApiService.compressPDF(file);
-      setResult(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    mutate({ file });
   };
+
+  const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -64,14 +58,20 @@ export const PDFCompress: React.FC = () => {
                 <p className="text-sm text-gray-500">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
               </div>
               <button 
-                onClick={() => { setFile(null); setResult(null); }}
+                onClick={() => { setFile(null); reset(); }}
                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors"
               >
                 Change
               </button>
             </div>
 
-            {!result ? (
+            {errorMessage && (
+              <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-100">
+                {errorMessage}
+              </div>
+            )}
+
+            {!result || !result.success ? (
               <button
                 onClick={handleCompress}
                 disabled={loading}

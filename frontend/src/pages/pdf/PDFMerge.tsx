@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import { Merge, Upload, Download, FileText, Plus, X } from 'lucide-react';
 import { ApiService } from '../../services/api';
-import type { PDFProcessingResponse } from '../../services/api';
+import { useMergePDFs } from '../../hooks/usePDF';
 
 export const PDFMerge: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<PDFProcessingResponse | null>(null);
+  const { mutate, isPending: loading, data: result, error, reset } = useMergePDFs();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
       setFiles(prev => [...prev, ...newFiles]);
-      setResult(null);
+      reset();
     }
   };
 
   const removeFile = (index: number) => {
     setFiles(prev => prev.filter((_, i) => i !== index));
+    reset();
   };
 
-  const handleMerge = async () => {
+  const handleMerge = () => {
     if (files.length < 2) return;
-    setLoading(true);
-    try {
-      const res = await ApiService.mergePDFs(files);
-      setResult(res);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    mutate({ files });
   };
+
+  const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -93,7 +87,13 @@ export const PDFMerge: React.FC = () => {
               </div>
             </div>
 
-            {!result ? (
+            {errorMessage && (
+              <div className="p-4 bg-red-50 text-red-700 rounded-lg border border-red-100">
+                {errorMessage}
+              </div>
+            )}
+
+            {!result || !result.success ? (
               <button
                 onClick={handleMerge}
                 disabled={loading || files.length < 2}
