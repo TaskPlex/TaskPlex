@@ -12,6 +12,19 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        'node_modules/',
+        'src-tauri/',
+        '**/*.d.ts',
+        '**/*.config.*',
+        '**/mockData',
+        '**/*.test.{ts,tsx}',
+        '**/test-utils.tsx',
+      ],
+    },
   },
   build: {
     rollupOptions: {
