@@ -4,6 +4,9 @@ const API_URL = 'http://localhost:8000/api/v1';
 
 const api = axios.create({
   baseURL: API_URL,
+  // No timeout for file uploads - let the request complete naturally
+  // Don't set Content-Type header here - let axios set it automatically
+  // This is important for multipart/form-data (file uploads)
 });
 
 // API Types

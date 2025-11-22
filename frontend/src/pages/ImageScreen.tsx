@@ -17,10 +17,14 @@ export const ImageScreen: React.FC = () => {
   const result = compressMutation.data || convertMutation.data;
   const error = compressMutation.error || convertMutation.error;
 
+  // Reset mutations when operation changes or file changes
+  // Note: We don't include mutation objects in dependencies to avoid infinite loops
+  // The reset functions are stable and don't need to be in dependencies
   useEffect(() => {
     compressMutation.reset();
     convertMutation.reset();
-  }, [operation, file, compressMutation, convertMutation]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [operation, file]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
