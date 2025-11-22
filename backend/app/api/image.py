@@ -9,11 +9,8 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.config import TEMP_DIR
 from app.models.image import ImageProcessingResponse
 from app.services.image_service import compress_image, convert_image
-from app.utils.file_handler import (
-    delete_file,
-    generate_unique_filename,
-    save_upload_file,
-)
+from app.utils.file_handler import (delete_file, generate_unique_filename,
+                                    save_upload_file)
 from app.utils.validators import validate_image_format
 
 router = APIRouter(prefix="/image", tags=["Image"])

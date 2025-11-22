@@ -12,15 +12,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 
 from app.api import image, pdf, regex, units, video
-from app.config import (
-    API_DESCRIPTION,
-    API_TITLE,
-    API_VERSION,
-    DEBUG,
-    HOST,
-    PORT,
-    TEMP_DIR,
-)
+from app.config import (API_DESCRIPTION, API_TITLE, API_VERSION, DEBUG, HOST,
+                        PORT, TEMP_DIR)
 from app.utils.file_handler import cleanup_temp_files
 
 

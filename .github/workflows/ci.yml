@@ -41,7 +41,7 @@ jobs:
         run: |
           cd backend
           ruff format app/ tests/ --check
-
+      
       - name: Check Import Sorting
         run: |
           cd backend

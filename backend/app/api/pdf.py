@@ -9,18 +9,10 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
-from app.services.pdf_service import (
-    compress_pdf,
-    get_pdf_info,
-    merge_pdfs,
-    reorganize_pdf,
-    split_pdf,
-)
-from app.utils.file_handler import (
-    delete_file,
-    generate_unique_filename,
-    save_upload_file,
-)
+from app.services.pdf_service import (compress_pdf, get_pdf_info, merge_pdfs,
+                                      reorganize_pdf, split_pdf)
+from app.utils.file_handler import (delete_file, generate_unique_filename,
+                                    save_upload_file)
 from app.utils.validators import validate_pdf_format
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
