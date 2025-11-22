@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
@@ -38,4 +39,3 @@ describe('HomeDashboard', () => {
     expect(screen.queryByText('Regex Tester')).not.toBeInTheDocument();
   });
 });
-
