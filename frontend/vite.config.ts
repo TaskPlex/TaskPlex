@@ -13,4 +13,21 @@ export default defineConfig({
     setupFiles: './src/setupTests.ts',
     css: true,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor chunks
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'query-vendor': ['@tanstack/react-query', '@tanstack/react-query-devtools'],
+          // PDF chunk (heavy dependencies)
+          'pdf-vendor': ['react-pdf', 'pdfjs-dist'],
+          // UI libraries
+          'ui-vendor': ['lucide-react', '@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+        },
+      },
+    },
+    // Increase chunk size warning limit since we're splitting properly
+    chunkSizeWarningLimit: 1000,
+  },
 })

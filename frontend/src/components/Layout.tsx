@@ -1,8 +1,48 @@
 import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Video, Image, FileText, Regex, Ruler, Menu } from 'lucide-react';
 
+// Preload route components on hover for better UX
+const preloadRoute = (routePath: string) => {
+  const routeMap: Record<string, () => Promise<any>> = {
+    '/': () => import('../pages/HomeDashboard'),
+    '/video': () => import('../pages/VideoScreen'),
+    '/image': () => import('../pages/ImageScreen'),
+    '/regex': () => import('../pages/RegexScreen'),
+    '/units': () => import('../pages/UnitsScreen'),
+    '/pdf': () => import('../pages/pdf/PDFDashboard'),
+    '/pdf/compress': () => import('../pages/pdf/PDFCompress'),
+    '/pdf/merge': () => import('../pages/pdf/PDFMerge'),
+    '/pdf/split': () => import('../pages/pdf/PDFSplit'),
+    '/pdf/reorganize': () => import('../pages/pdf/PDFReorganize'),
+  };
+  
+  const loader = routeMap[routePath];
+  if (loader) {
+    loader().catch(() => {
+      // Silently fail if preload fails
+    });
+  }
+};
+
 export const Layout: React.FC = () => {
+  const location = useLocation();
+  
+  // Preload adjacent routes when user is on a page
+  React.useEffect(() => {
+    const preloadAdjacentRoutes = () => {
+      // Preload common routes
+      preloadRoute('/');
+      preloadRoute('/video');
+      preloadRoute('/image');
+      preloadRoute('/pdf');
+    };
+    
+    // Small delay to not interfere with current page load
+    const timer = setTimeout(preloadAdjacentRoutes, 1000);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+  
   return (
     <div className="flex h-screen bg-gray-50">
       {/* SIDEBAR */}
@@ -52,6 +92,7 @@ export const Layout: React.FC = () => {
 const NavItem = ({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) => (
   <NavLink
     to={to}
+    onMouseEnter={() => preloadRoute(to)}
     className={({ isActive }) =>
       `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
         isActive
