@@ -2,17 +2,16 @@
 Image processing API endpoints
 """
 
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+
+from app.config import TEMP_DIR
 from app.models.image import ImageProcessingResponse
 from app.services.image_service import compress_image, convert_image
-from app.utils.file_handler import (
-    save_upload_file,
-    delete_file,
-    generate_unique_filename,
-)
+from app.utils.file_handler import (delete_file, generate_unique_filename,
+                                    save_upload_file)
 from app.utils.validators import validate_image_format
-from app.config import TEMP_DIR
 
 router = APIRouter(prefix="/image", tags=["Image"])
 

@@ -2,12 +2,14 @@
 Video processing service using FFmpeg
 """
 
-from pathlib import Path
-import ffmpeg
 import subprocess
+from pathlib import Path
+
+import ffmpeg
+
 from app.config import VIDEO_COMPRESSION_PRESETS
-from app.utils.file_handler import get_file_size, calculate_compression_ratio
 from app.models.video import VideoProcessingResponse
+from app.utils.file_handler import calculate_compression_ratio, get_file_size
 
 
 def get_available_h264_encoder():

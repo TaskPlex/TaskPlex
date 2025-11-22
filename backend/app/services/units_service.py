@@ -2,7 +2,8 @@
 Unit conversion service using Pint library
 """
 
-from pint import UnitRegistry, DimensionalityError, UndefinedUnitError
+from pint import DimensionalityError, UndefinedUnitError, UnitRegistry
+
 from app.models.units import UnitConversionResponse
 
 # Initialize unit registry

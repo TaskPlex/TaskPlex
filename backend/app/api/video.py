@@ -2,17 +2,16 @@
 Video processing API endpoints
 """
 
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+
+from app.config import TEMP_DIR
 from app.models.video import VideoProcessingResponse
 from app.services.video_service import compress_video, convert_video
-from app.utils.file_handler import (
-    save_upload_file,
-    delete_file,
-    generate_unique_filename,
-)
+from app.utils.file_handler import (delete_file, generate_unique_filename,
+                                    save_upload_file)
 from app.utils.validators import validate_video_format
-from app.config import TEMP_DIR
 
 router = APIRouter(prefix="/video", tags=["Video"])
 

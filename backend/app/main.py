@@ -3,23 +3,17 @@ AnyTools API - Main application file
 FastAPI application with multi-purpose file processing endpoints
 """
 
+import asyncio
+from contextlib import asynccontextmanager
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
-from contextlib import asynccontextmanager
-import uvicorn
-import asyncio
+from fastapi.responses import FileResponse, JSONResponse
 
-from app.config import (
-    API_TITLE,
-    API_VERSION,
-    API_DESCRIPTION,
-    HOST,
-    PORT,
-    DEBUG,
-    TEMP_DIR,
-)
-from app.api import video, image, pdf, regex, units
+from app.api import image, pdf, regex, units, video
+from app.config import (API_DESCRIPTION, API_TITLE, API_VERSION, DEBUG, HOST,
+                        PORT, TEMP_DIR)
 from app.utils.file_handler import cleanup_temp_files
 
 

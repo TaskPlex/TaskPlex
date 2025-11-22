@@ -4,10 +4,12 @@ PDF processing service using PyPDF2 and PyMuPDF
 
 from pathlib import Path
 from typing import List, Optional
-import PyPDF2
+
 import fitz  # PyMuPDF
+import PyPDF2
+
+from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
 from app.utils.file_handler import get_file_size
-from app.models.pdf import PDFProcessingResponse, PDFInfoResponse
 
 
 def get_pdf_info(input_path: Path) -> Optional[PDFInfoResponse]:

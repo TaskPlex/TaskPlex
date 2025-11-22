@@ -4,6 +4,7 @@ Regex validation service
 
 import re
 from typing import List
+
 from app.models.regex import RegexMatch, RegexValidationResponse
 
 

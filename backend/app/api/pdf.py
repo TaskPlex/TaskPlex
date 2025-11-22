@@ -2,24 +2,18 @@
 PDF processing API endpoints
 """
 
-from fastapi import APIRouter, UploadFile, File, Form, HTTPException
-from typing import List, Optional
 import shutil
-from app.models.pdf import PDFProcessingResponse, PDFInfoResponse
-from app.services.pdf_service import (
-    merge_pdfs,
-    compress_pdf,
-    split_pdf,
-    reorganize_pdf,
-    get_pdf_info,
-)
-from app.utils.file_handler import (
-    save_upload_file,
-    delete_file,
-    generate_unique_filename,
-)
-from app.utils.validators import validate_pdf_format
+from typing import List, Optional
+
+from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+
 from app.config import TEMP_DIR
+from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
+from app.services.pdf_service import (compress_pdf, get_pdf_info, merge_pdfs,
+                                      reorganize_pdf, split_pdf)
+from app.utils.file_handler import (delete_file, generate_unique_filename,
+                                    save_upload_file)
+from app.utils.validators import validate_pdf_format
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
 

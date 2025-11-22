@@ -3,10 +3,12 @@ Image processing service using Pillow
 """
 
 from pathlib import Path
+
 from PIL import Image
+
 from app.config import IMAGE_COMPRESSION_QUALITY
-from app.utils.file_handler import get_file_size, calculate_compression_ratio
 from app.models.image import ImageProcessingResponse
+from app.utils.file_handler import calculate_compression_ratio, get_file_size
 
 
 def compress_image(

@@ -3,6 +3,7 @@ Regex validation API endpoints
 """
 
 from fastapi import APIRouter, HTTPException
+
 from app.models.regex import RegexValidationRequest, RegexValidationResponse
 from app.services.regex_service import validate_regex
 

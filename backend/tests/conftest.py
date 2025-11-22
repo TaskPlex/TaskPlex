@@ -1,14 +1,15 @@
-import pytest
-from fastapi.testclient import TestClient
-from pathlib import Path
 import shutil
 import sys
+from pathlib import Path
+
+import pytest
+from fastapi.testclient import TestClient
 
 # Ajouter le dossier backend au path pour les imports
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.main import app
 from app.config import TEMP_DIR
+from app.main import app
 
 # Créer un dossier temporaire pour les tests
 TEST_ASSETS_DIR = Path(__file__).parent / "assets"
