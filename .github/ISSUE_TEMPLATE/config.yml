@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/tangjuyo/TaskPlex/discussions
+    about: Ask questions, share ideas, or discuss the project
+  - name: 📚 Documentation
+    url: https://github.com/tangjuyo/TaskPlex#readme
+    about: Check the README and documentation
+  - name: 🔒 Security Issue
+    url: https://github.com/tangjuyo/TaskPlex/security/advisories/new
+    about: Report a security vulnerability (please do not open a public issue)
+

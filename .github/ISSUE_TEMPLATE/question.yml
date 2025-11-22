@@ -1,0 +1,58 @@
+name: ❓ Question
+description: Ask a question about the project
+title: "[Question]: "
+labels: ["question", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your question! We'll do our best to help you.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What would you like to know?
+      placeholder: Ask your question here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide any relevant context about your question
+      placeholder: |
+        - What are you trying to accomplish?
+        - What have you tried so far?
+        - Any relevant code snippets or error messages?
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: What category does your question fall into?
+      options:
+        - "Installation/Setup"
+        - "Usage/How-to"
+        - "Configuration"
+        - "API/Integration"
+        - "Development/Contributing"
+        - "Performance"
+        - "Security"
+        - "Other"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions
+          required: true
+        - label: I have checked the documentation
+          required: true
+

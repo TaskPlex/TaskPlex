@@ -1,0 +1,133 @@
+[
+  {
+    "name": "bug",
+    "color": "d73a4a",
+    "description": "Something isn't working"
+  },
+  {
+    "name": "enhancement",
+    "color": "a2eeef",
+    "description": "New feature or request"
+  },
+  {
+    "name": "question",
+    "color": "d876e3",
+    "description": "Further information is requested"
+  },
+  {
+    "name": "documentation",
+    "color": "0075ca",
+    "description": "Improvements or additions to documentation"
+  },
+  {
+    "name": "good first issue",
+    "color": "7057ff",
+    "description": "Good for newcomers"
+  },
+  {
+    "name": "help wanted",
+    "color": "008672",
+    "description": "Extra attention is needed"
+  },
+  {
+    "name": "priority: high",
+    "color": "b60205",
+    "description": "High priority issue"
+  },
+  {
+    "name": "priority: medium",
+    "color": "fbca04",
+    "description": "Medium priority issue"
+  },
+  {
+    "name": "priority: low",
+    "color": "0e8a16",
+    "description": "Low priority issue"
+  },
+  {
+    "name": "needs-triage",
+    "color": "f9d0c4",
+    "description": "Needs to be reviewed and categorized"
+  },
+  {
+    "name": "wontfix",
+    "color": "ffffff",
+    "description": "This will not be worked on"
+  },
+  {
+    "name": "duplicate",
+    "color": "cfd3d7",
+    "description": "This issue or pull request already exists"
+  },
+  {
+    "name": "invalid",
+    "color": "e4e669",
+    "description": "This doesn't seem right"
+  },
+  {
+    "name": "frontend",
+    "color": "1d76db",
+    "description": "Frontend related"
+  },
+  {
+    "name": "backend",
+    "color": "0e8a16",
+    "description": "Backend related"
+  },
+  {
+    "name": "dependencies",
+    "color": "0366d6",
+    "description": "Dependency updates"
+  },
+  {
+    "name": "ci/cd",
+    "color": "bfd4f2",
+    "description": "CI/CD related"
+  },
+  {
+    "name": "security",
+    "color": "b60205",
+    "description": "Security related"
+  },
+  {
+    "name": "performance",
+    "color": "fbca04",
+    "description": "Performance related"
+  },
+  {
+    "name": "refactor",
+    "color": "c2e0c6",
+    "description": "Code refactoring"
+  },
+  {
+    "name": "testing",
+    "color": "c5def5",
+    "description": "Testing related"
+  },
+  {
+    "name": "video",
+    "color": "d4c5f9",
+    "description": "Video tools module"
+  },
+  {
+    "name": "image",
+    "color": "d4c5f9",
+    "description": "Image tools module"
+  },
+  {
+    "name": "pdf",
+    "color": "d4c5f9",
+    "description": "PDF tools module"
+  },
+  {
+    "name": "tauri",
+    "color": "ffc0cb",
+    "description": "Tauri/Desktop app related"
+  },
+  {
+    "name": "docker",
+    "color": "0db7ed",
+    "description": "Docker/Web app related"
+  }
+]
+
