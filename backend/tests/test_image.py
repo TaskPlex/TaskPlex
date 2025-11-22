@@ -42,3 +42,16 @@ def test_invalid_image_format(client, sample_pdf):
 
     # Should fail (400 or 422 depending on validation, let's check 400 for logic error)
     assert response.status_code in [400, 422]
+
+
+def test_convert_image_invalid_output_format(client, sample_image):
+    """Test image conversion with invalid output format"""
+    with open(sample_image, "rb") as f:
+        response = client.post(
+            "/api/v1/image/convert",
+            files={"file": ("test_image.png", f, "image/png")},
+            data={"output_format": "invalid_format", "quality": 80},
+        )
+
+    # Should fail due to invalid output format
+    assert response.status_code == 400

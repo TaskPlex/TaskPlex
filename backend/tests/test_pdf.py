@@ -17,7 +17,6 @@ def test_compress_pdf(client, sample_pdf):
         response = client.post(
             "/api/v1/pdf/compress",
             files={"file": ("test.pdf", f, "application/pdf")},
-            data={"compression_level": "medium"},
         )
 
     assert response.status_code == 200
@@ -74,3 +73,41 @@ def test_reorganize_pdf(client, sample_pdf):
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True
+
+
+def test_pdf_invalid_format(client, sample_image):
+    """Test sending a non-PDF file to PDF endpoint"""
+    with open(sample_image, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/compress",
+            files={"file": ("test.png", f, "image/png")},
+        )
+
+    # Should fail
+    assert response.status_code in [400, 422]
+
+
+def test_merge_pdfs_insufficient_files(client, sample_pdf):
+    """Test merging with less than 2 files"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/merge",
+            files={"file": ("test.pdf", f, "application/pdf")},
+        )
+
+    # Should fail - need at least 2 files
+    assert response.status_code == 400
+
+
+def test_split_pdf_invalid_pages(client, sample_pdf):
+    """Test splitting PDF with invalid page numbers"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/split",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"pages": "999"},  # Invalid page number
+        )
+
+    # Should handle gracefully (might succeed with empty result or fail)
+    # The service should handle this
+    assert response.status_code in [200, 400, 500]

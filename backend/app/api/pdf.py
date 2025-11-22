@@ -114,7 +114,9 @@ async def compress_pdf_file(
         result = compress_pdf(input_path, output_path)
 
         if not result.success:
-            raise HTTPException(status_code=500, detail=result.message)
+            raise HTTPException(
+                status_code=500, detail=result.message or "Failed to compress PDF"
+            )
 
         return result
     finally:
