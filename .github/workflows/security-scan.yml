@@ -58,12 +58,14 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
   container-scan:
     name: Container Security Scan
     runs-on: ubuntu-22.04
     permissions:
       contents: read
+      security-events: write
     
     steps:
       - name: Checkout code
@@ -89,10 +91,19 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
-      - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
+      # Note: Upload SARIF may fail for PRs from forks due to security restrictions
+      # This is expected behavior and the scan still runs successfully
+      - name: Upload Trivy scan results to GitHub Security (Backend)
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
         with:
           sarif_file: 'trivy-backend-results.sarif'
+        continue-on-error: true
+
+      - name: Upload Trivy scan results to GitHub Security (Frontend)
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        with:
+          sarif_file: 'trivy-frontend-results.sarif'
         continue-on-error: true
 
