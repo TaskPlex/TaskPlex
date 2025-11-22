@@ -45,16 +45,28 @@ def test_convert_video_invalid_format(client):
 
 def test_convert_video_invalid_output_format(client):
     """Test video conversion with invalid output format"""
-    # Create a dummy file for testing
+    import os
     from pathlib import Path
 
     from PIL import Image
 
     test_dir = Path(__file__).parent / "temp"
-    test_dir.mkdir(exist_ok=True)
-    img_path = test_dir / "test_video_image.png"
+    test_dir.mkdir(exist_ok=True, parents=True)
+
+    # Use unique filename for parallel execution (include process ID)
+    pid = os.getpid()
+    img_path = test_dir / f"test_video_image_{pid}.png"
+
+    # Remove existing file if it exists (for parallel test execution)
+    if img_path.exists():
+        img_path.unlink()
+
     img = Image.new("RGB", (100, 100), color="blue")
     img.save(img_path)
+
+    # Verify file was created
+    assert img_path.exists(), f"Image file was not created at {img_path}"
+    assert img_path.stat().st_size > 0, f"Image file is empty at {img_path}"
 
     # Using image as mock video file (will fail format validation first)
     with open(img_path, "rb") as f:
