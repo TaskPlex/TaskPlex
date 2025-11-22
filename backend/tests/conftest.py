@@ -28,8 +28,13 @@ def setup_test_env():
     yield
 
     # Cleanup après tous les tests
-    if TEST_TEMP_DIR.exists():
-        shutil.rmtree(TEST_TEMP_DIR)
+    # Vérifier que le répertoire existe avant de le supprimer (peut être supprimé par les tests en parallèle)
+    try:
+        if TEST_TEMP_DIR.exists():
+            shutil.rmtree(TEST_TEMP_DIR)
+    except (FileNotFoundError, OSError):
+        # Le répertoire peut avoir été supprimé par un autre worker en parallèle
+        pass
 
 
 @pytest.fixture
