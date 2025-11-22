@@ -52,14 +52,31 @@ def sample_image():
 @pytest.fixture
 def sample_pdf():
     """Create a dummy PDF for testing"""
+    import os
+
     from reportlab.pdfgen import canvas
 
-    pdf_path = TEST_TEMP_DIR / "test_file.pdf"
+    # Ensure temp directory exists
+    TEST_TEMP_DIR.mkdir(exist_ok=True, parents=True)
+
+    # Use unique filename for parallel execution (include process ID)
+    pid = os.getpid()
+    pdf_path = TEST_TEMP_DIR / f"test_file_{pid}.pdf"
+
+    # Remove existing file if it exists (for parallel test execution)
+    if pdf_path.exists():
+        pdf_path.unlink()
+
     c = canvas.Canvas(str(pdf_path))
     c.drawString(100, 750, "Hello World")
     c.showPage()  # Page 1
     c.drawString(100, 750, "Page 2")
     c.save()
+
+    # Verify file was created
+    assert pdf_path.exists(), f"PDF file was not created at {pdf_path}"
+    assert pdf_path.stat().st_size > 0, f"PDF file is empty at {pdf_path}"
+
     return pdf_path
 
 

@@ -117,6 +117,10 @@ async def compress_pdf_file(
             raise HTTPException(status_code=500, detail=result.message or "Failed to compress PDF")
 
         return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error compressing PDF: {str(e)}")
     finally:
         if input_path:
             delete_file(input_path)

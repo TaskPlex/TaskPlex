@@ -13,13 +13,19 @@ def test_pdf_info(client, sample_pdf):
 
 def test_compress_pdf(client, sample_pdf):
     """Test PDF compression"""
+    # Verify PDF file exists and is readable
+    assert sample_pdf.exists(), f"PDF fixture file does not exist: {sample_pdf}"
+    assert sample_pdf.stat().st_size > 0, f"PDF fixture file is empty: {sample_pdf}"
+
     with open(sample_pdf, "rb") as f:
         response = client.post(
             "/api/v1/pdf/compress",
             files={"file": ("test.pdf", f, "application/pdf")},
         )
 
-    assert response.status_code == 200
+    assert response.status_code == 200, (
+        f"Expected 200, got {response.status_code}. Response: {response.text}"
+    )
     data = response.json()
     assert data["success"] is True
     assert "download_url" in data
@@ -27,6 +33,10 @@ def test_compress_pdf(client, sample_pdf):
 
 def test_split_pdf(client, sample_pdf):
     """Test PDF splitting"""
+    # Verify PDF file exists and is readable
+    assert sample_pdf.exists(), f"PDF fixture file does not exist: {sample_pdf}"
+    assert sample_pdf.stat().st_size > 0, f"PDF fixture file is empty: {sample_pdf}"
+
     # Split page 1-1 (returns a ZIP now)
     with open(sample_pdf, "rb") as f:
         response = client.post(
@@ -35,7 +45,9 @@ def test_split_pdf(client, sample_pdf):
             data={"page_ranges": "1-1"},  # Updated param name
         )
 
-    assert response.status_code == 200
+    assert response.status_code == 200, (
+        f"Expected 200, got {response.status_code}. Response: {response.text}"
+    )
     data = response.json()
     assert data["success"] is True
     # Should return a ZIP file link
