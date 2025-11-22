@@ -18,9 +18,7 @@ class VideoCompressionRequest(BaseModel):
 class VideoConversionRequest(BaseModel):
     """Request model for video format conversion"""
 
-    output_format: str = Field(
-        ..., description="Target video format (e.g., mp4, avi, mov)"
-    )
+    output_format: str = Field(..., description="Target video format (e.g., mp4, avi, mov)")
     quality: Literal["low", "medium", "high"] = Field(
         default="medium", description="Conversion quality preset"
     )

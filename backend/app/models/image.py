@@ -18,9 +18,7 @@ class ImageCompressionRequest(BaseModel):
 class ImageConversionRequest(BaseModel):
     """Request model for image format conversion"""
 
-    output_format: str = Field(
-        ..., description="Target image format (e.g., jpg, png, webp)"
-    )
+    output_format: str = Field(..., description="Target image format (e.g., jpg, png, webp)")
     quality: Literal["low", "medium", "high"] = Field(
         default="medium", description="Conversion quality"
     )

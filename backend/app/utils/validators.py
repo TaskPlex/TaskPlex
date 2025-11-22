@@ -5,8 +5,11 @@ Validation utilities for file formats and inputs
 from pathlib import Path
 from typing import List
 
-from app.config import (SUPPORTED_IMAGE_FORMATS, SUPPORTED_PDF_FORMAT,
-                        SUPPORTED_VIDEO_FORMATS)
+from app.config import (
+    SUPPORTED_IMAGE_FORMATS,
+    SUPPORTED_PDF_FORMAT,
+    SUPPORTED_VIDEO_FORMATS,
+)
 
 
 def validate_file_format(filename: str, allowed_formats: List[str]) -> bool:

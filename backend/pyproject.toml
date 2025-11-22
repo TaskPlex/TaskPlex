@@ -1,0 +1,29 @@
+[tool.ruff]
+# Configuration Ruff
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+# Activer isort intégré dans ruff
+select = ["I"]  # Import sorting
+ignore = []
+
+[tool.ruff.lint.isort]
+# Configuration isort intégrée dans ruff
+known-first-party = ["app"]
+force-sort-within-sections = true
+
+[tool.ruff.format]
+# Configuration du formatage
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.isort]
+# Configuration isort (pour compatibilité)
+profile = "black"
+multi_line_output = 3
+line_length = 100
+known_first_party = ["app"]
+

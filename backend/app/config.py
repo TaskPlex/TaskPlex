@@ -20,9 +20,7 @@ PORT = int(os.getenv("PORT", 8000))
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
 # File upload limits
-MAX_FILE_SIZE = (
-    int(os.getenv("MAX_FILE_SIZE", 100)) * 1024 * 1024
-)  # Convert MB to bytes
+MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE", 100)) * 1024 * 1024  # Convert MB to bytes
 
 # Temporary file storage
 TEMP_DIR = Path(os.getenv("TEMP_DIR", BASE_DIR / "temp"))

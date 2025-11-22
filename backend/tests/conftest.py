@@ -1,9 +1,9 @@
+from pathlib import Path
 import shutil
 import sys
-from pathlib import Path
 
-import pytest
 from fastapi.testclient import TestClient
+import pytest
 
 # Ajouter le dossier backend au path pour les imports
 sys.path.append(str(Path(__file__).parent.parent))

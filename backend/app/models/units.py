@@ -11,12 +11,8 @@ class UnitConversionRequest(BaseModel):
     """Request model for unit conversion"""
 
     value: float = Field(..., description="Value to convert")
-    from_unit: str = Field(
-        ..., description="Source unit (e.g., 'meter', 'kilogram', 'celsius')"
-    )
-    to_unit: str = Field(
-        ..., description="Target unit (e.g., 'feet', 'pound', 'fahrenheit')"
-    )
+    from_unit: str = Field(..., description="Source unit (e.g., 'meter', 'kilogram', 'celsius')")
+    to_unit: str = Field(..., description="Target unit (e.g., 'feet', 'pound', 'fahrenheit')")
 
 
 class UnitConversionResponse(BaseModel):

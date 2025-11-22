@@ -6,14 +6,21 @@ FastAPI application with multi-purpose file processing endpoints
 import asyncio
 from contextlib import asynccontextmanager
 
-import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+import uvicorn
 
 from app.api import image, pdf, regex, units, video
-from app.config import (API_DESCRIPTION, API_TITLE, API_VERSION, DEBUG, HOST,
-                        PORT, TEMP_DIR)
+from app.config import (
+    API_DESCRIPTION,
+    API_TITLE,
+    API_VERSION,
+    DEBUG,
+    HOST,
+    PORT,
+    TEMP_DIR,
+)
 from app.utils.file_handler import cleanup_temp_files
 
 
@@ -130,9 +137,7 @@ async def download_file(filename: str):
         return JSONResponse(
             status_code=404, content={"success": False, "message": "File not found"}
         )
-    return FileResponse(
-        path=file_path, filename=filename, media_type="application/octet-stream"
-    )
+    return FileResponse(path=file_path, filename=filename, media_type="application/octet-stream")
 
 
 # Global exception handler

@@ -9,8 +9,11 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.config import TEMP_DIR
 from app.models.video import VideoProcessingResponse
 from app.services.video_service import compress_video, convert_video
-from app.utils.file_handler import (delete_file, generate_unique_filename,
-                                    save_upload_file)
+from app.utils.file_handler import (
+    delete_file,
+    generate_unique_filename,
+    save_upload_file,
+)
 from app.utils.validators import validate_video_format
 
 router = APIRouter(prefix="/video", tags=["Video"])
@@ -19,9 +22,7 @@ router = APIRouter(prefix="/video", tags=["Video"])
 @router.post("/compress", response_model=VideoProcessingResponse)
 async def compress_video_endpoint(
     file: UploadFile = File(..., description="Video file to compress"),
-    quality: str = Form(
-        "medium", description="Compression quality (low, medium, high)"
-    ),
+    quality: str = Form("medium", description="Compression quality (low, medium, high)"),
 ):
     """
     Compress a video file
@@ -89,9 +90,7 @@ async def convert_video_endpoint(
 
         # Create output path with new extension
         base_name = Path(file.filename).stem
-        output_filename = generate_unique_filename(
-            f"{base_name}_converted.{output_format}"
-        )
+        output_filename = generate_unique_filename(f"{base_name}_converted.{output_format}")
         output_path = TEMP_DIR / output_filename
 
         # Convert video

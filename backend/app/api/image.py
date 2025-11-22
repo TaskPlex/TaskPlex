@@ -9,8 +9,11 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.config import TEMP_DIR
 from app.models.image import ImageProcessingResponse
 from app.services.image_service import compress_image, convert_image
-from app.utils.file_handler import (delete_file, generate_unique_filename,
-                                    save_upload_file)
+from app.utils.file_handler import (
+    delete_file,
+    generate_unique_filename,
+    save_upload_file,
+)
 from app.utils.validators import validate_image_format
 
 router = APIRouter(prefix="/image", tags=["Image"])
@@ -19,9 +22,7 @@ router = APIRouter(prefix="/image", tags=["Image"])
 @router.post("/compress", response_model=ImageProcessingResponse)
 async def compress_image_endpoint(
     file: UploadFile = File(..., description="Image file to compress"),
-    quality: str = Form(
-        "medium", description="Compression quality (low, medium, high)"
-    ),
+    quality: str = Form("medium", description="Compression quality (low, medium, high)"),
 ):
     """
     Compress an image file
@@ -85,9 +86,7 @@ async def convert_image_endpoint(
 
         # Create output path with new extension
         base_name = Path(file.filename).stem
-        output_filename = generate_unique_filename(
-            f"{base_name}_converted.{output_format}"
-        )
+        output_filename = generate_unique_filename(f"{base_name}_converted.{output_format}")
         output_path = TEMP_DIR / output_filename
 
         # Convert image

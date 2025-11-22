@@ -11,9 +11,7 @@ class RegexValidationRequest(BaseModel):
     """Request model for regex validation"""
 
     pattern: str = Field(..., description="Regular expression pattern to test")
-    test_strings: List[str] = Field(
-        ..., description="List of strings to test against the pattern"
-    )
+    test_strings: List[str] = Field(..., description="List of strings to test against the pattern")
     flags: Optional[str] = Field(
         default=None,
         description="Regex flags (i=ignorecase, m=multiline, s=dotall, x=verbose)",

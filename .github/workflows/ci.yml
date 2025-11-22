@@ -37,15 +37,15 @@ jobs:
           cd backend
           ruff check app/ tests/ --output-format=github
 
+      - name: Run Ruff (Import Sorting Check)
+        run: |
+          cd backend
+          ruff check app/ tests/ --select I --output-format=github
+
       - name: Run Ruff (Formatter Check)
         run: |
           cd backend
           ruff format app/ tests/ --check
-      
-      - name: Check Import Sorting
-        run: |
-          cd backend
-          isort app/ tests/ --check-only
 
   lint-frontend:
     name: Frontend Linting

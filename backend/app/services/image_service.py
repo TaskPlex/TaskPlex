@@ -34,9 +34,7 @@ def compress_image(
             # Convert RGBA to RGB if saving as JPEG
             if output_path.suffix.lower() in [".jpg", ".jpeg"] and img.mode == "RGBA":
                 rgb_img = Image.new("RGB", img.size, (255, 255, 255))
-                rgb_img.paste(
-                    img, mask=img.split()[3] if len(img.split()) == 4 else None
-                )
+                rgb_img.paste(img, mask=img.split()[3] if len(img.split()) == 4 else None)
                 img = rgb_img
 
             # Get dimensions
@@ -102,9 +100,7 @@ def convert_image(
             # Convert RGBA to RGB if saving as JPEG
             if output_format.lower() in ["jpg", "jpeg"] and img.mode == "RGBA":
                 rgb_img = Image.new("RGB", img.size, (255, 255, 255))
-                rgb_img.paste(
-                    img, mask=img.split()[3] if len(img.split()) == 4 else None
-                )
+                rgb_img.paste(img, mask=img.split()[3] if len(img.split()) == 4 else None)
                 img = rgb_img
 
             # Get dimensions

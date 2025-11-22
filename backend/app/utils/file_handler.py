@@ -2,10 +2,10 @@
 File handling utilities for upload, download, and temporary file management
 """
 
-import shutil
-import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
+import shutil
+import uuid
 
 from fastapi import UploadFile
 
@@ -30,9 +30,7 @@ def generate_unique_filename(original_filename: str) -> str:
     return f"{timestamp}_{unique_id}_{name}{extension}"
 
 
-async def save_upload_file(
-    upload_file: UploadFile, custom_filename: str = None
-) -> Path:
+async def save_upload_file(upload_file: UploadFile, custom_filename: str = None) -> Path:
     """
     Save an uploaded file to the temporary directory
 
@@ -53,9 +51,7 @@ async def save_upload_file(
     return file_path
 
 
-def save_processed_file(
-    content: bytes, original_filename: str, suffix: str = "_processed"
-) -> Path:
+def save_processed_file(content: bytes, original_filename: str, suffix: str = "_processed") -> Path:
     """
     Save processed file content to temporary directory
 

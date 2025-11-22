@@ -9,10 +9,18 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
-from app.services.pdf_service import (compress_pdf, get_pdf_info, merge_pdfs,
-                                      reorganize_pdf, split_pdf)
-from app.utils.file_handler import (delete_file, generate_unique_filename,
-                                    save_upload_file)
+from app.services.pdf_service import (
+    compress_pdf,
+    get_pdf_info,
+    merge_pdfs,
+    reorganize_pdf,
+    split_pdf,
+)
+from app.utils.file_handler import (
+    delete_file,
+    generate_unique_filename,
+    save_upload_file,
+)
 from app.utils.validators import validate_pdf_format
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
@@ -51,16 +59,12 @@ async def merge_pdf_files(
     Merge multiple PDF files into one
     """
     if len(files) < 2:
-        raise HTTPException(
-            status_code=400, detail="At least 2 PDF files are required for merging"
-        )
+        raise HTTPException(status_code=400, detail="At least 2 PDF files are required for merging")
 
     # Validate all files
     for file in files:
         if not validate_pdf_format(file.filename):
-            raise HTTPException(
-                status_code=400, detail=f"File {file.filename} is not a valid PDF"
-            )
+            raise HTTPException(status_code=400, detail=f"File {file.filename} is not a valid PDF")
 
     input_paths = []
     output_path = None
@@ -121,9 +125,7 @@ async def compress_pdf_file(
 @router.post("/split", response_model=PDFProcessingResponse)
 async def split_pdf_file(
     file: UploadFile = File(..., description="PDF file to split"),
-    pages: Optional[str] = Form(
-        None, description="Comma-separated page numbers (e.g., '1,3,5')"
-    ),
+    pages: Optional[str] = Form(None, description="Comma-separated page numbers (e.g., '1,3,5')"),
     page_ranges: Optional[str] = Form(
         None, description="Comma-separated page ranges (e.g., '1-3,5-7')"
     ),
@@ -185,9 +187,7 @@ async def split_pdf_file(
 @router.post("/reorganize", response_model=PDFProcessingResponse)
 async def reorganize_pdf_pages(
     file: UploadFile = File(..., description="PDF file to reorganize"),
-    page_order: str = Form(
-        ..., description="Comma-separated new page order (e.g., '3,1,2,4')"
-    ),
+    page_order: str = Form(..., description="Comma-separated new page order (e.g., '3,1,2,4')"),
 ):
     # ... (reste inchangé) ...
     """

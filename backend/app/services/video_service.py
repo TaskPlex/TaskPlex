@@ -2,8 +2,8 @@
 Video processing service using FFmpeg
 """
 
-import subprocess
 from pathlib import Path
+import subprocess
 
 import ffmpeg
 
@@ -59,9 +59,7 @@ def compress_video(
         original_size = get_file_size(input_path)
 
         # Get compression preset
-        preset = VIDEO_COMPRESSION_PRESETS.get(
-            quality, VIDEO_COMPRESSION_PRESETS["medium"]
-        )
+        preset = VIDEO_COMPRESSION_PRESETS.get(quality, VIDEO_COMPRESSION_PRESETS["medium"])
 
         # Detect available H.264 encoder
         encoder = get_available_h264_encoder()
@@ -90,9 +88,7 @@ def compress_video(
             output_options["b:v"] = quality_map.get(quality, "2.5M")
 
         stream = ffmpeg.output(stream, str(output_path), **output_options)
-        ffmpeg.run(
-            stream, overwrite_output=True, capture_stdout=True, capture_stderr=True
-        )
+        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
 
         # Get compressed file size
         compressed_size = get_file_size(output_path)
@@ -144,9 +140,7 @@ def convert_video(
         original_size = get_file_size(input_path)
 
         # Get compression preset
-        preset = VIDEO_COMPRESSION_PRESETS.get(
-            quality, VIDEO_COMPRESSION_PRESETS["medium"]
-        )
+        preset = VIDEO_COMPRESSION_PRESETS.get(quality, VIDEO_COMPRESSION_PRESETS["medium"])
 
         # Detect available H.264 encoder
         encoder = get_available_h264_encoder()
@@ -175,9 +169,7 @@ def convert_video(
             output_options["b:v"] = quality_map.get(quality, "2.5M")
 
         stream = ffmpeg.output(stream, str(output_path), **output_options)
-        ffmpeg.run(
-            stream, overwrite_output=True, capture_stdout=True, capture_stderr=True
-        )
+        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
 
         # Get converted file size
         converted_size = get_file_size(output_path)

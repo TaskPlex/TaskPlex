@@ -220,9 +220,7 @@ def split_pdf(
         )
 
     except Exception as e:
-        return PDFProcessingResponse(
-            success=False, message=f"Error splitting PDF: {str(e)}"
-        )
+        return PDFProcessingResponse(success=False, message=f"Error splitting PDF: {str(e)}")
 
 
 def reorganize_pdf(

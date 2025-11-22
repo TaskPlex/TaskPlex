@@ -46,9 +46,7 @@ def validate_regex(
                 matches = [match.group(0)]
                 groups = list(match.groups()) if match.groups() else None
                 results.append(
-                    RegexMatch(
-                        string=test_string, matched=True, matches=matches, groups=groups
-                    )
+                    RegexMatch(string=test_string, matched=True, matches=matches, groups=groups)
                 )
             else:
                 results.append(RegexMatch(string=test_string, matched=False))
