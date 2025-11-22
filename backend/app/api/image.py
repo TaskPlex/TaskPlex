@@ -1,11 +1,16 @@
 """
 Image processing API endpoints
 """
+
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from pathlib import Path
 from app.models.image import ImageProcessingResponse
 from app.services.image_service import compress_image, convert_image
-from app.utils.file_handler import save_upload_file, delete_file, generate_unique_filename
+from app.utils.file_handler import (
+    save_upload_file,
+    delete_file,
+    generate_unique_filename,
+)
 from app.utils.validators import validate_image_format
 from app.config import TEMP_DIR
 
@@ -15,36 +20,38 @@ router = APIRouter(prefix="/image", tags=["Image"])
 @router.post("/compress", response_model=ImageProcessingResponse)
 async def compress_image_endpoint(
     file: UploadFile = File(..., description="Image file to compress"),
-    quality: str = Form("medium", description="Compression quality (low, medium, high)")
+    quality: str = Form(
+        "medium", description="Compression quality (low, medium, high)"
+    ),
 ):
     """
     Compress an image file
-    
+
     Supported formats: JPG, JPEG, PNG, GIF, BMP, WEBP
     """
     # Validate file format
     if not validate_image_format(file.filename):
         raise HTTPException(status_code=400, detail="Unsupported image format")
-    
+
     input_path = None
     output_path = None
-    
+
     try:
         # Save uploaded file
         input_path = await save_upload_file(file)
-        
+
         # Create output path
         output_filename = generate_unique_filename(f"compressed_{file.filename}")
         output_path = TEMP_DIR / output_filename
-        
+
         # Compress image
         result = compress_image(input_path, output_path, quality)
-        
+
         if not result.success:
             raise HTTPException(status_code=500, detail=result.message)
-        
+
         return result
-    
+
     finally:
         # Clean up input file
         if input_path:
@@ -55,43 +62,44 @@ async def compress_image_endpoint(
 async def convert_image_endpoint(
     file: UploadFile = File(..., description="Image file to convert"),
     output_format: str = Form(..., description="Target format (jpg, png, webp, etc.)"),
-    quality: str = Form("medium", description="Conversion quality (low, medium, high)")
+    quality: str = Form("medium", description="Conversion quality (low, medium, high)"),
 ):
     """
     Convert an image to a different format
-    
+
     Supported formats: JPG, JPEG, PNG, GIF, BMP, WEBP
     """
     # Validate input file format
     if not validate_image_format(file.filename):
         raise HTTPException(status_code=400, detail="Unsupported input image format")
-    
+
     # Validate output format
-    if output_format.lower() not in ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']:
+    if output_format.lower() not in ["jpg", "jpeg", "png", "gif", "bmp", "webp"]:
         raise HTTPException(status_code=400, detail="Unsupported output format")
-    
+
     input_path = None
     output_path = None
-    
+
     try:
         # Save uploaded file
         input_path = await save_upload_file(file)
-        
+
         # Create output path with new extension
         base_name = Path(file.filename).stem
-        output_filename = generate_unique_filename(f"{base_name}_converted.{output_format}")
+        output_filename = generate_unique_filename(
+            f"{base_name}_converted.{output_format}"
+        )
         output_path = TEMP_DIR / output_filename
-        
+
         # Convert image
         result = convert_image(input_path, output_path, output_format, quality)
-        
+
         if not result.success:
             raise HTTPException(status_code=500, detail=result.message)
-        
+
         return result
-    
+
     finally:
         # Clean up input file
         if input_path:
             delete_file(input_path)
-

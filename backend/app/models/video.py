@@ -1,32 +1,33 @@
 """
 Video processing models
 """
+
 from pydantic import BaseModel, Field
 from typing import Literal, Optional
 
 
 class VideoCompressionRequest(BaseModel):
     """Request model for video compression"""
+
     quality: Literal["low", "medium", "high"] = Field(
-        default="medium",
-        description="Compression quality preset"
+        default="medium", description="Compression quality preset"
     )
 
 
 class VideoConversionRequest(BaseModel):
     """Request model for video format conversion"""
+
     output_format: str = Field(
-        ...,
-        description="Target video format (e.g., mp4, avi, mov)"
+        ..., description="Target video format (e.g., mp4, avi, mov)"
     )
     quality: Literal["low", "medium", "high"] = Field(
-        default="medium",
-        description="Conversion quality preset"
+        default="medium", description="Conversion quality preset"
     )
 
 
 class VideoProcessingResponse(BaseModel):
     """Response model for video processing"""
+
     success: bool
     message: str
     filename: str
@@ -34,4 +35,3 @@ class VideoProcessingResponse(BaseModel):
     original_size: Optional[int] = None
     processed_size: Optional[int] = None
     compression_ratio: Optional[float] = None
-

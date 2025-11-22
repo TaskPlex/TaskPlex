@@ -2,14 +2,14 @@ def test_pdf_info(client, sample_pdf):
     """Test retrieving PDF information"""
     with open(sample_pdf, "rb") as f:
         response = client.post(
-            "/api/v1/pdf/info",
-            files={"file": ("test.pdf", f, "application/pdf")}
+            "/api/v1/pdf/info", files={"file": ("test.pdf", f, "application/pdf")}
         )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["page_count"] > 0
     assert data["page_count"] == 2
+
 
 def test_compress_pdf(client, sample_pdf):
     """Test PDF compression"""
@@ -17,13 +17,14 @@ def test_compress_pdf(client, sample_pdf):
         response = client.post(
             "/api/v1/pdf/compress",
             files={"file": ("test.pdf", f, "application/pdf")},
-            data={"compression_level": "medium"}
+            data={"compression_level": "medium"},
         )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True
     assert "download_url" in data
+
 
 def test_split_pdf(client, sample_pdf):
     """Test PDF splitting"""
@@ -32,9 +33,9 @@ def test_split_pdf(client, sample_pdf):
         response = client.post(
             "/api/v1/pdf/split",
             files={"file": ("test.pdf", f, "application/pdf")},
-            data={"page_ranges": "1-1"} # Updated param name
+            data={"page_ranges": "1-1"},  # Updated param name
         )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True
@@ -42,18 +43,16 @@ def test_split_pdf(client, sample_pdf):
     assert data["filename"].endswith(".zip")
     assert "download_url" in data
 
+
 def test_merge_pdfs(client, sample_pdf):
     """Test merging PDFs"""
     files = [
         ("files", ("test1.pdf", open(sample_pdf, "rb"), "application/pdf")),
-        ("files", ("test2.pdf", open(sample_pdf, "rb"), "application/pdf"))
+        ("files", ("test2.pdf", open(sample_pdf, "rb"), "application/pdf")),
     ]
-    
-    response = client.post(
-        "/api/v1/pdf/merge",
-        files=files
-    )
-    
+
+    response = client.post("/api/v1/pdf/merge", files=files)
+
     for _, (_, f, _) in files:
         f.close()
 
@@ -62,15 +61,16 @@ def test_merge_pdfs(client, sample_pdf):
     assert data["success"] is True
     assert "download_url" in data
 
+
 def test_reorganize_pdf(client, sample_pdf):
     """Test reorganizing PDF pages"""
     with open(sample_pdf, "rb") as f:
         response = client.post(
             "/api/v1/pdf/reorganize",
             files={"file": ("test.pdf", f, "application/pdf")},
-            data={"page_order": "2,1"}
+            data={"page_order": "2,1"},
         )
-    
+
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True

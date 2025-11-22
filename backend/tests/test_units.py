@@ -1,6 +1,7 @@
 """
 Basic tests for unit conversion endpoint
 """
+
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
@@ -10,11 +11,7 @@ client = TestClient(app)
 
 def test_length_conversion():
     """Test length unit conversion"""
-    payload = {
-        "value": 100,
-        "from_unit": "meter",
-        "to_unit": "feet"
-    }
+    payload = {"value": 100, "from_unit": "meter", "to_unit": "feet"}
     response = client.post("/api/v1/units/convert", json=payload)
     assert response.status_code == 200
     data = response.json()
@@ -31,14 +28,10 @@ def test_temperature_conversion():
     # If 400, it means Pint raised an error.
     # Note: Offset units (like temperature) require Quantity(value, unit) constructor in new Pint versions,
     # but multiplication works for delta. For absolute temp, it's tricky.
-    
-    payload = {
-        "value": 100,
-        "from_unit": "degC",
-        "to_unit": "degF"
-    }
+
+    payload = {"value": 100, "from_unit": "degC", "to_unit": "degF"}
     response = client.post("/api/v1/units/convert", json=payload)
-    
+
     if response.status_code != 200:
         print(f"Error response: {response.json()}")
 
@@ -50,11 +43,7 @@ def test_temperature_conversion():
 
 def test_mass_conversion():
     """Test mass unit conversion"""
-    payload = {
-        "value": 1,
-        "from_unit": "kilogram",
-        "to_unit": "pound"
-    }
+    payload = {"value": 1, "from_unit": "kilogram", "to_unit": "pound"}
     response = client.post("/api/v1/units/convert", json=payload)
     assert response.status_code == 200
     data = response.json()
@@ -64,21 +53,13 @@ def test_mass_conversion():
 
 def test_incompatible_units():
     """Test conversion between incompatible units"""
-    payload = {
-        "value": 100,
-        "from_unit": "meter",
-        "to_unit": "kilogram"
-    }
+    payload = {"value": 100, "from_unit": "meter", "to_unit": "kilogram"}
     response = client.post("/api/v1/units/convert", json=payload)
     assert response.status_code == 400
 
 
 def test_invalid_unit():
     """Test conversion with invalid unit"""
-    payload = {
-        "value": 100,
-        "from_unit": "invalid_unit",
-        "to_unit": "meter"
-    }
+    payload = {"value": 100, "from_unit": "invalid_unit", "to_unit": "meter"}
     response = client.post("/api/v1/units/convert", json=payload)
     assert response.status_code == 400

@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
+
 class PDFProcessingResponse(BaseModel):
     success: bool
     message: str
@@ -12,12 +13,15 @@ class PDFProcessingResponse(BaseModel):
     processed_size: Optional[int] = None
     filenames: Optional[List[str]] = None
 
+
 class PDFSplitRequest(BaseModel):
     pages: Optional[str] = None
     page_ranges: Optional[str] = None
 
+
 class PDFReorganizeRequest(BaseModel):
     page_order: str
+
 
 class PDFInfoResponse(BaseModel):
     filename: str
