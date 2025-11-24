@@ -5,6 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Layout } from './components/Layout';
 import { LoadingFallback } from './components/LoadingFallback';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 
 // Helper function to create lazy components with better error handling
 const createLazyComponent = <T extends React.ComponentType<Record<string, unknown>>>(
@@ -59,30 +60,32 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<HomeDashboard />} />
-                <Route path="video" element={<VideoScreen />} />
-                <Route path="image" element={<ImageScreen />} />
-                
-                {/* PDF Module Routes - Heavy dependencies loaded on demand */}
-                <Route path="pdf">
-                  <Route index element={<PDFDashboard />} />
-                  <Route path="compress" element={<PDFCompress />} />
-                  <Route path="merge" element={<PDFMerge />} />
-                  <Route path="split" element={<PDFSplit />} />
-                  <Route path="reorganize" element={<PDFReorganize />} />
-                </Route>
+        <FavoritesProvider>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<HomeDashboard />} />
+                  <Route path="video" element={<VideoScreen />} />
+                  <Route path="image" element={<ImageScreen />} />
+                  
+                  {/* PDF Module Routes - Heavy dependencies loaded on demand */}
+                  <Route path="pdf">
+                    <Route index element={<PDFDashboard />} />
+                    <Route path="compress" element={<PDFCompress />} />
+                    <Route path="merge" element={<PDFMerge />} />
+                    <Route path="split" element={<PDFSplit />} />
+                    <Route path="reorganize" element={<PDFReorganize />} />
+                  </Route>
 
-                <Route path="regex" element={<RegexScreen />} />
-                <Route path="units" element={<UnitsScreen />} />
-                <Route path="settings" element={<SettingsScreen />} />
-              </Route>
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
+                  <Route path="regex" element={<RegexScreen />} />
+                  <Route path="units" element={<UnitsScreen />} />
+                  <Route path="settings" element={<SettingsScreen />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </BrowserRouter>
+        </FavoritesProvider>
         {/* Devtools only in development */}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

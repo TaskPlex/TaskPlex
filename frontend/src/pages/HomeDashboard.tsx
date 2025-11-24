@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   Video, Image as ImageIcon, FileText, Regex, Ruler, 
-  Minimize2, RefreshCw, FileImage
+  Minimize2, RefreshCw, FileImage, Star
 } from 'lucide-react';
+import { useFavorites } from '../hooks/useFavorites';
 
 // Categories for filtering
 type Category = 'all' | 'media' | 'document' | 'developer' | 'utility';
@@ -109,6 +110,7 @@ export const HomeDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState<Category>('all');
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const tools = getTools(t);
   const categories = getCategories(t);
@@ -153,33 +155,75 @@ export const HomeDashboard: React.FC = () => {
       {/* Tools Grid */}
       <div className="max-w-[1400px] mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredTools.map((tool) => (
-            <button
-              key={tool.id}
-              onClick={() => navigate(tool.path)}
-              className="group relative flex flex-col p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 text-left h-full hover:-translate-y-1"
-            >
-              {/* Icon */}
-              <div className="mb-6 p-4 rounded-xl bg-gray-50 w-fit group-hover:bg-gray-100 transition-colors">
-                <tool.icon size={40} className={`${tool.color} transition-transform duration-300 group-hover:scale-110`} />
+          {filteredTools.map((tool) => {
+            // Map tool IDs to module IDs for favorites
+            // For main modules, use the tool ID directly
+            // For sub-tools, use their specific IDs
+            const moduleIdMap: Record<string, string> = {
+              'video-tools': 'video',
+              'image-tools': 'image',
+              'pdf-tools': 'pdf',
+              'regex-tester': 'regex',
+              'unit-converter': 'units',
+              // Sub-tools keep their own IDs
+              'organize-pdf': 'organize-pdf',
+              'convert-image': 'convert-image',
+              'compress-video': 'compress-video',
+            };
+            const moduleId = moduleIdMap[tool.id] || tool.id;
+            const isFav = isFavorite(moduleId);
+
+            return (
+              <div
+                key={tool.id}
+                className="group relative flex flex-col p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 h-full hover:-translate-y-1"
+              >
+                <button
+                  onClick={() => navigate(tool.path)}
+                  className="flex-1 text-left"
+                >
+                  {/* Icon */}
+                  <div className="mb-6 p-4 rounded-xl bg-gray-50 w-fit group-hover:bg-gray-100 transition-colors">
+                    <tool.icon size={40} className={`${tool.color} transition-transform duration-300 group-hover:scale-110`} />
+                  </div>
+
+                  {/* Content */}
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors">
+                    {tool.title}
+                  </h3>
+                  <p className="text-gray-500 text-sm leading-relaxed">
+                    {tool.description}
+                  </p>
+                </button>
+
+                {/* Favorite Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(moduleId);
+                  }}
+                  className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 transition-colors z-10"
+                  aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                  <Star 
+                    size={20} 
+                    className={`transition-all ${
+                      isFav 
+                        ? 'text-yellow-500 fill-yellow-500' 
+                        : 'text-gray-400 hover:text-yellow-500'
+                    }`} 
+                  />
+                </button>
+
+                {/* New Badge */}
+                {tool.isNew && (
+                  <span className="absolute top-4 left-4 px-2.5 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                    {t('home.new')}
+                  </span>
+                )}
               </div>
-
-              {/* Content */}
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-600 transition-colors">
-                {tool.title}
-              </h3>
-              <p className="text-gray-500 text-sm leading-relaxed">
-                {tool.description}
-              </p>
-
-              {/* New Badge */}
-              {tool.isNew && (
-                <span className="absolute top-6 right-6 px-2.5 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
-                  {t('home.new')}
-                </span>
-              )}
-            </button>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>
