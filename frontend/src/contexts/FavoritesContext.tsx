@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 
 const FAVORITES_STORAGE_KEY = 'taskplex_favorites';
 const SIDEBAR_COLLAPSED_KEY = 'taskplex_sidebar_collapsed';
