@@ -1,23 +1,18 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
 import { HomeDashboard } from './HomeDashboard';
-
-// Wrapper pour le router
-const renderWithRouter = (ui: React.ReactElement) => {
-  return render(ui, { wrapper: BrowserRouter });
-};
+import { renderWithProviders } from '../test-utils';
 
 describe('HomeDashboard', () => {
   it('renders the welcome message', () => {
-    renderWithRouter(<HomeDashboard />);
+    renderWithProviders(<HomeDashboard />);
     expect(screen.getByText(/Your Universal/i)).toBeInTheDocument();
     expect(screen.getByText(/TaskPlex/i)).toBeInTheDocument();
   });
 
   it('renders tool categories', () => {
-    renderWithRouter(<HomeDashboard />);
+    renderWithProviders(<HomeDashboard />);
     expect(screen.getByText(/All Tools/i)).toBeInTheDocument();
     expect(screen.getByText(/Media/i)).toBeInTheDocument();
     // Documents appears in both button and description, so use getAllByText
@@ -25,7 +20,7 @@ describe('HomeDashboard', () => {
   });
 
   it('filters tools when clicking a category', () => {
-    renderWithRouter(<HomeDashboard />);
+    renderWithProviders(<HomeDashboard />);
     
     // Au début, tous les outils sont là (ex: Video Tools et Regex Tester)
     expect(screen.getByText(/Video Tools/i)).toBeInTheDocument();

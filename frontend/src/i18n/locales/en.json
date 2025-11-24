@@ -16,6 +16,10 @@
     "reset": "Reset",
     "back": "Back"
   },
+  "sidebar": {
+    "noFavorites": "No favorites yet",
+    "addFavoritesHint": "Add favorites from the dashboard"
+  },
   "navigation": {
     "videoTools": "Video Tools",
     "imageTools": "Image Tools",

@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
+import { FavoritesProvider } from './contexts/FavoritesContext';
 
 export const renderWithProviders = (ui: React.ReactElement) => {
   const queryClient = new QueryClient({
@@ -14,9 +15,11 @@ export const renderWithProviders = (ui: React.ReactElement) => {
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        {ui}
-      </BrowserRouter>
+      <FavoritesProvider>
+        <BrowserRouter>
+          {ui}
+        </BrowserRouter>
+      </FavoritesProvider>
     </QueryClientProvider>
   );
 };

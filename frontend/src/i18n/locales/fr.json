@@ -16,6 +16,10 @@
     "reset": "Réinitialiser",
     "back": "Retour"
   },
+  "sidebar": {
+    "noFavorites": "Aucun favori pour le moment",
+    "addFavoritesHint": "Ajoutez des favoris depuis le tableau de bord"
+  },
   "navigation": {
     "videoTools": "Outils vidéo",
     "imageTools": "Outils image",
