@@ -21,6 +21,7 @@ interface PDFPage {
 }
 
 const SortablePage = ({ page }: { page: PDFPage }) => {
+  const { t } = useTranslation();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: page.id });
   
   const style = {
