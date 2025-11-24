@@ -32,6 +32,7 @@ const VideoScreen = createLazyComponent(() => import('./pages/VideoScreen'), 'Vi
 const ImageScreen = createLazyComponent(() => import('./pages/ImageScreen'), 'ImageScreen');
 const RegexScreen = createLazyComponent(() => import('./pages/RegexScreen'), 'RegexScreen');
 const UnitsScreen = createLazyComponent(() => import('./pages/UnitsScreen'), 'UnitsScreen');
+const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFDashboard = createLazyComponent(() => import('./pages/pdf/PDFDashboard'), 'PDFDashboard');
@@ -77,6 +78,7 @@ function App() {
 
                 <Route path="regex" element={<RegexScreen />} />
                 <Route path="units" element={<UnitsScreen />} />
+                <Route path="settings" element={<SettingsScreen />} />
               </Route>
             </Routes>
           </Suspense>

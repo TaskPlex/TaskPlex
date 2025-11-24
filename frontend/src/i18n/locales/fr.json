@@ -1,0 +1,66 @@
+{
+  "common": {
+    "appName": "TaskPlex",
+    "appTagline": "L'outil universel",
+    "dashboard": "Tableau de bord",
+    "modules": "Modules",
+    "settings": "Paramètres",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "upload": "Téléverser",
+    "download": "Télécharger",
+    "process": "Traiter",
+    "reset": "Réinitialiser",
+    "back": "Retour"
+  },
+  "navigation": {
+    "videoTools": "Outils vidéo",
+    "imageTools": "Outils image",
+    "pdfTools": "Outils PDF",
+    "regexTester": "Testeur Regex",
+    "unitConverter": "Convertisseur d'unités"
+  },
+  "home": {
+    "heroTitle": "Votre",
+    "heroSubtitle": "Tous les outils dont vous avez besoin pour être productif, en un seul endroit. Traitez des vidéos, images, PDF et plus encore. 100% Gratuit et Open Source.",
+    "allTools": "Tous les outils",
+    "media": "Média",
+    "documents": "Documents",
+    "developer": "Développeur",
+    "utilities": "Utilitaires",
+    "videoToolsDesc": "Compressez, convertissez et traitez vos fichiers vidéo en toute simplicité. Prend en charge MP4, AVI, MKV et plus encore.",
+    "imageToolsDesc": "Optimisez vos images. Compressez JPG, PNG, WEBP ou convertissez entre formats instantanément.",
+    "pdfToolsDesc": "Solution PDF complète. Fusionnez, divisez, compressez, organisez et gérez vos documents PDF.",
+    "regexTesterDesc": "Testez et déboguez vos expressions régulières en temps réel avec surlignage visuel.",
+    "unitConverterDesc": "Convertissez entre des milliers d'unités. Longueur, poids, température, vitesse et plus encore.",
+    "compressVideo": "Compresser vidéo",
+    "compressVideoDesc": "Réduisez rapidement la taille des fichiers vidéo sans perdre en qualité.",
+    "organizePdf": "Organiser PDF",
+    "organizePdfDesc": "Réorganisez, supprimez ou faites pivoter les pages de vos fichiers PDF.",
+    "convertImage": "Convertir image",
+    "convertImageDesc": "Transformez les images en formats PNG, JPG, WEBP en quelques secondes.",
+    "new": "Nouveau"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "languageDesc": "Choisissez votre langue préférée",
+    "appearance": "Apparence",
+    "theme": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système",
+    "about": "À propos",
+    "version": "Version",
+    "description": "TaskPlex est une suite d'utilitaires puissante, moderne et open-source pour traiter des vidéos, images et PDF."
+  },
+  "languages": {
+    "en": "Anglais",
+    "fr": "Français",
+    "es": "Espagnol"
+  }
+}
+

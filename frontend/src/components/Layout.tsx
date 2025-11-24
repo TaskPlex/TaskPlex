@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Video, Image, FileText, Regex, Ruler, Menu } from 'lucide-react';
+import { LayoutDashboard, Video, Image, FileText, Regex, Ruler, Menu, Settings } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 // Preload route components on hover for better UX
 const preloadRoute = (routePath: string) => {
@@ -15,6 +16,7 @@ const preloadRoute = (routePath: string) => {
     '/pdf/merge': () => import('../pages/pdf/PDFMerge'),
     '/pdf/split': () => import('../pages/pdf/PDFSplit'),
     '/pdf/reorganize': () => import('../pages/pdf/PDFReorganize'),
+    '/settings': () => import('../pages/SettingsScreen'),
   };
   
   const loader = routeMap[routePath];
@@ -27,6 +29,7 @@ const preloadRoute = (routePath: string) => {
 
 export const Layout: React.FC = () => {
   const location = useLocation();
+  const { t } = useTranslation();
   
   // Preload adjacent routes when user is on a page
   React.useEffect(() => {
@@ -49,24 +52,25 @@ export const Layout: React.FC = () => {
       <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col">
         <div className="p-6 border-b border-gray-100">
           <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-            TaskPlex
+            {t('common.appName')}
           </h1>
-          <p className="text-xs text-gray-400 mt-1">The Universal Tool</p>
+          <p className="text-xs text-gray-400 mt-1">{t('common.appTagline')}</p>
         </div>
 
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          <NavItem to="/" icon={<LayoutDashboard size={20}/>} label="Dashboard" />
+          <NavItem to="/" icon={<LayoutDashboard size={20}/>} label={t('common.dashboard')} />
           <div className="pt-4 pb-2 px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-            Modules
+            {t('common.modules')}
           </div>
-          <NavItem to="/video" icon={<Video size={20}/>} label="Video Tools" />
-          <NavItem to="/image" icon={<Image size={20}/>} label="Image Tools" />
-          <NavItem to="/pdf" icon={<FileText size={20}/>} label="PDF Tools" />
-          <NavItem to="/regex" icon={<Regex size={20}/>} label="Regex Tester" />
-          <NavItem to="/units" icon={<Ruler size={20}/>} label="Unit Converter" />
+          <NavItem to="/video" icon={<Video size={20}/>} label={t('navigation.videoTools')} />
+          <NavItem to="/image" icon={<Image size={20}/>} label={t('navigation.imageTools')} />
+          <NavItem to="/pdf" icon={<FileText size={20}/>} label={t('navigation.pdfTools')} />
+          <NavItem to="/regex" icon={<Regex size={20}/>} label={t('navigation.regexTester')} />
+          <NavItem to="/units" icon={<Ruler size={20}/>} label={t('navigation.unitConverter')} />
         </nav>
 
-        <div className="p-4 border-t border-gray-100">
+        <div className="p-4 border-t border-gray-100 space-y-2">
+          <NavItem to="/settings" icon={<Settings size={20}/>} label={t('common.settings')} />
           <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50">
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500"></div>
             <div>

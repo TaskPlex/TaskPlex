@@ -1,0 +1,66 @@
+{
+  "common": {
+    "appName": "TaskPlex",
+    "appTagline": "La herramienta universal",
+    "dashboard": "Panel de control",
+    "modules": "Módulos",
+    "settings": "Configuración",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "upload": "Subir",
+    "download": "Descargar",
+    "process": "Procesar",
+    "reset": "Restablecer",
+    "back": "Volver"
+  },
+  "navigation": {
+    "videoTools": "Herramientas de video",
+    "imageTools": "Herramientas de imagen",
+    "pdfTools": "Herramientas PDF",
+    "regexTester": "Probador Regex",
+    "unitConverter": "Convertidor de unidades"
+  },
+  "home": {
+    "heroTitle": "Tu",
+    "heroSubtitle": "Todas las herramientas que necesitas para ser productivo, en un solo lugar. Procesa videos, imágenes, PDF y más. 100% Gratis y Open Source.",
+    "allTools": "Todas las herramientas",
+    "media": "Medios",
+    "documents": "Documentos",
+    "developer": "Desarrollador",
+    "utilities": "Utilidades",
+    "videoToolsDesc": "Comprime, convierte y procesa tus archivos de video con facilidad. Soporta MP4, AVI, MKV y más.",
+    "imageToolsDesc": "Optimiza tus imágenes. Comprime JPG, PNG, WEBP o convierte entre formatos al instante.",
+    "pdfToolsDesc": "Solución PDF completa. Combina, divide, comprime, organiza y gestiona tus documentos PDF.",
+    "regexTesterDesc": "Prueba y depura tus expresiones regulares en tiempo real con resaltado visual.",
+    "unitConverterDesc": "Convierte entre miles de unidades. Longitud, peso, temperatura, velocidad y más.",
+    "compressVideo": "Comprimir video",
+    "compressVideoDesc": "Reduce rápidamente el tamaño de los archivos de video sin perder calidad.",
+    "organizePdf": "Organizar PDF",
+    "organizePdfDesc": "Reorganiza, elimina o rota páginas en tus archivos PDF.",
+    "convertImage": "Convertir imagen",
+    "convertImageDesc": "Transforma imágenes a formatos PNG, JPG, WEBP en segundos.",
+    "new": "Nuevo"
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "languageDesc": "Elige tu idioma preferido",
+    "appearance": "Apariencia",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "about": "Acerca de",
+    "version": "Versión",
+    "description": "TaskPlex es una suite de utilidades potente, moderna y de código abierto para procesar videos, imágenes y PDF."
+  },
+  "languages": {
+    "en": "Inglés",
+    "fr": "Francés",
+    "es": "Español"
+  }
+}
+

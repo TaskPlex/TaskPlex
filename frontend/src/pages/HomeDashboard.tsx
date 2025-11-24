@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   Video, Image as ImageIcon, FileText, Regex, Ruler, 
   Minimize2, RefreshCw, FileImage
@@ -19,62 +20,57 @@ interface Tool {
   isNew?: boolean;
 }
 
-const tools: Tool[] = [
-  // Video Tools
+// Tools will be created dynamically with translations
+const getTools = (t: (key: string) => string): Tool[] => [
   {
     id: 'video-tools',
-    title: 'Video Tools',
-    description: 'Compress, convert and process your video files with ease. Supports MP4, AVI, MKV and more.',
+    title: t('navigation.videoTools'),
+    description: t('home.videoToolsDesc'),
     icon: Video,
     color: 'text-purple-600',
     category: 'media',
     path: '/video'
   },
-  // Image Tools
   {
     id: 'image-tools',
-    title: 'Image Tools',
-    description: 'Optimize your images. Compress JPG, PNG, WEBP or convert between formats instantly.',
+    title: t('navigation.imageTools'),
+    description: t('home.imageToolsDesc'),
     icon: ImageIcon,
     color: 'text-blue-600',
     category: 'media',
     path: '/image'
   },
-  // PDF Tools
   {
     id: 'pdf-tools',
-    title: 'PDF Tools',
-    description: 'Complete PDF solution. Merge, split, compress, organize and manage your PDF documents.',
+    title: t('navigation.pdfTools'),
+    description: t('home.pdfToolsDesc'),
     icon: FileText,
     color: 'text-red-600',
     category: 'document',
     path: '/pdf'
   },
-  // Developer Tools
   {
     id: 'regex-tester',
-    title: 'Regex Tester',
-    description: 'Test and debug your regular expressions in real-time with visual highlighting.',
+    title: t('navigation.regexTester'),
+    description: t('home.regexTesterDesc'),
     icon: Regex,
     color: 'text-yellow-600',
     category: 'developer',
     path: '/regex'
   },
-  // Utilities
   {
     id: 'unit-converter',
-    title: 'Unit Converter',
-    description: 'Convert between thousands of units. Length, weight, temperature, speed and more.',
+    title: t('navigation.unitConverter'),
+    description: t('home.unitConverterDesc'),
     icon: Ruler,
     color: 'text-green-600',
     category: 'utility',
     path: '/units'
   },
-  // Shortcuts (Direct links to specific popular actions)
   {
     id: 'compress-video',
-    title: 'Compress Video',
-    description: 'Quickly reduce video file size without losing quality.',
+    title: t('home.compressVideo'),
+    description: t('home.compressVideoDesc'),
     icon: Minimize2,
     color: 'text-purple-500',
     category: 'media',
@@ -83,8 +79,8 @@ const tools: Tool[] = [
   },
   {
     id: 'organize-pdf',
-    title: 'Organize PDF',
-    description: 'Rearrange, delete or rotate pages in your PDF files.',
+    title: t('home.organizePdf'),
+    description: t('home.organizePdfDesc'),
     icon: RefreshCw,
     color: 'text-red-500',
     category: 'document',
@@ -92,8 +88,8 @@ const tools: Tool[] = [
   },
   {
     id: 'convert-image',
-    title: 'Convert Image',
-    description: 'Transform images to PNG, JPG, WEBP formats in seconds.',
+    title: t('home.convertImage'),
+    description: t('home.convertImageDesc'),
     icon: FileImage,
     color: 'text-blue-500',
     category: 'media',
@@ -101,17 +97,21 @@ const tools: Tool[] = [
   }
 ];
 
-const categories: { id: Category; label: string }[] = [
-  { id: 'all', label: 'All Tools' },
-  { id: 'media', label: 'Media' },
-  { id: 'document', label: 'Documents' },
-  { id: 'developer', label: 'Developer' },
-  { id: 'utility', label: 'Utilities' },
+const getCategories = (t: (key: string) => string): { id: Category; label: string }[] => [
+  { id: 'all', label: t('home.allTools') },
+  { id: 'media', label: t('home.media') },
+  { id: 'document', label: t('home.documents') },
+  { id: 'developer', label: t('home.developer') },
+  { id: 'utility', label: t('home.utilities') },
 ];
 
 export const HomeDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState<Category>('all');
+
+  const tools = getTools(t);
+  const categories = getCategories(t);
 
   const filteredTools = activeCategory === 'all' 
     ? tools 
@@ -122,11 +122,10 @@ export const HomeDashboard: React.FC = () => {
       {/* Hero Section */}
       <div className="bg-[#f4f0f8] py-20 px-4 text-center border-b border-gray-100">
         <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
-          Your Universal <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">TaskPlex</span>
+          {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">{t('common.appName')}</span>
         </h1>
         <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Every tool you need to be productive, in one place. 
-          Process videos, images, PDFs and more. 100% Free and Open Source.
+          {t('home.heroSubtitle')}
         </p>
       </div>
 
@@ -176,7 +175,7 @@ export const HomeDashboard: React.FC = () => {
               {/* New Badge */}
               {tool.isNew && (
                 <span className="absolute top-6 right-6 px-2.5 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
-                  New
+                  {t('home.new')}
                 </span>
               )}
             </button>
