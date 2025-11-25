@@ -30,13 +30,36 @@ const api = axios.create({
   // This is important for multipart/form-data (file uploads)
 });
 
+// Type for async task response
+interface TaskResponse {
+  task_id: string;
+}
+
 export const ApiService = {
-  // Video
+  // Video - Synchronous (existing, for backwards compatibility)
   compressVideo: async (file: File, quality: string) => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('quality', quality);
     const response = await api.post<VideoProcessingResponse>('/video/compress', formData);
+    return response.data;
+  },
+
+  // Video - Asynchronous with SSE progress tracking
+  compressVideoAsync: async (file: File, quality: string, signal?: AbortSignal) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('quality', quality);
+    const response = await api.post<TaskResponse>('/video/compress/async', formData, { signal });
+    return response.data;
+  },
+
+  convertVideoAsync: async (file: File, outputFormat: string, quality: string, signal?: AbortSignal) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('output_format', outputFormat);
+    formData.append('quality', quality);
+    const response = await api.post<TaskResponse>('/video/convert/async', formData, { signal });
     return response.data;
   },
 

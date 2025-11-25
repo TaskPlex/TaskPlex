@@ -21,6 +21,7 @@ from app.config import (
     PORT,
     TEMP_DIR,
 )
+from app.tasks import tasks_router
 from app.utils.file_handler import cleanup_temp_files
 
 
@@ -124,6 +125,7 @@ app.include_router(image.router, prefix="/api/v1")
 app.include_router(pdf.router, prefix="/api/v1")
 app.include_router(regex.router, prefix="/api/v1")
 app.include_router(units.router, prefix="/api/v1")
+app.include_router(tasks_router, prefix="/api/v1")
 
 
 # Download endpoint for processed files

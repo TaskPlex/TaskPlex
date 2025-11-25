@@ -7,6 +7,7 @@ interface FormatSelectorProps {
   onChange: (format: string) => void;
   labelKey?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export const FormatSelector: React.FC<FormatSelectorProps> = ({
@@ -15,6 +16,7 @@ export const FormatSelector: React.FC<FormatSelectorProps> = ({
   onChange,
   labelKey,
   className = '',
+  disabled = false,
 }) => {
   const { t } = useTranslation();
 
@@ -28,7 +30,10 @@ export const FormatSelector: React.FC<FormatSelectorProps> = ({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all"
+        disabled={disabled}
+        className={`w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all ${
+          disabled ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
       >
         {formats.map((f) => (
           <option key={f} value={f}>

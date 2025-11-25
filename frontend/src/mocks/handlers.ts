@@ -20,8 +20,20 @@ const errorResponse = (message: string, status = 400) =>
 // ============================================
 // VIDEO HANDLERS
 // ============================================
+
+// Store for tracking async tasks (for testing)
+const taskStore = new Map<string, {
+  status: 'processing' | 'completed' | 'error';
+  progress: number;
+  result?: object;
+  error?: string;
+}>();
+
+// Helper to generate task ID
+const generateTaskId = () => `task_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
 export const videoHandlers = [
-  // Compress video
+  // Compress video (synchronous - legacy)
   http.post(`${API_PATTERN}/video/compress`, async () => {
     await delay(50); // Simulate network delay
     return HttpResponse.json(
@@ -35,7 +47,44 @@ export const videoHandlers = [
     );
   }),
 
-  // Convert video
+  // Compress video (async with SSE progress)
+  http.post(`${API_PATTERN}/video/compress/async`, async () => {
+    await delay(30);
+    const taskId = generateTaskId();
+    
+    // Initialize task in store
+    taskStore.set(taskId, {
+      status: 'processing',
+      progress: 0,
+    });
+
+    // Simulate processing progress (for testing)
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 20;
+      if (progress >= 100) {
+        taskStore.set(taskId, {
+          status: 'completed',
+          progress: 100,
+          result: {
+            success: true,
+            download_url: '/api/v1/download/compressed_video.mp4',
+            filename: 'compressed_video.mp4',
+            original_size: 10485760,
+            processed_size: 5242880,
+            compression_ratio: 50,
+          },
+        });
+        clearInterval(progressInterval);
+      } else {
+        taskStore.set(taskId, { status: 'processing', progress });
+      }
+    }, 100);
+
+    return HttpResponse.json({ task_id: taskId });
+  }),
+
+  // Convert video (synchronous - legacy)
   http.post(`${API_PATTERN}/video/convert`, async () => {
     await delay(50);
     return HttpResponse.json(
@@ -46,6 +95,90 @@ export const videoHandlers = [
         processed_size: 8388608,
       })
     );
+  }),
+
+  // Convert video (async with SSE progress)
+  http.post(`${API_PATTERN}/video/convert/async`, async () => {
+    await delay(30);
+    const taskId = generateTaskId();
+    
+    taskStore.set(taskId, {
+      status: 'processing',
+      progress: 0,
+    });
+
+    // Simulate processing
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+      progress += 25;
+      if (progress >= 100) {
+        taskStore.set(taskId, {
+          status: 'completed',
+          progress: 100,
+          result: {
+            success: true,
+            download_url: '/api/v1/download/converted_video.webm',
+            filename: 'converted_video.webm',
+            original_size: 10485760,
+            processed_size: 8388608,
+          },
+        });
+        clearInterval(progressInterval);
+      } else {
+        taskStore.set(taskId, { status: 'processing', progress });
+      }
+    }, 80);
+
+    return HttpResponse.json({ task_id: taskId });
+  }),
+];
+
+// ============================================
+// TASK HANDLERS (for SSE progress tracking)
+// ============================================
+export const taskHandlers = [
+  // Get task status (polling fallback)
+  http.get(`${API_PATTERN}/tasks/:taskId/status`, async ({ params }) => {
+    const { taskId } = params;
+    const task = taskStore.get(taskId as string);
+
+    if (!task) {
+      return HttpResponse.json(
+        { success: false, error: 'Task not found' },
+        { status: 404 }
+      );
+    }
+
+    return HttpResponse.json({
+      task_id: taskId,
+      status: task.status,
+      progress: task.progress,
+      result: task.result,
+      error: task.error,
+    });
+  }),
+
+  // SSE stream endpoint (returns task status for testing)
+  // Note: Real SSE is not fully supported in MSW, so this returns JSON
+  // In real tests, you would mock the EventSource or test components individually
+  http.get(`${API_PATTERN}/tasks/:taskId/stream`, async ({ params }) => {
+    const { taskId } = params;
+    const task = taskStore.get(taskId as string);
+
+    if (!task) {
+      return HttpResponse.json(
+        { success: false, error: 'Task not found' },
+        { status: 404 }
+      );
+    }
+
+    // Return current status (in real scenario, this would be SSE stream)
+    return HttpResponse.json({
+      task_id: taskId,
+      status: task.status,
+      progress: task.progress,
+      result: task.result,
+    });
   }),
 ];
 
@@ -271,6 +404,7 @@ export const errorHandlers = {
 // ============================================
 export const handlers = [
   ...videoHandlers,
+  ...taskHandlers,
   ...imageHandlers,
   ...pdfHandlers,
   ...regexHandlers,

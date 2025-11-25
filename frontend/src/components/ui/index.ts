@@ -6,4 +6,5 @@ export { ProcessButton } from './ProcessButton';
 export { ErrorAlert } from './ErrorAlert';
 export { ResultCard } from './ResultCard';
 export { FormatSelector } from './FormatSelector';
+export { ProgressBar, ProgressIndicator } from './ProgressBar';
 

@@ -13,6 +13,7 @@ interface FileDropzoneProps {
   dropLabelKey?: string;
   color?: 'purple' | 'blue' | 'red' | 'green';
   className?: string;
+  disabled?: boolean;
 }
 
 const iconMap = {
@@ -38,27 +39,30 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
   dropLabelKey,
   color = 'purple',
   className = '',
+  disabled = false,
 }) => {
   const { t } = useTranslation();
   const FileIcon = iconMap[fileType];
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (disabled) return;
       if (e.target.files && e.target.files[0]) {
         onFileChange(e.target.files[0]);
       }
     },
-    [onFileChange]
+    [onFileChange, disabled]
   );
 
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
+      if (disabled) return;
       if (e.dataTransfer.files && e.dataTransfer.files[0]) {
         onFileChange(e.dataTransfer.files[0]);
       }
     },
-    [onFileChange]
+    [onFileChange, disabled]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -75,13 +79,18 @@ export const FileDropzone: React.FC<FileDropzoneProps> = ({
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors relative cursor-pointer"
+        className={`border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors relative ${
+          disabled 
+            ? 'opacity-50 cursor-not-allowed bg-gray-50 dark:bg-gray-800' 
+            : 'hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer'
+        }`}
       >
         <input
           type="file"
           accept={accept}
           onChange={handleChange}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          disabled={disabled}
+          className={`absolute inset-0 w-full h-full opacity-0 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
         />
         {file ? (
           <div className={`flex items-center justify-center gap-2 ${colorClasses[color]}`}>
