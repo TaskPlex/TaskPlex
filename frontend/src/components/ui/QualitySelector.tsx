@@ -9,6 +9,7 @@ interface QualitySelectorProps {
   labelKey?: string;
   color?: 'purple' | 'blue' | 'red' | 'green';
   className?: string;
+  disabled?: boolean;
 }
 
 const colorClasses = {
@@ -38,6 +39,7 @@ export const QualitySelector: React.FC<QualitySelectorProps> = ({
   labelKey,
   color = 'purple',
   className = '',
+  disabled = false,
 }) => {
   const { t } = useTranslation();
   const colors = colorClasses[color];
@@ -55,9 +57,10 @@ export const QualitySelector: React.FC<QualitySelectorProps> = ({
             key={q}
             type="button"
             onClick={() => onChange(q)}
+            disabled={disabled}
             className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
               value === q ? colors.active : colors.inactive
-            }`}
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {q.toUpperCase()}
           </button>

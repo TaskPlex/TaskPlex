@@ -13,6 +13,7 @@ interface OperationToggleProps {
   labelKey?: string;
   color?: 'purple' | 'blue' | 'red' | 'green';
   className?: string;
+  disabled?: boolean;
 }
 
 const colorClasses = {
@@ -29,6 +30,7 @@ export const OperationToggle: React.FC<OperationToggleProps> = ({
   labelKey,
   color = 'purple',
   className = '',
+  disabled = false,
 }) => {
   const { t } = useTranslation();
 
@@ -45,11 +47,12 @@ export const OperationToggle: React.FC<OperationToggleProps> = ({
             key={op.id}
             type="button"
             onClick={() => onChange(op.id)}
+            disabled={disabled}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all ${
               value === op.id
                 ? colorClasses[color]
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-            }`}
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             {t(op.labelKey)}
           </button>

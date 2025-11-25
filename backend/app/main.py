@@ -12,6 +12,7 @@ from fastapi.responses import FileResponse, JSONResponse
 import uvicorn
 
 from app.api import image, pdf, regex, units, video
+from app.tasks import tasks_router
 from app.config import (
     API_DESCRIPTION,
     API_TITLE,
@@ -124,6 +125,7 @@ app.include_router(image.router, prefix="/api/v1")
 app.include_router(pdf.router, prefix="/api/v1")
 app.include_router(regex.router, prefix="/api/v1")
 app.include_router(units.router, prefix="/api/v1")
+app.include_router(tasks_router, prefix="/api/v1")
 
 
 # Download endpoint for processed files

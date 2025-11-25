@@ -22,6 +22,20 @@
     "themeDark": "Oscuro",
     "themeSystem": "Sistema"
   },
+  "progress": {
+    "uploading": "Subiendo...",
+    "processing": "Procesando...",
+    "completed": "¡Completado!",
+    "error": "Error",
+    "pleaseWait": "Por favor espera, esto puede tomar un momento...",
+    "cancelled": "Cancelado",
+    "stage": {
+      "analyzing": "Analizando archivo...",
+      "encoding": "Codificando...",
+      "optimizing": "Optimizando...",
+      "finalizing": "Finalizando..."
+    }
+  },
   "sidebar": {
     "noFavorites": "Sin favoritos aún",
     "addFavoritesHint": "Agrega favoritos desde el panel"
