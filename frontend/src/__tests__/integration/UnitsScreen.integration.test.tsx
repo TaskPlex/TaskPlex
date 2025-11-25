@@ -3,7 +3,7 @@
  * Uses MSW to mock unit conversion API
  */
 import { describe, it, expect } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test-utils';
 import { UnitsScreen } from '../../pages/UnitsScreen';
