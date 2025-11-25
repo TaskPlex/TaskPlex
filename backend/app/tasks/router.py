@@ -1,6 +1,7 @@
 """
 Task API endpoints for SSE streaming and task management
 """
+
 import json
 
 from fastapi import APIRouter, HTTPException
@@ -19,7 +20,7 @@ async def get_task_status(task_id: str):
     task = task_store.get_task(task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
     return task.to_dict()
 
 
@@ -27,26 +28,26 @@ async def get_task_status(task_id: str):
 async def stream_task_progress(task_id: str):
     """
     Stream task progress updates via Server-Sent Events (SSE)
-    
+
     Events:
     - progress: { percent: number, message: string, stage: string }
     - complete: { success: true, download_url: string, ... }
     - error: { message: string }
     - cancelled: { message: string }
-    
+
     The stream closes automatically when task completes, fails, or is cancelled.
     """
     task = task_store.get_task(task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
     async def event_generator():
         async for message in task_store.subscribe(task_id):
             yield {
                 "event": message["event"],
                 "data": json.dumps(message["data"]),
             }
-    
+
     return EventSourceResponse(event_generator())
 
 
@@ -58,11 +59,11 @@ async def cancel_task(task_id: str):
     task = task_store.get_task(task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
-    
+
     success = task_store.cancel_task(task_id)
     if not success:
         raise HTTPException(status_code=400, detail="Failed to cancel task")
-    
+
     return {"success": True, "message": "Task cancelled"}
 
 
@@ -72,8 +73,4 @@ async def list_tasks():
     List all tasks (for debugging)
     """
     tasks = task_store.get_all_tasks()
-    return {
-        "count": len(tasks),
-        "tasks": [task.to_dict() for task in tasks.values()]
-    }
-
+    return {"count": len(tasks), "tasks": [task.to_dict() for task in tasks.values()]}
