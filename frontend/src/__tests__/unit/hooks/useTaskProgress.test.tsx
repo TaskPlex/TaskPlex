@@ -66,7 +66,7 @@ class MockEventSource {
 // Store for accessing mock EventSource instances
 let mockEventSourceInstance: MockEventSource | null = null;
 
-// Factory function to create EventSource and store reference
+// Factory function to create MockEventSource and store reference
 function createMockEventSource(url: string): MockEventSource {
   const instance = new MockEventSource(url);
   mockEventSourceInstance = instance;
