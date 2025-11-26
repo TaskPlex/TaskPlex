@@ -39,7 +39,7 @@ export const ProcessButton: React.FC<ProcessButtonProps> = ({
       className={`w-full py-4 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 ${
         isDisabled
           ? 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed'
-          : `${colorClasses[color]} hover:shadow-xl transform hover:-translate-y-0.5`
+          : `${colorClasses[color]} hover:shadow-xl transform hover:-translate-y-0.5 cursor-pointer`
       } ${className}`}
     >
       {loading && <Loader2 className="w-5 h-5 animate-spin" />}

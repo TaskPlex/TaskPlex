@@ -124,7 +124,7 @@ export const UnitsScreen: React.FC = () => {
           <button
             key={cat.id}
             onClick={() => handleCategoryChange(cat)}
-            className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-200 cursor-pointer ${
               category.id === cat.id
                 ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-lg scale-105'
                 : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 shadow-sm hover:shadow border border-gray-200 dark:border-gray-700'
@@ -166,7 +166,7 @@ export const UnitsScreen: React.FC = () => {
             <button 
               onClick={handleSwap}
               aria-label={t('units.swap')}
-              className="p-4 rounded-full bg-gray-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
+              className="p-4 rounded-full bg-gray-50 dark:bg-gray-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group cursor-pointer"
             >
               <ArrowRightLeft size={24} className="group-hover:rotate-180 transition-transform duration-300" />
             </button>

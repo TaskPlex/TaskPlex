@@ -7,6 +7,8 @@ import { LoadingFallback } from './components/LoadingFallback';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { DownloadNotificationProvider } from './contexts/DownloadNotificationContext';
+import { DownloadNotifications } from './components/ui';
 import { getAllModules } from './config/modules';
 
 // Helper function to create lazy components with better error handling
@@ -88,31 +90,35 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <FavoritesProvider>
-            <BrowserRouter>
-              <Suspense fallback={<LoadingFallback />}>
-                <Routes>
-                  <Route path="/" element={<Layout />}>
-                    <Route index element={<HomeDashboard />} />
-                    
-                    {/* Dynamically generate routes from module registry */}
-                    {allModules.map((module) => {
-                      // Get the component for this module (either implemented or placeholder)
-                      const Component = componentMap[module.id] || PlaceholderScreen;
+            <DownloadNotificationProvider>
+              <BrowserRouter>
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<HomeDashboard />} />
                       
-                      return (
-                        <Route 
-                          key={module.id} 
-                          path={module.path} 
-                          element={<Component />} 
-                        />
-                      );
-                    })}
+                      {/* Dynamically generate routes from module registry */}
+                      {allModules.map((module) => {
+                        // Get the component for this module (either implemented or placeholder)
+                        const Component = componentMap[module.id] || PlaceholderScreen;
+                        
+                        return (
+                          <Route 
+                            key={module.id} 
+                            path={module.path} 
+                            element={<Component />} 
+                          />
+                        );
+                      })}
 
-                    <Route path="settings" element={<SettingsScreen />} />
-                  </Route>
-                </Routes>
-              </Suspense>
-            </BrowserRouter>
+                      <Route path="settings" element={<SettingsScreen />} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              </BrowserRouter>
+              {/* Download notifications toast */}
+              <DownloadNotifications />
+            </DownloadNotificationProvider>
           </FavoritesProvider>
         </ThemeProvider>
         {/* Devtools only in development */}

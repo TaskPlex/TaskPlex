@@ -7,6 +7,7 @@
     "settings": "Paramètres",
     "save": "Enregistrer",
     "cancel": "Annuler",
+    "close": "Fermer",
     "loading": "Chargement...",
     "error": "Erreur",
     "success": "Succès",
@@ -21,6 +22,14 @@
     "themeLight": "Clair",
     "themeDark": "Sombre",
     "themeSystem": "Système"
+  },
+  "download": {
+    "inProgress": "Téléchargement...",
+    "completed": "Téléchargement terminé",
+    "error": "Échec du téléchargement",
+    "redownload": "Télécharger à nouveau",
+    "openFolder": "Ouvrir le dossier",
+    "savedToDownloads": "Enregistré dans Téléchargements"
   },
   "progress": {
     "uploading": "Téléversement...",

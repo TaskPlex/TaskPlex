@@ -52,7 +52,7 @@ export const OperationToggle: React.FC<OperationToggleProps> = ({
               value === op.id
                 ? colorClasses[color]
                 : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             {t(op.labelKey)}
           </button>

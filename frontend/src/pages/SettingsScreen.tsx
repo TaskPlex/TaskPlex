@@ -50,7 +50,7 @@ export const SettingsScreen: React.FC = () => {
               <button
                 key={lang.code}
                 onClick={() => handleLanguageChange(lang.code)}
-                className={`p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                className={`p-4 rounded-lg border-2 transition-all duration-200 text-left cursor-pointer ${
                   i18n.language === lang.code || i18n.language.startsWith(lang.code)
                     ? 'border-purple-500 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/30 shadow-md'
                     : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-sm'
@@ -85,7 +85,7 @@ export const SettingsScreen: React.FC = () => {
                 <button
                   key={option.id}
                   onClick={() => setTheme(option.id as 'light' | 'dark' | 'system')}
-                  className={`p-4 rounded-lg border-2 transition-all duration-200 text-left flex items-center gap-3 ${
+                  className={`p-4 rounded-lg border-2 transition-all duration-200 text-left flex items-center gap-3 cursor-pointer ${
                     isActive
                       ? 'border-purple-500 dark:border-purple-400 bg-purple-50 dark:bg-purple-900/30 shadow-md'
                       : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-sm'

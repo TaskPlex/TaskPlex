@@ -60,7 +60,7 @@ export const QualitySelector: React.FC<QualitySelectorProps> = ({
             disabled={disabled}
             className={`flex-1 py-2 px-3 rounded-lg border text-sm font-medium transition-all ${
               value === q ? colors.active : colors.inactive
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             {q.toUpperCase()}
           </button>

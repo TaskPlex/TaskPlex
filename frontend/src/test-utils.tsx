@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { FavoritesProvider } from './contexts/FavoritesContext';
+import { DownloadNotificationProvider } from './contexts/DownloadNotificationContext';
 
 export const renderWithProviders = (ui: React.ReactElement) => {
   const queryClient = new QueryClient({
@@ -16,9 +17,11 @@ export const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
-        <BrowserRouter>
-          {ui}
-        </BrowserRouter>
+        <DownloadNotificationProvider>
+          <BrowserRouter>
+            {ui}
+          </BrowserRouter>
+        </DownloadNotificationProvider>
       </FavoritesProvider>
     </QueryClientProvider>
   );

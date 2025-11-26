@@ -7,4 +7,5 @@ export { ErrorAlert } from './ErrorAlert';
 export { ResultCard } from './ResultCard';
 export { FormatSelector } from './FormatSelector';
 export { ProgressBar, ProgressIndicator } from './ProgressBar';
+export { DownloadNotifications } from './DownloadNotifications';
 

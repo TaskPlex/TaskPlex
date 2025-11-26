@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Split, Upload, Download, FileText, Check, Settings2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ApiService } from '../../services/api';
 import { useSplitPDF } from '../../hooks/usePDF';
+import { useDownload } from '../../hooks/useDownload';
 
 export const PDFSplit: React.FC = () => {
   const { t } = useTranslation();
@@ -11,6 +12,7 @@ export const PDFSplit: React.FC = () => {
   const [range, setRange] = useState('');
   
   const { mutate, isPending: loading, data: result, error, reset } = useSplitPDF();
+  const { downloadDirect } = useDownload();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -29,6 +31,11 @@ export const PDFSplit: React.FC = () => {
   };
 
   const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
+
+  const handleDownload = useCallback((filename: string) => {
+    const url = ApiService.getDownloadUrl(`/api/v1/download/${filename}`);
+    downloadDirect(url, filename);
+  }, [downloadDirect]);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -67,7 +74,7 @@ export const PDFSplit: React.FC = () => {
               </div>
               <button 
                 onClick={() => { setFile(null); reset(); }}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors cursor-pointer"
               >
                 {t('pdf.split.change')}
               </button>
@@ -84,7 +91,7 @@ export const PDFSplit: React.FC = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setMode('all')}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${
+                    className={`p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                       mode === 'all' 
                         ? 'border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 ring-1 ring-blue-600 dark:ring-blue-400' 
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
@@ -100,7 +107,7 @@ export const PDFSplit: React.FC = () => {
 
                   <button
                     onClick={() => setMode('range')}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${
+                    className={`p-4 rounded-xl border-2 text-left transition-all cursor-pointer ${
                       mode === 'range' 
                         ? 'border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 ring-1 ring-blue-600 dark:ring-blue-400' 
                         : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
@@ -131,7 +138,7 @@ export const PDFSplit: React.FC = () => {
                 <button
                   onClick={handleSplit}
                   disabled={loading || (mode === 'range' && !range)}
-                  className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200 dark:hover:shadow-blue-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? t('pdf.split.splitting') : t('pdf.split.splitBtn')}
                 </button>
@@ -146,15 +153,14 @@ export const PDFSplit: React.FC = () => {
                 
                 <div className="grid gap-2 max-h-60 overflow-y-auto mb-4">
                   {result.filenames?.map((fname, i) => (
-                    <a
+                    <button
                       key={i}
-                      href={ApiService.getDownloadUrl(`/api/v1/download/${fname}`)}
-                      download
-                      className="flex items-center justify-between p-3 bg-white dark:bg-gray-700 rounded-lg border border-blue-100 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-600 transition-colors text-sm text-gray-700 dark:text-gray-300"
+                      onClick={() => handleDownload(fname)}
+                      className="flex items-center justify-between p-3 bg-white dark:bg-gray-700 rounded-lg border border-blue-100 dark:border-blue-800 hover:border-blue-300 dark:hover:border-blue-600 transition-colors text-sm text-gray-700 dark:text-gray-300 w-full text-left cursor-pointer"
                     >
                       <span className="truncate">{fname}</span>
-                      <Download size={16} className="text-blue-600 dark:text-blue-400 ml-2" />
-                    </a>
+                      <Download size={16} className="text-blue-600 dark:text-blue-400 ml-2 flex-shrink-0" />
+                    </button>
                   ))}
                 </div>
               </div>

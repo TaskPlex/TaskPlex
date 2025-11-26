@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Download, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ApiService } from '../../services/api';
+import { useDownload } from '../../hooks/useDownload';
 
 interface ResultCardProps {
   success: boolean;
@@ -58,7 +59,17 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   children,
 }) => {
   const { t } = useTranslation();
+  const { downloadDirect } = useDownload();
   const colors = colorClasses[color];
+
+  const handleDownload = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (downloadUrl) {
+      const url = ApiService.getDownloadUrl(downloadUrl);
+      const extractedFilename = filename || downloadUrl.split('/').pop() || 'download';
+      downloadDirect(url, extractedFilename);
+    }
+  }, [downloadUrl, filename, downloadDirect]);
 
   if (!success) return null;
 
@@ -94,14 +105,13 @@ export const ResultCard: React.FC<ResultCardProps> = ({
         </div>
 
         {downloadUrl && (
-          <a
-            href={ApiService.getDownloadUrl(downloadUrl)}
-            download={filename}
-            className={`flex items-center justify-center gap-2 px-6 py-3 text-white rounded-lg font-bold transition-colors shadow-sm hover:shadow-md ${colors.button}`}
+          <button
+            onClick={handleDownload}
+            className={`flex items-center justify-center gap-2 px-6 py-3 text-white rounded-lg font-bold transition-colors shadow-sm hover:shadow-md cursor-pointer ${colors.button}`}
           >
             <Download className="w-5 h-5" />
             {t(downloadLabelKey)}
-          </a>
+          </button>
         )}
       </div>
 

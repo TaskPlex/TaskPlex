@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RefreshCw, Upload, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -8,12 +8,13 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, useSortable, r
 import { CSS } from '@dnd-kit/utilities';
 import { ApiService } from '../../services/api';
 import { useReorganizePDF } from '../../hooks/usePDF';
+import { useDownload } from '../../hooks/useDownload';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
-// Configure PDF.js worker using CDN to ensure correct version and MIME type
-// This avoids issues with local Nginx configuration or bundler paths
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+// Configure PDF.js worker using CDN with explicit https protocol
+// Required for Tauri which doesn't handle protocol-relative URLs well
+pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface PDFPage {
   id: string;
@@ -53,23 +54,25 @@ export const PDFReorganize: React.FC = () => {
   const [pages, setPages] = useState<PDFPage[]>([]);
 
   const { mutate, isPending: loading, data: result, error, reset } = useReorganizePDF();
+  const { downloadDirect } = useDownload();
+  
+  // Track if we've already triggered the download for this result
+  const downloadedResultRef = useRef<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
   );
 
-  // Effect to auto-download when result is available
+  // Effect to auto-download when result is available (only once per result)
   useEffect(() => {
-    if (result && result.download_url) {
-      const link = document.createElement('a');
-      link.href = ApiService.getDownloadUrl(result.download_url);
-      link.download = result.filename || 'download.pdf';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    if (result && result.download_url && result.download_url !== downloadedResultRef.current) {
+      downloadedResultRef.current = result.download_url;
+      const url = ApiService.getDownloadUrl(result.download_url);
+      const filename = result.filename || 'reorganized.pdf';
+      downloadDirect(url, filename);
     }
-  }, [result]);
+  }, [result, downloadDirect]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -77,6 +80,7 @@ export const PDFReorganize: React.FC = () => {
       setFile(selectedFile);
       reset();
       setPages([]);
+      downloadedResultRef.current = null; // Reset download tracker
     }
   };
 
@@ -148,15 +152,15 @@ export const PDFReorganize: React.FC = () => {
               <div className="flex gap-3 items-center">
                 {errorMessage && <span className="text-red-600 dark:text-red-400 text-sm mr-2">{errorMessage}</span>}
                 <button 
-                  onClick={() => { setFile(null); reset(); }}
-                  className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => { setFile(null); reset(); downloadedResultRef.current = null; }}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   onClick={handleReorganize}
                   disabled={loading}
-                  className="px-6 py-2 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-all shadow-md hover:shadow-lg disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center gap-2"
+                  className="px-6 py-2 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700 transition-all shadow-md hover:shadow-lg disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center gap-2 cursor-pointer"
                 >
                   {loading ? t('pdf.reorganize.organizing') : t('pdf.reorganize.organizeBtn')}
                 </button>

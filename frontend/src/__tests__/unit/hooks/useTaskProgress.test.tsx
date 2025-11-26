@@ -66,13 +66,15 @@ class MockEventSource {
 // Store for accessing mock EventSource instances
 let mockEventSourceInstance: MockEventSource | null = null;
 
+// Factory function to create EventSource and store reference
+function createMockEventSource(url: string): MockEventSource {
+  const instance = new MockEventSource(url);
+  mockEventSourceInstance = instance;
+  return instance;
+}
+
 // Mock the global EventSource
-vi.stubGlobal('EventSource', class extends MockEventSource {
-  constructor(url: string) {
-    super(url);
-    mockEventSourceInstance = this;
-  }
-});
+vi.stubGlobal('EventSource', createMockEventSource);
 
 describe('useTaskProgress', () => {
   beforeEach(() => {

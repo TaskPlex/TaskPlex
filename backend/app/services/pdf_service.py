@@ -1,12 +1,12 @@
 """
-PDF processing service using PyPDF2 and PyMuPDF
+PDF processing service using pypdf and PyMuPDF
 """
 
 from pathlib import Path
 from typing import List, Optional
 
 import fitz  # PyMuPDF
-import PyPDF2
+from pypdf import PdfReader, PdfWriter
 
 from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
 from app.utils.file_handler import get_file_size
@@ -20,7 +20,7 @@ def get_pdf_info(input_path: Path) -> Optional[PDFInfoResponse]:
         file_size = get_file_size(input_path)
 
         with open(input_path, "rb") as f:
-            reader = PyPDF2.PdfReader(f)
+            reader = PdfReader(f)
             page_count = len(reader.pages)
             encrypted = reader.is_encrypted
             metadata = reader.metadata
@@ -57,21 +57,19 @@ def merge_pdfs(input_paths: List[Path], output_path: Path) -> PDFProcessingRespo
         PDFProcessingResponse with merge results
     """
     try:
-        pdf_merger = PyPDF2.PdfMerger()
+        writer = PdfWriter()
 
         total_pages = 0
         for pdf_path in input_paths:
-            pdf_merger.append(str(pdf_path))
+            writer.append(str(pdf_path))
             # Count pages
             with open(pdf_path, "rb") as f:
-                reader = PyPDF2.PdfReader(f)
+                reader = PdfReader(f)
                 total_pages += len(reader.pages)
 
         # Write merged PDF
         with open(output_path, "wb") as output_file:
-            pdf_merger.write(output_file)
-
-        pdf_merger.close()
+            writer.write(output_file)
 
         processed_size = get_file_size(output_path)
 
@@ -160,7 +158,7 @@ def split_pdf(
     """
     try:
         with open(input_path, "rb") as file:
-            reader = PyPDF2.PdfReader(file)
+            reader = PdfReader(file)
             total_pages = len(reader.pages)
 
             output_files = []
@@ -168,7 +166,7 @@ def split_pdf(
             # If no pages or ranges specified, split into individual pages
             if not pages and not page_ranges:
                 for i in range(total_pages):
-                    writer = PyPDF2.PdfWriter()
+                    writer = PdfWriter()
                     writer.add_page(reader.pages[i])
 
                     output_filename = f"{input_path.stem}_page_{i + 1}.pdf"
@@ -183,7 +181,7 @@ def split_pdf(
             elif pages:
                 for page_num in pages:
                     if 1 <= page_num <= total_pages:
-                        writer = PyPDF2.PdfWriter()
+                        writer = PdfWriter()
                         writer.add_page(reader.pages[page_num - 1])
 
                         output_filename = f"{input_path.stem}_page_{page_num}.pdf"
@@ -199,7 +197,7 @@ def split_pdf(
                 for page_range in page_ranges:
                     start, end = map(int, page_range.split("-"))
                     if 1 <= start <= end <= total_pages:
-                        writer = PyPDF2.PdfWriter()
+                        writer = PdfWriter()
 
                         for i in range(start - 1, end):
                             writer.add_page(reader.pages[i])
@@ -239,7 +237,7 @@ def reorganize_pdf(
     """
     try:
         with open(input_path, "rb") as file:
-            reader = PyPDF2.PdfReader(file)
+            reader = PdfReader(file)
             total_pages = len(reader.pages)
 
             # Validate page numbers
@@ -251,7 +249,7 @@ def reorganize_pdf(
                     )
 
             # Create new PDF with reordered pages
-            writer = PyPDF2.PdfWriter()
+            writer = PdfWriter()
 
             for page_num in page_order:
                 writer.add_page(reader.pages[page_num - 1])

@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Minimize2, Upload, Download, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ApiService } from '../../services/api';
 import { useCompressPDF } from '../../hooks/usePDF';
+import { useDownload } from '../../hooks/useDownload';
 
 export const PDFCompress: React.FC = () => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
   
   const { mutate, isPending: loading, data: result, error, reset } = useCompressPDF();
+  const { downloadDirect } = useDownload();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -23,6 +25,14 @@ export const PDFCompress: React.FC = () => {
   };
 
   const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
+
+  const handleDownload = useCallback(() => {
+    if (result?.download_url) {
+      const url = ApiService.getDownloadUrl(result.download_url);
+      const filename = result.download_url.split('/').pop() || 'compressed.pdf';
+      downloadDirect(url, filename);
+    }
+  }, [result, downloadDirect]);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -61,7 +71,7 @@ export const PDFCompress: React.FC = () => {
               </div>
               <button 
                 onClick={() => { setFile(null); reset(); }}
-                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors cursor-pointer"
               >
                 {t('pdf.compress.change')}
               </button>
@@ -77,7 +87,7 @@ export const PDFCompress: React.FC = () => {
               <button
                 onClick={handleCompress}
                 disabled={loading}
-                className="w-full py-4 bg-green-600 text-white rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+                className="w-full py-4 bg-green-600 text-white rounded-xl font-bold text-lg hover:bg-green-700 transition-all shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? t('pdf.compress.compressing') : t('pdf.compress.compressBtn')}
               </button>
@@ -97,13 +107,13 @@ export const PDFCompress: React.FC = () => {
                   </p>
                 )}
                 {result.download_url && (
-                  <a
-                    href={ApiService.getDownloadUrl(result.download_url)}
-                    download
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors shadow-md"
+                  <button
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors shadow-md cursor-pointer"
                   >
+                    <Download className="w-5 h-5" />
                     {t('pdf.compress.downloadResult')}
-                  </a>
+                  </button>
                 )}
               </div>
             )}

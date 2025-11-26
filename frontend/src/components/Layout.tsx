@@ -38,7 +38,7 @@ export const Layout: React.FC = () => {
               {/* Toggle sidebar button - top right (expanded mode) */}
               <button
                 onClick={toggleSidebar}
-                className="absolute top-4 right-4 p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="absolute top-4 right-4 p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-300 transition-colors cursor-pointer"
                 aria-label="Collapse sidebar"
               >
                 <ChevronLeft size={18} />
@@ -49,7 +49,7 @@ export const Layout: React.FC = () => {
               {/* Toggle sidebar button - top (collapsed mode) */}
               <button
                 onClick={toggleSidebar}
-                className="w-full p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex items-center justify-center"
+                className="w-full p-2 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex items-center justify-center cursor-pointer"
                 aria-label="Expand sidebar"
               >
                 <ChevronRight size={18} />
@@ -98,7 +98,7 @@ export const Layout: React.FC = () => {
                       e.stopPropagation();
                       toggleFavorite(module.id);
                     }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded cursor-pointer"
                     aria-label="Remove from favorites"
                   >
                     <Star size={14} className="text-yellow-500 fill-yellow-500" />
@@ -129,7 +129,7 @@ export const Layout: React.FC = () => {
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} ${isCollapsed ? 'px-2 py-3' : 'px-3 py-3'} w-full rounded-lg text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white`}
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'} ${isCollapsed ? 'px-2 py-3' : 'px-3 py-3'} w-full rounded-lg text-sm font-medium transition-colors text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white cursor-pointer`}
             title={isCollapsed ? (resolvedTheme === 'dark' ? t('common.lightMode') : t('common.darkMode')) : undefined}
           >
             {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
@@ -164,11 +164,11 @@ export const Layout: React.FC = () => {
           <div className="flex items-center gap-2">
             <button 
               onClick={toggleTheme}
-              className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+              className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer"
             >
               {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
             </button>
-            <button className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+            <button className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer">
               <Menu size={20}/>
             </button>
           </div>

@@ -7,6 +7,7 @@
     "settings": "Settings",
     "save": "Save",
     "cancel": "Cancel",
+    "close": "Close",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",
@@ -21,6 +22,14 @@
     "themeLight": "Light",
     "themeDark": "Dark",
     "themeSystem": "System"
+  },
+  "download": {
+    "inProgress": "Downloading...",
+    "completed": "Download complete",
+    "error": "Download failed",
+    "redownload": "Download again",
+    "openFolder": "Open folder",
+    "savedToDownloads": "Saved to Downloads"
   },
   "progress": {
     "uploading": "Uploading...",

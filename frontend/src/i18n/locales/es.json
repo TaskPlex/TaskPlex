@@ -7,6 +7,7 @@
     "settings": "Configuración",
     "save": "Guardar",
     "cancel": "Cancelar",
+    "close": "Cerrar",
     "loading": "Cargando...",
     "error": "Error",
     "success": "Éxito",
@@ -21,6 +22,14 @@
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema"
+  },
+  "download": {
+    "inProgress": "Descargando...",
+    "completed": "Descarga completada",
+    "error": "Error en la descarga",
+    "redownload": "Descargar de nuevo",
+    "openFolder": "Abrir carpeta",
+    "savedToDownloads": "Guardado en Descargas"
   },
   "progress": {
     "uploading": "Subiendo...",

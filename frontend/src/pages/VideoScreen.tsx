@@ -156,7 +156,7 @@ export const VideoScreen: React.FC = () => {
               <div className="mt-4 flex justify-center">
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-red-300 dark:hover:border-red-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-red-300 dark:hover:border-red-700 transition-colors cursor-pointer"
                 >
                   <X className="w-4 h-4" />
                   {t('common.cancel')}
@@ -181,7 +181,7 @@ export const VideoScreen: React.FC = () => {
           {isCompleted && (
             <button
               onClick={handleReset}
-              className="w-full py-3 px-4 rounded-lg font-medium border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors"
+              className="w-full py-3 px-4 rounded-lg font-medium border-2 border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-colors cursor-pointer"
             >
               {t('common.reset')}
             </button>

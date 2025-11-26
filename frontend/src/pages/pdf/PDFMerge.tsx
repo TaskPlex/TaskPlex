@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Merge, Upload, Download, FileText, Plus, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ApiService } from '../../services/api';
 import { useMergePDFs } from '../../hooks/usePDF';
+import { useDownload } from '../../hooks/useDownload';
 
 export const PDFMerge: React.FC = () => {
   const { t } = useTranslation();
   const [files, setFiles] = useState<File[]>([]);
   const { mutate, isPending: loading, data: result, error, reset } = useMergePDFs();
+  const { downloadDirect } = useDownload();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -28,6 +30,14 @@ export const PDFMerge: React.FC = () => {
   };
 
   const errorMessage = error instanceof Error ? error.message : (result && !result.success ? result.message : null);
+
+  const handleDownload = useCallback(() => {
+    if (result?.download_url) {
+      const url = ApiService.getDownloadUrl(result.download_url);
+      const filename = result.download_url.split('/').pop() || 'merged.pdf';
+      downloadDirect(url, filename);
+    }
+  }, [result, downloadDirect]);
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -69,7 +79,7 @@ export const PDFMerge: React.FC = () => {
                   </div>
                   <button 
                     onClick={() => removeFile(index)}
-                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                    className="p-2 text-gray-400 dark:text-gray-500 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors cursor-pointer"
                   >
                     <X size={20} />
                   </button>
@@ -99,7 +109,7 @@ export const PDFMerge: React.FC = () => {
               <button
                 onClick={handleMerge}
                 disabled={loading || files.length < 2}
-                className="w-full py-4 bg-red-600 text-white rounded-xl font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-red-200 dark:hover:shadow-red-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2"
+                className="w-full py-4 bg-red-600 text-white rounded-xl font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-red-200 dark:hover:shadow-red-900/30 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 cursor-pointer"
               >
                 {loading ? t('pdf.merge.merging') : t('pdf.merge.mergeBtn')}
               </button>
@@ -112,13 +122,13 @@ export const PDFMerge: React.FC = () => {
                 <p className="text-red-700 dark:text-red-300 mb-6">Your files have been combined into one document.</p>
                 
                 {result.download_url && (
-                  <a
-                    href={ApiService.getDownloadUrl(result.download_url)}
-                    download
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors shadow-md"
+                  <button
+                    onClick={handleDownload}
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors shadow-md cursor-pointer"
                   >
+                    <Download className="w-5 h-5" />
                     {t('pdf.merge.downloadResult')}
-                  </a>
+                  </button>
                 )}
               </div>
             )}

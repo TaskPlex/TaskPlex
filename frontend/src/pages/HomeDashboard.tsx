@@ -28,10 +28,10 @@ const ModuleCard = React.memo<ModuleCardProps>(({
   const ModuleIcon = getIcon(module.icon as IconName);
 
   return (
-    <div className="group relative flex flex-col p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-purple-900/20 transition-all duration-300 h-full hover:-translate-y-1">
+    <div className="group relative flex flex-col p-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-purple-900/20 transition-all duration-300 h-full hover:-translate-y-1 cursor-pointer">
       <button
         onClick={() => onNavigate(module.path)}
-        className="flex-1 text-left"
+        className="flex-1 text-left cursor-pointer"
       >
         {/* Icon */}
         <div className="mb-6 p-4 rounded-xl bg-gray-50 dark:bg-gray-700 w-fit group-hover:bg-gray-100 dark:group-hover:bg-gray-600 transition-colors">
@@ -56,7 +56,7 @@ const ModuleCard = React.memo<ModuleCardProps>(({
           e.stopPropagation();
           onToggleFavorite(module.id);
         }}
-        className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-10"
+        className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors z-10 cursor-pointer"
         aria-label={isFav ? 'Remove from favorites' : 'Add to favorites'}
       >
         <Star 
@@ -98,7 +98,7 @@ interface CategoryButtonProps {
 const CategoryButton = React.memo<CategoryButtonProps>(({ category, isActive, onClick }) => (
   <button
     onClick={onClick}
-    className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 ${
+    className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
       isActive
         ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg transform scale-105'
         : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
