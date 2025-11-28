@@ -3,6 +3,43 @@ import { vi, beforeAll, afterEach, afterAll } from 'vitest';
 import './i18n/config'; // Initialize i18n for tests
 
 // ============================================
+// Mock Tauri Modules (for web environment tests)
+// ============================================
+
+// Mock @tauri-apps/plugin-os
+vi.mock('@tauri-apps/plugin-os', () => ({
+  platform: vi.fn(async () => 'linux'),
+  arch: vi.fn(async () => 'x86_64'),
+  type: vi.fn(async () => 'Linux'),
+  version: vi.fn(async () => '6.0.0'),
+  hostname: vi.fn(async () => 'test-host'),
+}));
+
+// Mock @tauri-apps/plugin-shell
+vi.mock('@tauri-apps/plugin-shell', () => ({
+  open: vi.fn(async () => {}),
+  Command: class MockCommand {
+    spawn() { return Promise.resolve({ pid: 12345, kill: vi.fn() }); }
+    execute() { return Promise.resolve({ stdout: '', stderr: '', code: 0 }); }
+  },
+}));
+
+// Mock @tauri-apps/api/path
+vi.mock('@tauri-apps/api/path', () => ({
+  downloadDir: vi.fn(async () => '/home/user/Downloads'),
+  appDataDir: vi.fn(async () => '/home/user/.local/share/taskplex'),
+  homeDir: vi.fn(async () => '/home/user'),
+  desktopDir: vi.fn(async () => '/home/user/Desktop'),
+  documentDir: vi.fn(async () => '/home/user/Documents'),
+  tempDir: vi.fn(async () => '/tmp'),
+}));
+
+// Mock @tauri-apps/api/core
+vi.mock('@tauri-apps/api/core', () => ({
+  invoke: vi.fn(async () => null),
+}));
+
+// ============================================
 // MSW Server Setup
 // ============================================
 import { server } from './mocks/server';

@@ -195,3 +195,45 @@ jobs:
           du -sh dist/assets/*.js | sort -h
         continue-on-error: true
 
+  test-frontend-tauri:
+    name: Frontend Tests (Tauri ${{ matrix.platform }})
+    runs-on: ubuntu-22.04
+    needs: [lint-frontend]
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [linux, windows]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run Tauri Tests (${{ matrix.platform }})
+        run: |
+          cd frontend
+          npm run test:tauri:${{ matrix.platform }} -- --reporter=junit --outputFile=junit-tauri-${{ matrix.platform }}.xml
+        env:
+          CI: true
+          TEST_ENV: tauri
+          TEST_PLATFORM: ${{ matrix.platform }}
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: frontend-tauri-${{ matrix.platform }}-test-results
+          path: frontend/junit-tauri-${{ matrix.platform }}.xml
+          retention-days: 7
+
