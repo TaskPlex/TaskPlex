@@ -59,6 +59,9 @@
   "home": {
     "heroTitle": "Votre",
     "heroSubtitle": "Tous les outils dont vous avez besoin pour être productif, en un seul endroit. Traitez des vidéos, images, PDF et plus encore. 100% Gratuit et Open Source.",
+    "searchPlaceholder": "Rechercher un outil... (ex: PDF, compresser, convertir)",
+    "noResults": "Aucun outil trouvé",
+    "noResultsHint": "Essayez d'autres mots-clés ou vérifiez l'orthographe",
     "allTools": "Tous les outils",
     "media": "Média",
     "documents": "Documents",
@@ -277,6 +280,17 @@
     "files": "Outils Fichiers",
     "design": "Design",
     "utility": "Utilitaires"
+  },
+  "nav": {
+    "pdf": "Outils PDF",
+    "video": "Vidéo",
+    "image": "Image",
+    "audio": "Audio",
+    "devTools": "Outils Dev",
+    "convert": "Convertir",
+    "more": "Plus d'outils",
+    "implemented": "Disponible",
+    "comingSoon": "Bientôt"
   },
   "placeholder": {
     "comingSoon": "Bientôt disponible",

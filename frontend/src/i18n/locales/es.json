@@ -59,6 +59,9 @@
   "home": {
     "heroTitle": "Tu",
     "heroSubtitle": "Todas las herramientas que necesitas para ser productivo, en un solo lugar. Procesa videos, imágenes, PDF y más. 100% Gratis y Open Source.",
+    "searchPlaceholder": "Buscar herramientas... (ej: PDF, comprimir, convertir)",
+    "noResults": "No se encontraron herramientas",
+    "noResultsHint": "Intenta con otras palabras clave o revisa la ortografía",
     "allTools": "Todas las herramientas",
     "media": "Medios",
     "documents": "Documentos",
@@ -277,6 +280,17 @@
     "files": "Herramientas de Archivos",
     "design": "Diseño",
     "utility": "Utilidades"
+  },
+  "nav": {
+    "pdf": "Herramientas PDF",
+    "video": "Video",
+    "image": "Imagen",
+    "audio": "Audio",
+    "devTools": "Herramientas Dev",
+    "convert": "Convertir",
+    "more": "Más herramientas",
+    "implemented": "Disponible",
+    "comingSoon": "Próximamente"
   },
   "placeholder": {
     "comingSoon": "Próximamente",
