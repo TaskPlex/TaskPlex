@@ -59,6 +59,9 @@
   "home": {
     "heroTitle": "Your Universal",
     "heroSubtitle": "Every tool you need to be productive, in one place. Process videos, images, PDFs and more. 100% Free and Open Source.",
+    "searchPlaceholder": "Search tools... (e.g. PDF, compress, convert)",
+    "noResults": "No tools found",
+    "noResultsHint": "Try different keywords or check the spelling",
     "allTools": "All Tools",
     "media": "Media",
     "documents": "Documents",
@@ -277,6 +280,17 @@
     "files": "File Tools",
     "design": "Design",
     "utility": "Utilities"
+  },
+  "nav": {
+    "pdf": "PDF Tools",
+    "video": "Video",
+    "image": "Image",
+    "audio": "Audio",
+    "devTools": "Dev Tools",
+    "convert": "Convert",
+    "more": "More Tools",
+    "implemented": "Available",
+    "comingSoon": "Coming Soon"
   },
   "placeholder": {
     "comingSoon": "Coming Soon",

@@ -1,13 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Star } from 'lucide-react';
+import { Star, SearchX } from 'lucide-react';
 import { useFavorites } from '../hooks/useFavorites';
-import { getAllModules, CATEGORIES, type ModuleCategory, type ModuleDefinition } from '../config/modules';
+import { useModuleSearch } from '../hooks/useModuleSearch';
+import { getAllModules, type ModuleDefinition } from '../config/modules';
 import { getIcon, type IconName } from '../config/icons';
-
-// Extended category type to include 'all'
-type Category = ModuleCategory | 'all';
+import { SearchBar } from '../components/ui/SearchBar';
 
 // Module Card component - memoized for performance
 interface ModuleCardProps {
@@ -88,99 +87,89 @@ const ModuleCard = React.memo<ModuleCardProps>(({
 
 ModuleCard.displayName = 'ModuleCard';
 
-// Category Button component - memoized for performance
-interface CategoryButtonProps {
-  category: { id: Category; label: string };
-  isActive: boolean;
-  onClick: () => void;
-}
-
-const CategoryButton = React.memo<CategoryButtonProps>(({ category, isActive, onClick }) => (
-  <button
-    onClick={onClick}
-    className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer ${
-      isActive
-        ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 shadow-lg transform scale-105'
-        : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-    }`}
-  >
-    {category.label}
-  </button>
-));
-
-CategoryButton.displayName = 'CategoryButton';
-
 export const HomeDashboard: React.FC = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [activeCategory, setActiveCategory] = useState<Category>('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { searchModules } = useModuleSearch();
 
   // Get all modules from registry
   const allModules = getAllModules();
   
-  // Filter modules by category
-  const filteredModules = activeCategory === 'all' 
-    ? allModules 
-    : allModules.filter(module => module.category === activeCategory);
+  // Apply search filter (memoized for performance)
+  const filteredModules = useMemo(() => {
+    return searchModules(allModules, searchQuery);
+  }, [allModules, searchQuery, searchModules]);
   
-  // Get categories with translations
-  const categories = CATEGORIES.map(cat => ({
-    id: cat.id as Category,
-    label: t(cat.labelKey)
-  }));
+  // Check if we have no results
+  const hasNoResults = searchQuery.trim() !== '' && filteredModules.length === 0;
 
   // Memoized handlers
   const handleNavigate = useCallback((path: string) => {
     navigate(path);
   }, [navigate]);
 
-  const handleCategoryChange = useCallback((categoryId: Category) => {
-    setActiveCategory(categoryId);
+  const handleSearchChange = useCallback((query: string) => {
+    setSearchQuery(query);
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50/50 dark:bg-gray-900">
+    <div className="min-h-full bg-gray-50/50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="bg-[#f4f0f8] dark:bg-gray-800/50 py-20 px-4 text-center border-b border-gray-100 dark:border-gray-800">
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
+      <div className="bg-gradient-to-b from-purple-50 to-transparent dark:from-gray-800/50 dark:to-transparent py-16 px-4 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
           {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">{t('common.appName')}</span>
         </h1>
-        <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
           {t('home.heroSubtitle')}
         </p>
-      </div>
-
-      {/* Filter Bar */}
-      <div className="sticky top-0 z-10 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 overflow-x-auto">
-          <div className="flex gap-2 min-w-max justify-center">
-            {categories.map((cat) => (
-              <CategoryButton
-                key={cat.id}
-                category={cat}
-                isActive={activeCategory === cat.id}
-                onClick={() => handleCategoryChange(cat.id)}
-              />
-            ))}
-          </div>
+        
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto">
+          <SearchBar
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
         </div>
       </div>
 
       {/* Tools Grid */}
-      <div className="max-w-[1400px] mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredModules.map((module) => (
-            <ModuleCard
-              key={module.id}
-              module={module}
-              isFavorite={isFavorite(module.id)}
-              onToggleFavorite={toggleFavorite}
-              onNavigate={handleNavigate}
-              t={t}
-            />
-          ))}
-        </div>
+      <div className="max-w-[1400px] mx-auto px-6 py-12">
+        {hasNoResults ? (
+          /* No Results State */
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+            <div className="p-6 rounded-full bg-gray-100 dark:bg-gray-800 mb-6">
+              <SearchX size={48} className="text-gray-400 dark:text-gray-500" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+              {t('home.noResults')}
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400 max-w-md">
+              {t('home.noResultsHint')}
+            </p>
+            <button
+              onClick={() => setSearchQuery('')}
+              className="mt-6 px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
+            >
+              {t('common.reset')}
+            </button>
+          </div>
+        ) : (
+          /* Modules Grid */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {filteredModules.map((module) => (
+              <ModuleCard
+                key={module.id}
+                module={module}
+                isFavorite={isFavorite(module.id)}
+                onToggleFavorite={toggleFavorite}
+                onNavigate={handleNavigate}
+                t={t}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

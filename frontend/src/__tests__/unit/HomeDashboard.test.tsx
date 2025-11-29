@@ -11,27 +11,29 @@ describe('HomeDashboard', () => {
     expect(screen.getByText(/TaskPlex/i)).toBeInTheDocument();
   });
 
-  it('renders tool categories', () => {
+  it('renders search bar and tools', () => {
     renderWithProviders(<HomeDashboard />);
-    expect(screen.getByText(/All Tools/i)).toBeInTheDocument();
-    expect(screen.getByText(/Media/i)).toBeInTheDocument();
-    // Documents appears in both button and description, so use getAllByText
-    expect(screen.getAllByText(/Documents/i).length).toBeGreaterThan(0);
+    // Search bar should be present
+    expect(screen.getByPlaceholderText(/Search tools/i)).toBeInTheDocument();
+    // Some tools should be visible
+    expect(screen.getByText(/Compress Video/i)).toBeInTheDocument();
   });
 
-  it('filters tools when clicking a category', () => {
+  it('filters tools when searching', () => {
     renderWithProviders(<HomeDashboard />);
     
-    // At the start, all tools are there (ex: Compress Video from Media and Regex Tester from Developer)
+    // At the start, all tools are there (ex: Compress Video and Regex Tester)
     expect(screen.getByText(/Compress Video/i)).toBeInTheDocument();
     expect(screen.getByText(/Regex Tester/i)).toBeInTheDocument();
 
-    // Click on "Media"
-    fireEvent.click(screen.getByText(/Media/i));
+    // Search for "PDF"
+    const searchInput = screen.getByPlaceholderText(/Search tools/i);
+    fireEvent.change(searchInput, { target: { value: 'PDF' } });
 
-    // Compress Video (Media tool) should still be there
-    expect(screen.getByText(/Compress Video/i)).toBeInTheDocument();
-    // Regex Tester (Developer tool) should no longer be visible
+    // PDF-related tools should be visible
+    expect(screen.getByText(/Compress PDF/i)).toBeInTheDocument();
+    // Non-PDF tools should not be visible
+    expect(screen.queryByText(/Compress Video/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Regex Tester/i)).not.toBeInTheDocument();
   });
 });

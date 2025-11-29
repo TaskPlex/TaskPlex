@@ -1,29 +1,61 @@
-import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, Menu, Settings, Star, ChevronLeft, ChevronRight, Moon, Sun } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { NavLink, Outlet, Link } from 'react-router-dom';
+import { LayoutDashboard, Menu, Settings, Star, Moon, Sun, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useFavorites } from '../hooks/useFavorites';
 import { useTheme } from '../contexts/ThemeContext';
-import { getAllModules } from '../config/modules';
+import { getAllModules, type ModuleDefinition } from '../config/modules';
 import { getIcon, type IconName } from '../config/icons';
+import { NavDropdown } from './ui/NavDropdown';
 
 // Get all available modules from the registry
-const MODULES = getAllModules();
+const ALL_MODULES = getAllModules();
+
+// Helper to filter modules by ID prefix
+const filterByPrefix = (prefix: string): ModuleDefinition[] => 
+  ALL_MODULES.filter(m => m.id.startsWith(prefix));
+
+// Helper to filter modules by category
+const filterByCategory = (category: string): ModuleDefinition[] => 
+  ALL_MODULES.filter(m => m.category === category);
 
 export const Layout: React.FC = () => {
   const { t } = useTranslation();
   const { isFavorite, toggleFavorite, isCollapsed, toggleSidebar } = useFavorites();
   const { resolvedTheme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Filter modules to show only favorites
-  const favoriteModules = MODULES.filter(module => isFavorite(module.id));
+  const favoriteModules = ALL_MODULES.filter(module => isFavorite(module.id));
+
+  // Organize modules for nav dropdowns
+  const navGroups = useMemo(() => ({
+    pdf: filterByPrefix('pdf-'),
+    video: filterByPrefix('video-'),
+    image: filterByPrefix('image-'),
+    audio: filterByPrefix('audio-'),
+    developer: filterByCategory('developer'),
+    data: filterByCategory('data'),
+    security: filterByCategory('security'),
+    text: filterByCategory('text'),
+    files: filterByCategory('files'),
+    design: filterByCategory('design'),
+  }), []);
+
+  // More tools = security + text + files + design
+  const moreToolsModules = useMemo(() => [
+    ...navGroups.security,
+    ...navGroups.text,
+    ...navGroups.files,
+    ...navGroups.design,
+  ], [navGroups]);
   
   // Get icons for favorite modules
   const getFavoriteModuleIcon = (moduleIconName: string) => {
     const IconComponent = getIcon(moduleIconName as IconName);
     return <IconComponent size={20} />;
   };
-  
+
   return (
     <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
       {/* SIDEBAR */}
@@ -31,9 +63,11 @@ export const Layout: React.FC = () => {
         <div className={`border-b border-gray-100 dark:border-gray-700 relative ${isCollapsed ? 'p-2' : 'p-6'}`}>
           {!isCollapsed ? (
             <>
-              <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">
-                {t('common.appName')}
-              </h1>
+              <Link to="/">
+                <h1 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">
+                  {t('common.appName')}
+                </h1>
+              </Link>
               <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">{t('common.appTagline')}</p>
               {/* Toggle sidebar button - top right (expanded mode) */}
               <button
@@ -158,22 +192,99 @@ export const Layout: React.FC = () => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900">
-        <header className="md:hidden bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-4 flex items-center justify-between">
-          <span className="font-bold text-lg text-gray-900 dark:text-white">TaskPlex</span>
-          <div className="flex items-center gap-2">
-            <button 
-              onClick={toggleTheme}
-              className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer"
-            >
-              {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
-            <button className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer">
-              <Menu size={20}/>
-            </button>
+      <main className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900 flex flex-col">
+        {/* TOP NAVBAR with dropdowns */}
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
+          <div className="px-4">
+            <div className="flex items-center justify-center h-14 relative">
+              {/* Mobile: Logo */}
+              <div className="md:hidden absolute left-4">
+                <Link to="/" className="font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+                  TaskPlex
+                </Link>
+              </div>
+
+              {/* Desktop Navigation - Centered */}
+              <nav className="hidden md:flex items-center gap-1">
+                <NavDropdown 
+                  label={t('nav.pdf')}
+                  modules={navGroups.pdf}
+                  columns={2}
+                  columnLabels={[t('nav.implemented'), t('nav.comingSoon')]}
+                  splitByStatus
+                />
+                <NavDropdown 
+                  label={t('nav.video')}
+                  modules={navGroups.video}
+                  columns={2}
+                  columnLabels={[t('nav.implemented'), t('nav.comingSoon')]}
+                  splitByStatus
+                />
+                <NavDropdown 
+                  label={t('nav.image')}
+                  modules={navGroups.image}
+                  columns={2}
+                  columnLabels={[t('nav.implemented'), t('nav.comingSoon')]}
+                  splitByStatus
+                />
+                <NavDropdown 
+                  label={t('nav.audio')}
+                  modules={navGroups.audio}
+                />
+                <NavDropdown 
+                  label={t('nav.devTools')}
+                  modules={navGroups.developer}
+                  columns={2}
+                  columnLabels={[t('nav.implemented'), t('nav.comingSoon')]}
+                  splitByStatus
+                />
+                <NavDropdown 
+                  label={t('nav.convert')}
+                  modules={navGroups.data}
+                />
+                <NavDropdown 
+                  label={t('nav.more')}
+                  modules={moreToolsModules}
+                />
+              </nav>
+
+              {/* Mobile Menu Toggle */}
+              <div className="md:hidden absolute right-4 flex items-center gap-2">
+                <button 
+                  onClick={toggleTheme}
+                  className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer"
+                >
+                  {resolvedTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+                </button>
+                <button 
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-pointer"
+                >
+                  {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                </button>
+              </div>
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 py-4 px-4">
+              <nav className="space-y-2">
+                <MobileNavLink to="/" label={t('common.dashboard')} icon={<LayoutDashboard size={20} />} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/pdf/compress" label={t('nav.pdf')} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/video/compress" label={t('nav.video')} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/image/compress" label={t('nav.image')} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/dev/regex" label={t('nav.devTools')} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/settings" label={t('common.settings')} icon={<Settings size={20} />} onClick={() => setMobileMenuOpen(false)} />
+              </nav>
+            </div>
+          )}
         </header>
-        <Outlet />
+
+        {/* Page Content */}
+        <div className="flex-1 overflow-auto">
+          <Outlet />
+        </div>
       </main>
     </div>
   );
@@ -206,3 +317,28 @@ const NavItem = React.memo<NavItemProps>(({ to, icon, label, isCollapsed }) => (
 ));
 
 NavItem.displayName = 'NavItem';
+
+// Mobile navigation link component
+interface MobileNavLinkProps {
+  to: string;
+  label: string;
+  icon?: React.ReactNode;
+  onClick?: () => void;
+}
+
+const MobileNavLink: React.FC<MobileNavLinkProps> = ({ to, label, icon, onClick }) => (
+  <NavLink
+    to={to}
+    onClick={onClick}
+    className={({ isActive }) =>
+      `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+        isActive
+          ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400'
+          : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+      }`
+    }
+  >
+    {icon}
+    <span>{label}</span>
+  </NavLink>
+);

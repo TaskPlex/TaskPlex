@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'; // Explicit import to ensure types are loade
 import { RegexScreen } from '../../pages/RegexScreen';
 import { ApiService } from '../../services/api';
 import { renderWithProviders } from '../../test-utils';
-
+import '@testing-library/jest-dom/vitest';
 // Mock ApiService
 vi.mock('../../services/api', () => ({
   ApiService: {
