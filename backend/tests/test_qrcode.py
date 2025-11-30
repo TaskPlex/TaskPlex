@@ -22,7 +22,7 @@ def test_generate_qrcode_basic():
     assert data["qr_code_url"] is not None
     assert data["filename"] is not None
     assert data["filename"].endswith(".png")
-    
+
     # Verify file exists
     file_path = TEMP_DIR / data["filename"]
     assert file_path.exists()
@@ -101,4 +101,3 @@ def test_generate_qrcode_long_data():
     assert response.status_code == 200
     data = response.json()
     assert data["success"] is True
-
