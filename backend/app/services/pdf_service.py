@@ -285,6 +285,131 @@ def reorganize_pdf(
         )
 
 
+def add_password_pdf(input_path: Path, output_path: Path, password: str) -> PDFProcessingResponse:
+    """
+    Add password protection to a PDF file
+
+    Args:
+        input_path: Path to input PDF
+        output_path: Path to save password-protected PDF
+        password: Password to encrypt the PDF
+
+    Returns:
+        PDFProcessingResponse with password protection results
+    """
+    try:
+        original_size = get_file_size(input_path)
+
+        # Read the PDF
+        with open(input_path, "rb") as file:
+            reader = PdfReader(file)
+            writer = PdfWriter()
+
+            # Copy all pages
+            for page in reader.pages:
+                writer.add_page(page)
+
+            # Add password encryption
+            writer.encrypt(password)
+
+            # Write encrypted PDF
+            with open(output_path, "wb") as output_file:
+                writer.write(output_file)
+
+        # Get page count
+        with open(input_path, "rb") as file:
+            reader = PdfReader(file)
+            total_pages = len(reader.pages)
+
+        processed_size = get_file_size(output_path)
+
+        return PDFProcessingResponse(
+            success=True,
+            message="PDF password protection added successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            total_pages=total_pages,
+            original_size=original_size,
+            processed_size=processed_size,
+        )
+
+    except Exception as e:
+        return PDFProcessingResponse(
+            success=False,
+            message=f"Error adding password to PDF: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
+
+
+def remove_password_pdf(
+    input_path: Path, output_path: Path, password: str
+) -> PDFProcessingResponse:
+    """
+    Remove password protection from a PDF file
+
+    Args:
+        input_path: Path to input password-protected PDF
+        output_path: Path to save unprotected PDF
+        password: Password to decrypt the PDF
+
+    Returns:
+        PDFProcessingResponse with password removal results
+    """
+    try:
+        original_size = get_file_size(input_path)
+
+        # Read the encrypted PDF
+        with open(input_path, "rb") as file:
+            reader = PdfReader(file)
+
+            # Check if PDF is encrypted
+            if not reader.is_encrypted:
+                return PDFProcessingResponse(
+                    success=False,
+                    message="PDF is not password-protected",
+                    filename=output_path.name if output_path else None,
+                )
+
+            # Try to decrypt with provided password
+            if not reader.decrypt(password):
+                return PDFProcessingResponse(
+                    success=False,
+                    message="Incorrect password provided",
+                    filename=output_path.name if output_path else None,
+                )
+
+            # Create new PDF without password
+            writer = PdfWriter()
+
+            # Copy all pages
+            for page in reader.pages:
+                writer.add_page(page)
+
+            # Write unencrypted PDF
+            with open(output_path, "wb") as output_file:
+                writer.write(output_file)
+
+        total_pages = len(reader.pages)
+        processed_size = get_file_size(output_path)
+
+        return PDFProcessingResponse(
+            success=True,
+            message="PDF password removed successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            total_pages=total_pages,
+            original_size=original_size,
+            processed_size=processed_size,
+        )
+
+    except Exception as e:
+        return PDFProcessingResponse(
+            success=False,
+            message=f"Error removing password from PDF: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
+
+
 def extract_text_with_ocr(
     input_path: Path, output_path: Path, language: str = "eng"
 ) -> PDFProcessingResponse:

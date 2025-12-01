@@ -165,3 +165,96 @@ def test_ocr_pdf(client, sample_pdf):
         assert data["success"] is True
         assert "download_url" in data
         assert data["filename"].endswith(".txt")
+
+
+def test_add_password_pdf(client, sample_pdf):
+    """Test adding password protection to PDF"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/password",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"action": "add", "password": "test123"},
+        )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert "download_url" in data
+    assert "protected_" in data["filename"]
+
+
+def test_remove_password_pdf(client, sample_pdf):
+    """Test removing password protection from PDF"""
+    # First, add a password to the PDF
+    with open(sample_pdf, "rb") as f:
+        add_response = client.post(
+            "/api/v1/pdf/password",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"action": "add", "password": "test123"},
+        )
+
+    assert add_response.status_code == 200
+    add_data = add_response.json()
+    assert add_data["success"] is True
+
+    # Download the protected PDF
+    from app.config import TEMP_DIR
+
+    protected_filename = add_data["filename"]
+    protected_path = TEMP_DIR / protected_filename
+
+    # Now try to remove the password
+    if protected_path.exists():
+        with open(protected_path, "rb") as f:
+            remove_response = client.post(
+                "/api/v1/pdf/password",
+                files={"file": (protected_filename, f, "application/pdf")},
+                data={"action": "remove", "password": "test123"},
+            )
+
+        assert remove_response.status_code == 200
+        remove_data = remove_response.json()
+        assert remove_data["success"] is True
+        assert "download_url" in remove_data
+        assert "unprotected_" in remove_data["filename"]
+
+
+def test_password_pdf_invalid_action(client, sample_pdf):
+    """Test password endpoint with invalid action"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/password",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"action": "invalid", "password": "test123"},
+        )
+
+    assert response.status_code == 400
+
+
+def test_password_pdf_empty_password(client, sample_pdf):
+    """Test password endpoint with empty password"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/password",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"action": "add", "password": ""},
+        )
+
+    assert response.status_code == 400
+
+
+def test_remove_password_from_unprotected_pdf(client, sample_pdf):
+    """Test removing password from an unprotected PDF"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/password",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"action": "remove", "password": "test123"},
+        )
+
+    # Should fail because PDF is not encrypted
+    assert response.status_code == 500
+    data = response.json()
+    # FastAPI returns error in "detail" field for HTTPException
+    error_message = data.get("detail", data.get("message", ""))
+    assert "not password-protected" in error_message.lower()

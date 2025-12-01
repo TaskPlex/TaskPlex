@@ -122,6 +122,15 @@ export const ApiService = {
     return response.data;
   },
 
+  passwordPDF: async (file: File, action: 'add' | 'remove', password: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('action', action);
+    formData.append('password', password);
+    const response = await api.post<PDFProcessingResponse>('/pdf/password', formData);
+    return response.data;
+  },
+
   // Image
   compressImage: async (file: File, quality: string) => {
     const formData = new FormData();

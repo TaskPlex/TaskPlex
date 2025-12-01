@@ -462,8 +462,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.pdf.password.title',
     descriptionKey: 'modules.pdf.password.description',
     category: 'document',
-    status: 'placeholder',
-    color: 'text-red-500',
+    status: 'implemented',
+    color: 'text-red-600',
   },
   {
     id: 'pdf-to-word',

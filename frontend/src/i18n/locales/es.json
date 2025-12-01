@@ -187,6 +187,26 @@
       "organizeBtn": "Organizar PDF",
       "downloadResult": "Descargar resultado"
     },
+    "password": {
+      "title": "Proteger PDF con contraseña",
+      "description": "Agregar o eliminar protección por contraseña de tus archivos PDF",
+      "selectFile": "Seleccionar archivo PDF",
+      "dropFile": "o arrastra el PDF aquí",
+      "change": "Cambiar",
+      "action": "Acción",
+      "addPassword": "Agregar contraseña",
+      "removePassword": "Eliminar contraseña",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Ingresa la contraseña",
+      "passwordHint": "Elige una contraseña segura para proteger tu PDF",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
+      "processing": "Procesando PDF...",
+      "addBtn": "Agregar contraseña",
+      "removeBtn": "Eliminar contraseña",
+      "successMessage": "Protección por contraseña del PDF actualizada con éxito",
+      "downloadResult": "Descargar resultado"
+    },
     "ocr": {
       "title": "OCR",
       "description": "Extraer texto de PDF escaneados",

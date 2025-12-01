@@ -187,6 +187,26 @@
       "organizeBtn": "Organize PDF",
       "downloadResult": "Download Result"
     },
+    "password": {
+      "title": "Password Protect PDF",
+      "description": "Add or remove password protection from your PDF files",
+      "selectFile": "Select PDF file",
+      "dropFile": "or drop PDF here",
+      "change": "Change",
+      "action": "Action",
+      "addPassword": "Add Password",
+      "removePassword": "Remove Password",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Enter password",
+      "passwordHint": "Choose a strong password to protect your PDF",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "processing": "Processing PDF...",
+      "addBtn": "Add Password",
+      "removeBtn": "Remove Password",
+      "successMessage": "PDF password protection updated successfully",
+      "downloadResult": "Download Result"
+    },
     "ocr": {
       "title": "OCR",
       "description": "Extract text from scanned PDFs",

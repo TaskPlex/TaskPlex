@@ -37,14 +37,21 @@ def create_mock_video_file(filename: str = "test_video.mp4"):
 class TestCompressVideoAsyncEndpoint:
     """Tests for POST /api/v1/video/compress/async"""
 
+    @patch("app.api.video.run_compress_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_compress_async_success(self, mock_save, mock_create_task, client):
+    def test_compress_async_success(self, mock_save, mock_create_task, mock_run_task, client):
         """Test successful async compression request"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test_video.mp4")
-        mock_create_task.return_value = MagicMock()
+
+        # Make create_task consume the coroutine to avoid warnings
+        def consume_coroutine(coro):
+            # Create a task-like object but don't actually await
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         response = client.post(
             "/api/v1/video/compress/async",
@@ -74,13 +81,21 @@ class TestCompressVideoAsyncEndpoint:
         assert response.status_code == 400
         assert "unsupported" in response.json()["detail"].lower()
 
+    @patch("app.api.video.run_compress_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_compress_async_different_qualities(self, mock_save, mock_create_task, client):
+    def test_compress_async_different_qualities(
+        self, mock_save, mock_create_task, mock_run_task, client
+    ):
         """Test async compression with different quality settings"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         for quality in ["low", "medium", "high"]:
             response = client.post(
@@ -96,13 +111,19 @@ class TestCompressVideoAsyncEndpoint:
 class TestConvertVideoAsyncEndpoint:
     """Tests for POST /api/v1/video/convert/async"""
 
+    @patch("app.api.video.run_convert_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_convert_async_success(self, mock_save, mock_create_task, client):
+    def test_convert_async_success(self, mock_save, mock_create_task, mock_run_task, client):
         """Test successful async conversion request"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test_video.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         response = client.post(
             "/api/v1/video/convert/async",
@@ -121,7 +142,8 @@ class TestConvertVideoAsyncEndpoint:
         assert task.metadata["output_format"] == "avi"
         assert task.metadata["quality"] == "high"
 
-    def test_convert_async_invalid_input_format(self, client):
+    @patch("app.api.video.run_convert_task", new_callable=AsyncMock)
+    def test_convert_async_invalid_input_format(self, mock_run_task, client):
         """Test async conversion with invalid input format"""
         response = client.post(
             "/api/v1/video/convert/async",
@@ -132,7 +154,8 @@ class TestConvertVideoAsyncEndpoint:
         assert response.status_code == 400
         assert "unsupported" in response.json()["detail"].lower()
 
-    def test_convert_async_invalid_output_format(self, client):
+    @patch("app.api.video.run_convert_task", new_callable=AsyncMock)
+    def test_convert_async_invalid_output_format(self, mock_run_task, client):
         """Test async conversion with invalid output format"""
         response = client.post(
             "/api/v1/video/convert/async",
@@ -143,13 +166,19 @@ class TestConvertVideoAsyncEndpoint:
         assert response.status_code == 400
         assert "unsupported" in response.json()["detail"].lower()
 
+    @patch("app.api.video.run_convert_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_convert_async_all_formats(self, mock_save, mock_create_task, client):
+    def test_convert_async_all_formats(self, mock_save, mock_create_task, mock_run_task, client):
         """Test async conversion to all supported formats"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         supported_formats = ["mp4", "avi", "mov", "mkv", "flv", "wmv"]
 
@@ -165,15 +194,21 @@ class TestConvertVideoAsyncEndpoint:
 class TestVideoAsyncIntegration:
     """Integration tests for async video endpoints with task system"""
 
+    @patch("app.api.video.run_compress_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
-    @patch("app.api.video.save_upload_file")
-    def test_task_workflow(self, mock_save, mock_create_task, client):
+    @patch("app.api.video.save_upload_file", new_callable=AsyncMock)
+    def test_task_workflow(self, mock_save, mock_create_task, mock_run_task, client):
         """Test complete task workflow: create -> status -> complete"""
         from pathlib import Path
 
         from app.tasks.models import TaskResult
 
         mock_save.return_value = Path("/tmp/test.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         # Create task via endpoint
         response = client.post(
@@ -210,13 +245,19 @@ class TestVideoAsyncIntegration:
         assert status_response.json()["status"] == "completed"
         assert status_response.json()["result"]["success"] is True
 
+    @patch("app.api.video.run_compress_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_task_cancellation(self, mock_save, mock_create_task, client):
+    def test_task_cancellation(self, mock_save, mock_create_task, mock_run_task, client):
         """Test task cancellation"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         # Create task
         response = client.post(
@@ -237,13 +278,19 @@ class TestVideoAsyncIntegration:
         status_response = client.get(f"/api/v1/tasks/{task_id}/status")
         assert status_response.json()["status"] == "cancelled"
 
+    @patch("app.api.video.run_compress_task", new_callable=AsyncMock)
     @patch("app.api.video.asyncio.create_task")
     @patch("app.api.video.save_upload_file")
-    def test_multiple_concurrent_tasks(self, mock_save, mock_create_task, client):
+    def test_multiple_concurrent_tasks(self, mock_save, mock_create_task, mock_run_task, client):
         """Test multiple concurrent tasks"""
         from pathlib import Path
 
         mock_save.return_value = Path("/tmp/test.mp4")
+
+        def consume_coroutine(coro):
+            return MagicMock()
+
+        mock_create_task.side_effect = consume_coroutine
 
         task_ids = []
 

@@ -42,3 +42,15 @@ export const useOCRPDF = () => {
   });
 };
 
+export const usePasswordPDF = () => {
+  return useMutation<
+    PDFProcessingResponse,
+    Error,
+    { file: File; action: 'add' | 'remove'; password: string }
+  >({
+    mutationFn: async ({ file, action, password }) => {
+      return ApiService.passwordPDF(file, action, password);
+    },
+  });
+};
+

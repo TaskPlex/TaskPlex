@@ -12,10 +12,12 @@ from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Uploa
 from app.config import TEMP_DIR
 from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
 from app.services.pdf_service import (
+    add_password_pdf,
     compress_pdf,
     extract_text_with_ocr,
     get_pdf_info,
     merge_pdfs,
+    remove_password_pdf,
     reorganize_pdf,
     split_pdf,
 )
@@ -314,3 +316,49 @@ async def extract_text_from_pdf_ocr_async(
     asyncio.create_task(run_ocr_task(task.id, input_path, output_path, language))
 
     return {"task_id": task.id}
+
+
+@router.post("/password", response_model=PDFProcessingResponse)
+async def password_pdf_file(
+    file: UploadFile = File(..., description="PDF file to add or remove password"),
+    action: str = Form(..., description="Action: 'add' or 'remove'"),
+    password: str = Form(..., description="Password for encryption/decryption"),
+):
+    """
+    Add or remove password protection from a PDF file
+    """
+    if not validate_pdf_format(file.filename):
+        raise HTTPException(status_code=400, detail="File is not a valid PDF")
+
+    if action not in ["add", "remove"]:
+        raise HTTPException(status_code=400, detail="Action must be 'add' or 'remove'")
+
+    if not password or len(password) < 1:
+        raise HTTPException(status_code=400, detail="Password cannot be empty")
+
+    input_path = None
+    output_path = None
+
+    try:
+        input_path = await save_upload_file(file)
+
+        if action == "add":
+            output_filename = generate_unique_filename(f"protected_{file.filename}")
+            output_path = TEMP_DIR / output_filename
+            result = add_password_pdf(input_path, output_path, password)
+        else:  # remove
+            output_filename = generate_unique_filename(f"unprotected_{file.filename}")
+            output_path = TEMP_DIR / output_filename
+            result = remove_password_pdf(input_path, output_path, password)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error processing PDF: {str(e)}")
+    finally:
+        if input_path:
+            delete_file(input_path)

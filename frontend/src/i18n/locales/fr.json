@@ -187,6 +187,26 @@
       "organizeBtn": "Organiser PDF",
       "downloadResult": "Télécharger le résultat"
     },
+    "password": {
+      "title": "Protéger PDF par mot de passe",
+      "description": "Ajouter ou supprimer la protection par mot de passe de vos fichiers PDF",
+      "selectFile": "Sélectionner un fichier PDF",
+      "dropFile": "ou glissez-déposez le PDF ici",
+      "change": "Changer",
+      "action": "Action",
+      "addPassword": "Ajouter un mot de passe",
+      "removePassword": "Supprimer le mot de passe",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Entrez le mot de passe",
+      "passwordHint": "Choisissez un mot de passe fort pour protéger votre PDF",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe",
+      "processing": "Traitement du PDF...",
+      "addBtn": "Ajouter le mot de passe",
+      "removeBtn": "Supprimer le mot de passe",
+      "successMessage": "Protection par mot de passe du PDF mise à jour avec succès",
+      "downloadResult": "Télécharger le résultat"
+    },
     "ocr": {
       "title": "OCR",
       "description": "Extraire le texte de PDF scannés",
