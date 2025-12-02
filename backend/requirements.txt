@@ -22,6 +22,11 @@ pint>=0.23
 # QR Code generation
 qrcode[pil]>=8.0
 
+# Code formatting and minification
+jsbeautifier>=1.15.1
+rcssmin>=1.1.2
+rjsmin>=1.2.2
+
 # Environment variables
 python-dotenv>=1.0.0
 

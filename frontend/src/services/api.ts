@@ -6,6 +6,18 @@ import type {
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
+  CodeFormatterResponse,
+  CSSMinifierResponse,
+  JSMinifierResponse,
+  JSONFormatterResponse,
+  JSONMinifierResponse,
+  XMLFormatterResponse,
+  CodeMinifierResponse,
+  HTMLFormatterResponse,
+  HTMLMinifierResponse,
+  CSSFormatterResponse,
+  JSFormatterResponse,
+  XMLMinifierResponse,
 } from '../types/api';
 
 // Re-export types for backwards compatibility
@@ -17,6 +29,18 @@ export type {
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
+  CodeFormatterResponse,
+  CSSMinifierResponse,
+  JSMinifierResponse,
+  JSONFormatterResponse,
+  JSONMinifierResponse,
+  XMLFormatterResponse,
+  CodeMinifierResponse,
+  HTMLFormatterResponse,
+  HTMLMinifierResponse,
+  CSSFormatterResponse,
+  JSFormatterResponse,
+  XMLMinifierResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -176,6 +200,116 @@ export const ApiService = {
       size,
       border,
       error_correction: errorCorrection
+    });
+    return response.data;
+  },
+
+  // Code Formatter
+  formatCode: async (code: string, language?: string, indentSize?: number, indentChar?: string, wrapLineLength?: number) => {
+    const response = await api.post<CodeFormatterResponse>('/code-formatter/format', {
+      code,
+      language: language || 'auto',
+      indent_size: indentSize || 2,
+      indent_char: indentChar || ' ',
+      wrap_line_length: wrapLineLength || 80
+    });
+    return response.data;
+  },
+
+  // CSS Minifier
+  minifyCSS: async (css: string) => {
+    const response = await api.post<CSSMinifierResponse>('/css-minifier/minify', {
+      css
+    });
+    return response.data;
+  },
+
+  // JS Minifier
+  minifyJS: async (javascript: string) => {
+    const response = await api.post<JSMinifierResponse>('/js-minifier/minify', {
+      javascript
+    });
+    return response.data;
+  },
+
+  // JSON Formatter
+  formatJSON: async (json: string, indentSize?: number) => {
+    const response = await api.post<JSONFormatterResponse>('/json-formatter/format', {
+      json,
+      indent_size: indentSize || 2
+    });
+    return response.data;
+  },
+
+  // JSON Minifier
+  minifyJSON: async (json: string) => {
+    const response = await api.post<JSONMinifierResponse>('/json-minifier/minify', {
+      json
+    });
+    return response.data;
+  },
+
+  // XML Formatter
+  formatXML: async (xml: string, indentSize?: number) => {
+    const response = await api.post<XMLFormatterResponse>('/xml-formatter/format', {
+      xml,
+      indent_size: indentSize || 2
+    });
+    return response.data;
+  },
+
+  // Code Minifier
+  minifyCode: async (code: string, language: string = 'auto') => {
+    const response = await api.post<CodeMinifierResponse>('/code-minifier/minify', {
+      code,
+      language
+    });
+    return response.data;
+  },
+
+  // HTML Formatter
+  formatHTML: async (html: string, indentSize: number = 2, indentChar: string = ' ') => {
+    const response = await api.post<HTMLFormatterResponse>('/html-formatter/format', {
+      html,
+      indent_size: indentSize,
+      indent_char: indentChar
+    });
+    return response.data;
+  },
+
+  // HTML Minifier
+  minifyHTML: async (html: string) => {
+    const response = await api.post<HTMLMinifierResponse>('/html-minifier/minify', {
+      html
+    });
+    return response.data;
+  },
+
+  // CSS Formatter
+  formatCSS: async (css: string, indentSize: number = 2, indentChar: string = ' ') => {
+    const response = await api.post<CSSFormatterResponse>('/css-formatter/format', {
+      css,
+      indent_size: indentSize,
+      indent_char: indentChar
+    });
+    return response.data;
+  },
+
+  // JS Formatter
+  formatJS: async (javascript: string, indentSize: number = 2, indentChar: string = ' ', wrapLineLength: number = 80) => {
+    const response = await api.post<JSFormatterResponse>('/js-formatter/format', {
+      javascript,
+      indent_size: indentSize,
+      indent_char: indentChar,
+      wrap_line_length: wrapLineLength
+    });
+    return response.data;
+  },
+
+  // XML Minifier
+  minifyXML: async (xml: string) => {
+    const response = await api.post<XMLMinifierResponse>('/xml-minifier/minify', {
+      xml
     });
     return response.data;
   },

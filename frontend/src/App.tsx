@@ -38,6 +38,18 @@ const ImageScreen = createLazyComponent(() => import('./pages/ImageScreen'), 'Im
 const RegexScreen = createLazyComponent(() => import('./pages/RegexScreen'), 'RegexScreen');
 const UnitsScreen = createLazyComponent(() => import('./pages/UnitsScreen'), 'UnitsScreen');
 const QRCodeScreen = createLazyComponent(() => import('./pages/QRCodeScreen'), 'QRCodeScreen');
+const CodeFormatterScreen = createLazyComponent(() => import('./pages/CodeFormatterScreen'), 'CodeFormatterScreen');
+const CSSMinifierScreen = createLazyComponent(() => import('./pages/CSSMinifierScreen'), 'CSSMinifierScreen');
+const JSMinifierScreen = createLazyComponent(() => import('./pages/JSMinifierScreen'), 'JSMinifierScreen');
+const JSONFormatterScreen = createLazyComponent(() => import('./pages/JSONFormatterScreen'), 'JSONFormatterScreen');
+const JSONMinifierScreen = createLazyComponent(() => import('./pages/JSONMinifierScreen'), 'JSONMinifierScreen');
+const XMLFormatterScreen = createLazyComponent(() => import('./pages/XMLFormatterScreen'), 'XMLFormatterScreen');
+const CodeMinifierScreen = createLazyComponent(() => import('./pages/CodeMinifierScreen'), 'CodeMinifierScreen');
+const HTMLFormatterScreen = createLazyComponent(() => import('./pages/HTMLFormatterScreen'), 'HTMLFormatterScreen');
+const HTMLMinifierScreen = createLazyComponent(() => import('./pages/HTMLMinifierScreen'), 'HTMLMinifierScreen');
+const CSSFormatterScreen = createLazyComponent(() => import('./pages/CSSFormatterScreen'), 'CSSFormatterScreen');
+const JSFormatterScreen = createLazyComponent(() => import('./pages/JSFormatterScreen'), 'JSFormatterScreen');
+const XMLMinifierScreen = createLazyComponent(() => import('./pages/XMLMinifierScreen'), 'XMLMinifierScreen');
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
 
@@ -71,6 +83,18 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'regex': RegexScreen,
   'units': UnitsScreen,
   'qr-generator': QRCodeScreen,
+  'code-formatter': CodeFormatterScreen,
+  'code-minifier': CodeMinifierScreen,
+  'html-formatter': HTMLFormatterScreen,
+  'html-minifier': HTMLMinifierScreen,
+  'css-formatter': CSSFormatterScreen,
+  'css-minifier': CSSMinifierScreen,
+  'js-formatter': JSFormatterScreen,
+  'js-minifier': JSMinifierScreen,
+  'json-formatter': JSONFormatterScreen,
+  'json-minifier': JSONMinifierScreen,
+  'xml-formatter': XMLFormatterScreen,
+  'xml-minifier': XMLMinifierScreen,
 };
 
 // Create a client

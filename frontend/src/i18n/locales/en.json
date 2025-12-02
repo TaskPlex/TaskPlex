@@ -327,6 +327,208 @@
     "noPreview": "Enter data and click Generate to see QR code",
     "characters": "characters"
   },
+  "codeFormatter": {
+    "title": "Code Formatter",
+    "description": "Format and beautify code in multiple languages",
+    "inputCode": "Input Code",
+    "codePlaceholder": "Paste your code here...",
+    "formattedCode": "Formatted Code",
+    "formattedPlaceholder": "Formatted code will appear here...",
+    "language": {
+      "label": "Language",
+      "auto": "Auto-detect",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "xml": "XML",
+      "html": "HTML",
+      "css": "CSS"
+    },
+    "indentSize": "Indent Size",
+    "indentChar": "Indent Character",
+    "space": "Space",
+    "tab": "Tab",
+    "wrapLineLength": "Wrap Line Length",
+    "noWrap": "No wrap",
+    "formatting": "Formatting...",
+    "formatBtn": "Format Code",
+    "characters": "characters"
+  },
+  "cssMinifier": {
+    "title": "CSS Minifier",
+    "description": "Minify CSS code to reduce file size",
+    "inputCSS": "Input CSS",
+    "cssPlaceholder": "Paste your CSS code here...",
+    "minifiedCSS": "Minified CSS",
+    "minifiedPlaceholder": "Minified CSS will appear here...",
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify CSS",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "jsMinifier": {
+    "title": "JavaScript Minifier",
+    "description": "Minify JavaScript code to reduce file size",
+    "inputJS": "Input JavaScript",
+    "jsPlaceholder": "Paste your JavaScript code here...",
+    "minifiedJS": "Minified JavaScript",
+    "minifiedPlaceholder": "Minified JavaScript will appear here...",
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify JavaScript",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "jsonFormatter": {
+    "title": "JSON Formatter",
+    "description": "Format and beautify JSON code",
+    "inputJSON": "Input JSON",
+    "jsonPlaceholder": "Paste your JSON code here...",
+    "formattedJSON": "Formatted JSON",
+    "formattedPlaceholder": "Formatted JSON will appear here...",
+    "indentSize": "Indent Size",
+    "formatting": "Formatting...",
+    "formatBtn": "Format JSON",
+    "originalSize": "Original Size",
+    "resultSize": "Result Size",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "jsonMinifier": {
+    "title": "JSON Minifier",
+    "description": "Minify JSON code to reduce file size",
+    "inputJSON": "Input JSON",
+    "jsonPlaceholder": "Paste your JSON code here...",
+    "minifiedJSON": "Minified JSON",
+    "minifiedPlaceholder": "Minified JSON will appear here...",
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify JSON",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "xmlFormatter": {
+    "title": "XML Formatter",
+    "description": "Format and beautify XML code",
+    "inputXML": "Input XML",
+    "xmlPlaceholder": "Paste your XML code here...",
+    "formattedXML": "Formatted XML",
+    "formattedPlaceholder": "Formatted XML will appear here...",
+    "indentSize": "Indent Size",
+    "formatting": "Formatting...",
+    "formatBtn": "Format XML",
+    "originalSize": "Original Size",
+    "resultSize": "Result Size",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "codeMinifier": {
+    "title": "Code Minifier",
+    "description": "Minify code in multiple languages (HTML, CSS, JS, JSON, XML)",
+    "inputCode": "Input Code",
+    "codePlaceholder": "Paste your code here...",
+    "minifiedCode": "Minified Code",
+    "minifiedPlaceholder": "Minified code will appear here...",
+    "languageLabel": "Language",
+    "language": {
+      "auto": "Auto-detect",
+      "html": "HTML",
+      "css": "CSS",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "xml": "XML"
+    },
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify Code",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "htmlFormatter": {
+    "title": "HTML Formatter",
+    "description": "Format and beautify HTML code",
+    "inputHTML": "Input HTML",
+    "htmlPlaceholder": "Paste your HTML code here...",
+    "formattedHTML": "Formatted HTML",
+    "formattedPlaceholder": "Formatted HTML will appear here...",
+    "indentSize": "Indent Size",
+    "indentChar": "Indent Character",
+    "space": "Space",
+    "tab": "Tab",
+    "formatting": "Formatting...",
+    "formatBtn": "Format HTML",
+    "characters": "characters"
+  },
+  "htmlMinifier": {
+    "title": "HTML Minifier",
+    "description": "Minify HTML code to reduce file size",
+    "inputHTML": "Input HTML",
+    "htmlPlaceholder": "Paste your HTML code here...",
+    "minifiedHTML": "Minified HTML",
+    "minifiedPlaceholder": "Minified HTML will appear here...",
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify HTML",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
+  "cssFormatter": {
+    "title": "CSS Formatter",
+    "description": "Format and beautify CSS code",
+    "inputCSS": "Input CSS",
+    "cssPlaceholder": "Paste your CSS code here...",
+    "formattedCSS": "Formatted CSS",
+    "formattedPlaceholder": "Formatted CSS will appear here...",
+    "indentSize": "Indent Size",
+    "indentChar": "Indent Character",
+    "space": "Space",
+    "tab": "Tab",
+    "formatting": "Formatting...",
+    "formatBtn": "Format CSS",
+    "characters": "characters"
+  },
+  "jsFormatter": {
+    "title": "JavaScript Formatter",
+    "description": "Format and beautify JavaScript code",
+    "inputCode": "Input JavaScript",
+    "codePlaceholder": "Paste your JavaScript code here...",
+    "formattedCode": "Formatted JavaScript",
+    "formattedPlaceholder": "Formatted JavaScript will appear here...",
+    "indentSize": "Indent Size",
+    "indentChar": "Indent Character",
+    "space": "Space",
+    "tab": "Tab",
+    "wrapLineLength": "Wrap Line Length",
+    "noWrap": "No wrap",
+    "formatting": "Formatting...",
+    "formatBtn": "Format JavaScript",
+    "characters": "characters"
+  },
+  "xmlMinifier": {
+    "title": "XML Minifier",
+    "description": "Minify XML code to reduce file size",
+    "inputXML": "Input XML",
+    "xmlPlaceholder": "Paste your XML code here...",
+    "minifiedXML": "Minified XML",
+    "minifiedPlaceholder": "Minified XML will appear here...",
+    "minifying": "Minifying...",
+    "minifyBtn": "Minify XML",
+    "originalSize": "Original Size",
+    "minifiedSize": "Minified Size",
+    "compressionRatio": "Compression Ratio",
+    "characters": "characters",
+    "bytes": "bytes"
+  },
   "categories": {
     "all": "All Tools",
     "media": "Media",
@@ -562,11 +764,15 @@
       },
       "jsonFormatter": {
         "title": "JSON Formatter",
-        "description": "Format and minify JSON"
+        "description": "Format and beautify JSON"
+      },
+      "jsonMinifier": {
+        "title": "JSON Minifier",
+        "description": "Minify JSON files"
       },
       "xmlFormatter": {
         "title": "XML Formatter",
-        "description": "Format and minify XML"
+        "description": "Format and beautify XML"
       },
       "hashGenerator": {
         "title": "Hash Generator",
@@ -615,6 +821,30 @@
       "jsMinifier": {
         "title": "JS Minifier",
         "description": "Minify JavaScript files"
+      },
+      "codeMinifier": {
+        "title": "Code Minifier",
+        "description": "Minify code in multiple languages"
+      },
+      "htmlFormatter": {
+        "title": "HTML Formatter",
+        "description": "Format and beautify HTML code"
+      },
+      "htmlMinifier": {
+        "title": "HTML Minifier",
+        "description": "Minify HTML files"
+      },
+      "cssFormatter": {
+        "title": "CSS Formatter",
+        "description": "Format and beautify CSS code"
+      },
+      "jsFormatter": {
+        "title": "JS Formatter",
+        "description": "Format and beautify JavaScript code"
+      },
+      "xmlMinifier": {
+        "title": "XML Minifier",
+        "description": "Minify XML files"
       },
       "htmlValidator": {
         "title": "HTML Validator",

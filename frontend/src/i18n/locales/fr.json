@@ -327,6 +327,208 @@
     "noPreview": "Entrez des données et cliquez sur Générer pour voir le QR code",
     "characters": "caractères"
   },
+  "codeFormatter": {
+    "title": "Formateur de Code",
+    "description": "Formater et embellir le code dans plusieurs langages",
+    "inputCode": "Code d'entrée",
+    "codePlaceholder": "Collez votre code ici...",
+    "formattedCode": "Code formaté",
+    "formattedPlaceholder": "Le code formaté apparaîtra ici...",
+    "language": {
+      "label": "Langage",
+      "auto": "Détection automatique",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "xml": "XML",
+      "html": "HTML",
+      "css": "CSS"
+    },
+    "indentSize": "Taille d'indentation",
+    "indentChar": "Caractère d'indentation",
+    "space": "Espace",
+    "tab": "Tabulation",
+    "wrapLineLength": "Longueur de ligne",
+    "noWrap": "Pas de retour à la ligne",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater le code",
+    "characters": "caractères"
+  },
+  "cssMinifier": {
+    "title": "Minifieur CSS",
+    "description": "Minifier le code CSS pour réduire la taille du fichier",
+    "inputCSS": "CSS d'entrée",
+    "cssPlaceholder": "Collez votre code CSS ici...",
+    "minifiedCSS": "CSS minifié",
+    "minifiedPlaceholder": "Le CSS minifié apparaîtra ici...",
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier le CSS",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "jsMinifier": {
+    "title": "Minifieur JavaScript",
+    "description": "Minifier le code JavaScript pour réduire la taille du fichier",
+    "inputJS": "JavaScript d'entrée",
+    "jsPlaceholder": "Collez votre code JavaScript ici...",
+    "minifiedJS": "JavaScript minifié",
+    "minifiedPlaceholder": "Le JavaScript minifié apparaîtra ici...",
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier le JavaScript",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "jsonFormatter": {
+    "title": "Formateur JSON",
+    "description": "Formater et embellir du code JSON",
+    "inputJSON": "JSON d'entrée",
+    "jsonPlaceholder": "Collez votre code JSON ici...",
+    "formattedJSON": "JSON formaté",
+    "formattedPlaceholder": "Le JSON formaté apparaîtra ici...",
+    "indentSize": "Taille d'indentation",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater JSON",
+    "originalSize": "Taille originale",
+    "resultSize": "Taille du résultat",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "jsonMinifier": {
+    "title": "Minifieur JSON",
+    "description": "Minifier du code JSON pour réduire la taille du fichier",
+    "inputJSON": "JSON d'entrée",
+    "jsonPlaceholder": "Collez votre code JSON ici...",
+    "minifiedJSON": "JSON minifié",
+    "minifiedPlaceholder": "Le JSON minifié apparaîtra ici...",
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier JSON",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "xmlFormatter": {
+    "title": "Formateur XML",
+    "description": "Formater et embellir du code XML",
+    "inputXML": "XML d'entrée",
+    "xmlPlaceholder": "Collez votre code XML ici...",
+    "formattedXML": "XML formaté",
+    "formattedPlaceholder": "Le XML formaté apparaîtra ici...",
+    "indentSize": "Taille d'indentation",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater XML",
+    "originalSize": "Taille originale",
+    "resultSize": "Taille du résultat",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "codeMinifier": {
+    "title": "Minifieur de Code",
+    "description": "Minifier du code dans plusieurs langages (HTML, CSS, JS, JSON, XML)",
+    "inputCode": "Code d'entrée",
+    "codePlaceholder": "Collez votre code ici...",
+    "minifiedCode": "Code minifié",
+    "minifiedPlaceholder": "Le code minifié apparaîtra ici...",
+    "languageLabel": "Langage",
+    "language": {
+      "auto": "Détection automatique",
+      "html": "HTML",
+      "css": "CSS",
+      "javascript": "JavaScript",
+      "json": "JSON",
+      "xml": "XML"
+    },
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier le code",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "htmlFormatter": {
+    "title": "Formateur HTML",
+    "description": "Formater et embellir du code HTML",
+    "inputHTML": "HTML d'entrée",
+    "htmlPlaceholder": "Collez votre code HTML ici...",
+    "formattedHTML": "HTML formaté",
+    "formattedPlaceholder": "Le HTML formaté apparaîtra ici...",
+    "indentSize": "Taille d'indentation",
+    "indentChar": "Caractère d'indentation",
+    "space": "Espace",
+    "tab": "Tabulation",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater HTML",
+    "characters": "caractères"
+  },
+  "htmlMinifier": {
+    "title": "Minifieur HTML",
+    "description": "Minifier du code HTML pour réduire la taille du fichier",
+    "inputHTML": "HTML d'entrée",
+    "htmlPlaceholder": "Collez votre code HTML ici...",
+    "minifiedHTML": "HTML minifié",
+    "minifiedPlaceholder": "Le HTML minifié apparaîtra ici...",
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier HTML",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
+  "cssFormatter": {
+    "title": "Formateur CSS",
+    "description": "Formater et embellir du code CSS",
+    "inputCSS": "CSS d'entrée",
+    "cssPlaceholder": "Collez votre code CSS ici...",
+    "formattedCSS": "CSS formaté",
+    "formattedPlaceholder": "Le CSS formaté apparaîtra ici...",
+    "indentSize": "Taille d'indentation",
+    "indentChar": "Caractère d'indentation",
+    "space": "Espace",
+    "tab": "Tabulation",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater CSS",
+    "characters": "caractères"
+  },
+  "jsFormatter": {
+    "title": "Formateur JavaScript",
+    "description": "Formater et embellir du code JavaScript",
+    "inputCode": "JavaScript d'entrée",
+    "codePlaceholder": "Collez votre code JavaScript ici...",
+    "formattedCode": "JavaScript formaté",
+    "formattedPlaceholder": "Le JavaScript formaté apparaîtra ici...",
+    "indentSize": "Taille d'indentation",
+    "indentChar": "Caractère d'indentation",
+    "space": "Espace",
+    "tab": "Tabulation",
+    "wrapLineLength": "Longueur de ligne",
+    "noWrap": "Pas de retour à la ligne",
+    "formatting": "Formatage...",
+    "formatBtn": "Formater JavaScript",
+    "characters": "caractères"
+  },
+  "xmlMinifier": {
+    "title": "Minifieur XML",
+    "description": "Minifier du code XML pour réduire la taille du fichier",
+    "inputXML": "XML d'entrée",
+    "xmlPlaceholder": "Collez votre code XML ici...",
+    "minifiedXML": "XML minifié",
+    "minifiedPlaceholder": "Le XML minifié apparaîtra ici...",
+    "minifying": "Minification...",
+    "minifyBtn": "Minifier XML",
+    "originalSize": "Taille originale",
+    "minifiedSize": "Taille minifiée",
+    "compressionRatio": "Taux de compression",
+    "characters": "caractères",
+    "bytes": "octets"
+  },
   "categories": {
     "all": "Tous les outils",
     "media": "Média",
@@ -562,11 +764,15 @@
       },
       "jsonFormatter": {
         "title": "Formateur JSON",
-        "description": "Formater et minifier JSON"
+        "description": "Formater et embellir JSON"
+      },
+      "jsonMinifier": {
+        "title": "Minifieur JSON",
+        "description": "Minifier des fichiers JSON"
       },
       "xmlFormatter": {
         "title": "Formateur XML",
-        "description": "Formater et minifier XML"
+        "description": "Formater et embellir XML"
       },
       "hashGenerator": {
         "title": "Générateur de hash",
@@ -609,12 +815,36 @@
         "description": "Formater du code JavaScript, Python, HTML, CSS"
       },
       "cssMinifier": {
-        "title": "Minificateur CSS",
+        "title": "Minifieur CSS",
         "description": "Minifier les fichiers CSS"
       },
       "jsMinifier": {
-        "title": "Minificateur JS",
+        "title": "Minifieur JS",
         "description": "Minifier les fichiers JavaScript"
+      },
+      "codeMinifier": {
+        "title": "Minifieur de Code",
+        "description": "Minifier du code dans plusieurs langages"
+      },
+      "htmlFormatter": {
+        "title": "Formateur HTML",
+        "description": "Formater et embellir du code HTML"
+      },
+      "htmlMinifier": {
+        "title": "Minifieur HTML",
+        "description": "Minifier les fichiers HTML"
+      },
+      "cssFormatter": {
+        "title": "Formateur CSS",
+        "description": "Formater et embellir du code CSS"
+      },
+      "jsFormatter": {
+        "title": "Formateur JS",
+        "description": "Formater et embellir du code JavaScript"
+      },
+      "xmlMinifier": {
+        "title": "Minifieur XML",
+        "description": "Minifier les fichiers XML"
       },
       "htmlValidator": {
         "title": "Validateur HTML",

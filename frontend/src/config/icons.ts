@@ -11,7 +11,7 @@ import {
   FileCheck, RefreshCw, FilePlus2, FileSpreadsheet, Scan,
   // Developer Tools
   Code, Code2, Braces, Hash, Binary, Key, QrCode, Eye, Palette as PaletteIcon,
-  FileJson, FileCode, Link, Regex, Type,
+  FileJson, FileCode, FileType, Link, Regex, Type,
   // Data & Conversion
   Database, Table, FileSpreadsheet as FileExcel, BarChart, Calculator, DollarSign, Calendar, Clock,
   // Security
@@ -114,11 +114,20 @@ export const iconMap = {
   'qr-reader': Eye,
   'barcode-generator': Binary,
   'color-converter': PaletteIcon,
+  'css-formatter': Palette,
   'css-minifier': FileCode,
+  'js-formatter': FileCode,
   'js-minifier': FileJson,
+  'code-minifier': FileCode,
+  'html-minifier': FileText,
+  'json-minifier': FileJson,
+  'xml-minifier': FileType,
   'html-validator': FileCode,
   'lorem-ipsum': FileText,
   'fake-data-generator': Database,
+  'palette': Palette,
+  'file-code': FileCode,
+  'minimize-2': Minimize2,
   
   // Data & Conversion
   'csv-to-json': Database,

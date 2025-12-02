@@ -75,6 +75,98 @@ export interface QRCodeResponse extends ApiResponse {
   filename?: string;
 }
 
+// Code Formatter
+export interface CodeFormatterResponse extends ApiResponse {
+  formatted_code?: string;
+  original_length?: number;
+  formatted_length?: number;
+}
+
+// CSS Minifier
+export interface CSSMinifierResponse extends ApiResponse {
+  minified_css?: string;
+  original_size?: number;
+  minified_size?: number;
+  compression_ratio?: number;
+}
+
+// JS Minifier
+export interface JSMinifierResponse extends ApiResponse {
+  minified_js?: string;
+  original_size?: number;
+  minified_size?: number;
+  compression_ratio?: number;
+}
+
+// JSON Formatter
+export interface JSONFormatterResponse extends ApiResponse {
+  result?: string;
+  original_size?: number;
+  result_size?: number;
+  compression_ratio?: number;
+}
+
+// JSON Minifier
+export interface JSONMinifierResponse extends ApiResponse {
+  minified_json?: string;
+  original_length?: number;
+  minified_length?: number;
+  compression_ratio?: number;
+}
+
+// XML Formatter
+export interface XMLFormatterResponse extends ApiResponse {
+  result?: string;
+  original_size?: number;
+  result_size?: number;
+  compression_ratio?: number;
+}
+
+// Code Minifier
+export interface CodeMinifierResponse extends ApiResponse {
+  minified_code?: string;
+  original_length?: number;
+  minified_length?: number;
+  compression_ratio?: number;
+}
+
+// HTML Formatter
+export interface HTMLFormatterResponse extends ApiResponse {
+  formatted_html?: string;
+  original_length?: number;
+  formatted_length?: number;
+}
+
+// HTML Minifier
+export interface HTMLMinifierResponse extends ApiResponse {
+  minified_html?: string;
+  original_length?: number;
+  minified_length?: number;
+  compression_ratio?: number;
+}
+
+// CSS Formatter
+export interface CSSFormatterResponse extends ApiResponse {
+  formatted_css?: string;
+  original_length?: number;
+  formatted_length?: number;
+}
+
+// JS Formatter
+export interface JSFormatterResponse extends ApiResponse {
+  formatted_js?: string;
+  original_length?: number;
+  formatted_length?: number;
+}
+
+// XML Minifier
+export interface XMLMinifierResponse extends ApiResponse {
+  minified_xml?: string;
+  original_length?: number;
+  minified_length?: number;
+  compression_ratio?: number;
+}
+
 // Generic file processing result (useful for UI components)
 export interface ProcessingResult {
   success: boolean;

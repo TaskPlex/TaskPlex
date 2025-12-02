@@ -11,7 +11,26 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 import uvicorn
 
-from app.api import image, pdf, qrcode, regex, units, video
+from app.api import (
+    code_formatter,
+    code_minifier,
+    css_formatter,
+    css_minifier,
+    html_formatter,
+    html_minifier,
+    image,
+    js_formatter,
+    js_minifier,
+    json_formatter,
+    json_minifier,
+    pdf,
+    qrcode,
+    regex,
+    units,
+    video,
+    xml_formatter,
+    xml_minifier,
+)
 from app.config import (
     API_DESCRIPTION,
     API_TITLE,
@@ -116,6 +135,18 @@ async def health_check():
             "regex": "/api/v1/regex",
             "units": "/api/v1/units",
             "qrcode": "/api/v1/qrcode",
+            "code-formatter": "/api/v1/code-formatter",
+            "code-minifier": "/api/v1/code-minifier",
+            "html-formatter": "/api/v1/html-formatter",
+            "html-minifier": "/api/v1/html-minifier",
+            "css-formatter": "/api/v1/css-formatter",
+            "css-minifier": "/api/v1/css-minifier",
+            "js-formatter": "/api/v1/js-formatter",
+            "js-minifier": "/api/v1/js-minifier",
+            "json-formatter": "/api/v1/json-formatter",
+            "json-minifier": "/api/v1/json-minifier",
+            "xml-formatter": "/api/v1/xml-formatter",
+            "xml-minifier": "/api/v1/xml-minifier",
         },
     }
 
@@ -127,6 +158,18 @@ app.include_router(pdf.router, prefix="/api/v1")
 app.include_router(regex.router, prefix="/api/v1")
 app.include_router(units.router, prefix="/api/v1")
 app.include_router(qrcode.router, prefix="/api/v1")
+app.include_router(code_formatter.router, prefix="/api/v1")
+app.include_router(code_minifier.router, prefix="/api/v1")
+app.include_router(html_formatter.router, prefix="/api/v1")
+app.include_router(html_minifier.router, prefix="/api/v1")
+app.include_router(css_formatter.router, prefix="/api/v1")
+app.include_router(css_minifier.router, prefix="/api/v1")
+app.include_router(js_formatter.router, prefix="/api/v1")
+app.include_router(js_minifier.router, prefix="/api/v1")
+app.include_router(json_formatter.router, prefix="/api/v1")
+app.include_router(json_minifier.router, prefix="/api/v1")
+app.include_router(xml_formatter.router, prefix="/api/v1")
+app.include_router(xml_minifier.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
 
