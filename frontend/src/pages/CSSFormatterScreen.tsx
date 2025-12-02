@@ -63,7 +63,7 @@ export const CSSFormatterScreen: React.FC = () => {
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div className="flex items-center justify-between mb-4">
               <label
-                cssFor="css-input"
+                htmlFor="css-input"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 {t('cssFormatter.inputCSS')}
@@ -92,7 +92,7 @@ export const CSSFormatterScreen: React.FC = () => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  cssFor="indent-size"
+                  htmlFor="indent-size"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('cssFormatter.indentSize')}
@@ -110,7 +110,7 @@ export const CSSFormatterScreen: React.FC = () => {
 
               <div>
                 <label
-                  cssFor="indent-char"
+                  htmlFor="indent-char"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                 >
                   {t('cssFormatter.indentChar')}

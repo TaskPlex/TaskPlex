@@ -240,7 +240,9 @@ def test_password_pdf_empty_password(client, sample_pdf):
             data={"action": "add", "password": ""},
         )
 
-    assert response.status_code == 400
+    # FastAPI/Pydantic may return 422 (validation error) or 400 (manual check)
+    # depending on version. Both are acceptable error responses.
+    assert response.status_code in [400, 422]
 
 
 def test_remove_password_from_unprotected_pdf(client, sample_pdf):

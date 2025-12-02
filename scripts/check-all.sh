@@ -84,6 +84,35 @@ else
 fi
 
 # ============================================
+# FRONTEND TYPE CHECKING
+# ============================================
+print_section "Frontend Type Checking (TypeScript)"
+
+cd "$PROJECT_ROOT/frontend"
+
+# Check if node_modules exists
+if [ ! -d "node_modules" ]; then
+    print_warning "node_modules not found. Installing dependencies..."
+    npm install
+fi
+
+# Check if tsc is available
+if ! npx tsc --version &> /dev/null; then
+    print_warning "TypeScript compiler not found, skipping type check"
+else
+    echo "Running TypeScript type check (tsc --noEmit)..."
+    TYPE_CHECK_OUTPUT=$(npx tsc --noEmit 2>&1)
+    TYPE_CHECK_EXIT_CODE=$?
+    
+    if [ $TYPE_CHECK_EXIT_CODE -ne 0 ]; then
+        print_error "TypeScript type check failed"
+        echo "$TYPE_CHECK_OUTPUT" | grep -E "error TS|error:" | head -20
+    else
+        print_success "TypeScript type check passed"
+    fi
+fi
+
+# ============================================
 # FRONTEND LINTING
 # ============================================
 print_section "Frontend Linting (ESLint)"

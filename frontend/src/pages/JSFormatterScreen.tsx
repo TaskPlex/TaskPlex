@@ -205,7 +205,7 @@ export const JSFormatterScreen: React.FC = () => {
               placeholder={t('jsFormatter.formattedPlaceholder')}
               className="w-full h-96 p-4 font-mono text-sm bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 resize-none"
             />
-            {result?.formatted_javascript && (
+            {result?.formatted_js && (
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                 {result.formatted_length} {t('jsFormatter.characters')}
                 {result.original_length && result.formatted_length && (

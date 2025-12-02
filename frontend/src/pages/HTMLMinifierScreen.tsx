@@ -146,7 +146,7 @@ export const HTMLMinifierScreen: React.FC = () => {
                       {t('htmlMinifier.originalSize')}:
                     </span>
                     <span className="ml-2 font-semibold text-gray-900 dark:text-white">
-                      {result.original_size} {t('htmlMinifier.bytes')}
+                      {result.original_length} {t('htmlMinifier.bytes')}
                     </span>
                   </div>
                   <div>
@@ -154,7 +154,7 @@ export const HTMLMinifierScreen: React.FC = () => {
                       {t('htmlMinifier.minifiedSize')}:
                     </span>
                     <span className="ml-2 font-semibold text-gray-900 dark:text-white">
-                      {result.minified_size} {t('htmlMinifier.bytes')}
+                      {result.minified_length} {t('htmlMinifier.bytes')}
                     </span>
                   </div>
                   {result.compression_ratio !== undefined && (
