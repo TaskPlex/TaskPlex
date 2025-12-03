@@ -24,3 +24,5 @@ log = "0.4"
 tauri = { version = "2.9.2", features = [] }
 tauri-plugin-log = "2"
 tauri-plugin-shell = "2.3.3"
+# Force glib to 0.20.0 to fix security vulnerability in 0.18.5
+glib = "0.20.0"
