@@ -18,3 +18,11 @@ export const useConvertVideo = () => {
   });
 };
 
+export const useRotateVideo = () => {
+  return useMutation<VideoProcessingResponse, Error, { file: File; angle: number }>({
+    mutationFn: async ({ file, angle }) => {
+      return ApiService.rotateVideo(file, angle);
+    },
+  });
+};
+

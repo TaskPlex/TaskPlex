@@ -8,7 +8,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.image import ImageProcessingResponse
-from app.services.image_service import compress_image, convert_image
+from app.services.image_service import compress_image, convert_image, rotate_image
 from app.utils.file_handler import (
     delete_file,
     generate_unique_filename,
@@ -91,6 +91,50 @@ async def convert_image_endpoint(
 
         # Convert image
         result = convert_image(input_path, output_path, output_format, quality)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input file
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/rotate", response_model=ImageProcessingResponse)
+async def rotate_image_endpoint(
+    file: UploadFile = File(..., description="Image file to rotate"),
+    angle: int = Form(..., description="Rotation angle in degrees (90, 180, or 270)"),
+):
+    """
+    Rotate an image by a specified angle
+
+    Supported formats: JPG, JPEG, PNG, GIF, BMP, WEBP
+    Supported angles: 90, 180, 270 degrees
+    """
+    # Validate file format
+    if not validate_image_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported image format")
+
+    # Validate angle
+    if angle not in [90, 180, 270]:
+        raise HTTPException(status_code=400, detail="Invalid angle. Supported angles: 90, 180, 270")
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Create output path
+        output_filename = generate_unique_filename(f"rotated_{angle}_{file.filename}")
+        output_path = TEMP_DIR / output_filename
+
+        # Rotate image
+        result = rotate_image(input_path, output_path, angle)
 
         if not result.success:
             raise HTTPException(status_code=500, detail=result.message)

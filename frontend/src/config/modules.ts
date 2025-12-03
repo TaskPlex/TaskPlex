@@ -86,12 +86,12 @@ export const MODULES: ModuleDefinition[] = [
   {
     id: 'video-rotate',
     path: '/video/rotate',
-    icon: 'video-rotate',
+    icon: 'rotate-cw',
     labelKey: 'modules.video.rotate.title',
     descriptionKey: 'modules.video.rotate.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-purple-500',
+    status: 'implemented',
+    color: 'text-purple-600',
   },
   {
     id: 'video-add-subtitles',
@@ -264,12 +264,12 @@ export const MODULES: ModuleDefinition[] = [
   {
     id: 'image-rotate',
     path: '/image/rotate',
-    icon: 'image-rotate',
+    icon: 'rotate-cw',
     labelKey: 'modules.image.rotate.title',
     descriptionKey: 'modules.image.rotate.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-blue-500',
+    status: 'implemented',
+    color: 'text-blue-600',
   },
   {
     id: 'image-flip',

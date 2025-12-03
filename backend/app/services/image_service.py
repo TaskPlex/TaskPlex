@@ -141,3 +141,69 @@ def convert_image(
             message=f"Error converting image: {str(e)}",
             filename=output_path.name if output_path else None,
         )
+
+
+def rotate_image(input_path: Path, output_path: Path, angle: int) -> ImageProcessingResponse:
+    """
+    Rotate an image by a specified angle
+
+    Args:
+        input_path: Path to input image
+        output_path: Path to save rotated image
+        angle: Rotation angle in degrees (90, 180, or 270)
+
+    Returns:
+        ImageProcessingResponse with rotation results
+    """
+    try:
+        # Get original file size
+        original_size = get_file_size(input_path)
+
+        # Open and rotate image
+        with Image.open(input_path) as img:
+            # Get original dimensions
+            original_dimensions = {"width": img.width, "height": img.height}
+
+            # Rotate image (expand=True to avoid cropping)
+            rotated_img = img.rotate(-angle, expand=True)
+
+            # Get new dimensions after rotation
+            new_dimensions = {"width": rotated_img.width, "height": rotated_img.height}
+
+            # Preserve original format
+            output_format = img.format or "PNG"
+            if output_format == "JPEG":
+                # Convert RGBA to RGB if saving as JPEG
+                if rotated_img.mode == "RGBA":
+                    rgb_img = Image.new("RGB", rotated_img.size, (255, 255, 255))
+                    rgb_img.paste(
+                        rotated_img,
+                        mask=rotated_img.split()[3] if len(rotated_img.split()) == 4 else None,
+                    )
+                    rotated_img = rgb_img
+
+            # Save rotated image
+            if output_format in ["JPEG", "JPG"]:
+                rotated_img.save(output_path, format=output_format, quality=95, optimize=True)
+            else:
+                rotated_img.save(output_path, format=output_format, optimize=True)
+
+        # Get rotated file size
+        rotated_size = get_file_size(output_path)
+
+        return ImageProcessingResponse(
+            success=True,
+            message=f"Image rotated {angle} degrees successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=rotated_size,
+            dimensions=new_dimensions,
+        )
+
+    except Exception as e:
+        return ImageProcessingResponse(
+            success=False,
+            message=f"Error rotating image: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )

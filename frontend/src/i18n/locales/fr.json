@@ -136,6 +136,30 @@
     "original": "Original",
     "reducedBy": "Réduit de"
   },
+  "rotateImage": {
+    "title": "Rotation d'image",
+    "imageFile": "Fichier image",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "angle": "Angle de rotation",
+    "rotateImage": "Tourner l'image",
+    "processing": "Traitement en cours...",
+    "result": "Résultat",
+    "preview": "L'aperçu apparaîtra ici",
+    "original": "Original",
+    "downloadResult": "Télécharger le résultat"
+  },
+  "rotateVideo": {
+    "title": "Rotation de vidéo",
+    "videoFile": "Fichier vidéo",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "angle": "Angle de rotation",
+    "rotateVideo": "Tourner la vidéo",
+    "processing": "Traitement en cours...",
+    "result": "Résultat",
+    "preview": "L'aperçu apparaîtra ici",
+    "original": "Original",
+    "downloadResult": "Télécharger le résultat"
+  },
   "pdf": {
     "title": "Outils PDF",
     "subtitle": "Fusionnez, divisez, compressez et organisez vos PDF en quelques clics.",

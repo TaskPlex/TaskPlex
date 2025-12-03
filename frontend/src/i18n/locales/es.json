@@ -136,6 +136,30 @@
     "original": "Original",
     "reducedBy": "Reducido en"
   },
+  "rotateImage": {
+    "title": "Rotar imagen",
+    "imageFile": "Archivo de imagen",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "angle": "Ángulo de rotación",
+    "rotateImage": "Rotar imagen",
+    "processing": "Procesando...",
+    "result": "Resultado",
+    "preview": "La vista previa aparecerá aquí",
+    "original": "Original",
+    "downloadResult": "Descargar resultado"
+  },
+  "rotateVideo": {
+    "title": "Rotar video",
+    "videoFile": "Archivo de video",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "angle": "Ángulo de rotación",
+    "rotateVideo": "Rotar video",
+    "processing": "Procesando...",
+    "result": "Resultado",
+    "preview": "La vista previa aparecerá aquí",
+    "original": "Original",
+    "downloadResult": "Descargar resultado"
+  },
   "pdf": {
     "title": "Herramientas PDF",
     "subtitle": "Combina, divide, comprime y organiza tus PDFs con solo unos clics.",

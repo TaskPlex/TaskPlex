@@ -9,7 +9,7 @@ from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Uploa
 
 from app.config import TEMP_DIR
 from app.models.video import VideoProcessingResponse
-from app.services.video_service import compress_video, convert_video
+from app.services.video_service import compress_video, convert_video, rotate_video
 from app.services.video_service_async import (
     compress_video_with_progress,
     convert_video_with_progress,
@@ -101,6 +101,52 @@ async def convert_video_endpoint(
 
         # Convert video
         result = convert_video(input_path, output_path, output_format, quality)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input file
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/rotate", response_model=VideoProcessingResponse)
+async def rotate_video_endpoint(
+    file: UploadFile = File(..., description="Video file to rotate"),
+    angle: int = Form(..., description="Rotation angle in degrees (90, 180, or 270)"),
+):
+    """
+    Rotate a video by a specified angle
+
+    Supported formats: MP4, AVI, MOV, MKV, FLV, WMV
+    Supported angles: 90, 180, 270 degrees
+
+    Note: This operation may take some time depending on video size
+    """
+    # Validate file format
+    if not validate_video_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported video format")
+
+    # Validate angle
+    if angle not in [90, 180, 270]:
+        raise HTTPException(status_code=400, detail="Invalid angle. Supported angles: 90, 180, 270")
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Create output path
+        output_filename = generate_unique_filename(f"rotated_{angle}_{file.filename}")
+        output_path = TEMP_DIR / output_filename
+
+        # Rotate video
+        result = rotate_video(input_path, output_path, angle)
 
         if not result.success:
             raise HTTPException(status_code=500, detail=result.message)

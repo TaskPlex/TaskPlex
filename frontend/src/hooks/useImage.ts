@@ -18,3 +18,11 @@ export const useConvertImage = () => {
   });
 };
 
+export const useRotateImage = () => {
+  return useMutation<ImageProcessingResponse, Error, { file: File; angle: number }>({
+    mutationFn: async ({ file, angle }) => {
+      return ApiService.rotateImage(file, angle);
+    },
+  });
+};
+

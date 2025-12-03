@@ -197,3 +197,91 @@ def convert_video(
             message=f"Error converting video: {str(e)}",
             filename=output_path.name if output_path else None,
         )
+
+
+def rotate_video(input_path: Path, output_path: Path, angle: int) -> VideoProcessingResponse:
+    """
+    Rotate a video by a specified angle
+
+    Args:
+        input_path: Path to input video
+        output_path: Path to save rotated video
+        angle: Rotation angle in degrees (90, 180, or 270)
+
+    Returns:
+        VideoProcessingResponse with rotation results
+    """
+    try:
+        # Get original file size
+        original_size = get_file_size(input_path)
+
+        # Detect available H.264 encoder (needed for re-encoding after rotation)
+        encoder = get_available_h264_encoder()
+        if encoder is None:
+            return VideoProcessingResponse(
+                success=False,
+                message="No H.264 encoder available. Please install FFmpeg with H.264 support.",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Rotate video using FFmpeg
+        # We need to re-encode because rotation changes video dimensions
+        stream = ffmpeg.input(str(input_path))
+
+        # Map angle to FFmpeg transpose filter
+        # transpose=1: 90° clockwise
+        # transpose=2: 90° counter-clockwise
+        # For 180°, we apply transpose twice
+        if angle == 90:
+            stream = ffmpeg.filter(stream, "transpose", "1")
+        elif angle == 180:
+            stream = ffmpeg.filter(stream, "transpose", "1")
+            stream = ffmpeg.filter(stream, "transpose", "1")
+        elif angle == 270:
+            stream = ffmpeg.filter(stream, "transpose", "2")
+        else:
+            return VideoProcessingResponse(
+                success=False,
+                message=f"Unsupported rotation angle: {angle}. Supported angles: 90, 180, 270",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Build output options with encoder
+        output_options = {"c:v": encoder, "c:a": "aac", "b:a": "128k"}
+
+        # Add quality parameters based on encoder type
+        if encoder == "libx264":
+            output_options["crf"] = "23"  # Good quality
+            output_options["preset"] = "medium"
+        elif encoder in ["libopenh264", "h264_vaapi"]:
+            output_options["b:v"] = "2.5M"
+
+        stream = ffmpeg.output(stream, str(output_path), **output_options)
+        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
+
+        # Get rotated file size
+        rotated_size = get_file_size(output_path)
+
+        return VideoProcessingResponse(
+            success=True,
+            message=f"Video rotated {angle} degrees successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=rotated_size,
+        )
+
+    except ffmpeg.Error as e:
+        error_message = e.stderr.decode() if e.stderr else str(e)
+        return VideoProcessingResponse(
+            success=False,
+            message=f"FFmpeg error: {error_message}",
+            filename=output_path.name if output_path else None,
+        )
+
+    except Exception as e:
+        return VideoProcessingResponse(
+            success=False,
+            message=f"Error rotating video: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )

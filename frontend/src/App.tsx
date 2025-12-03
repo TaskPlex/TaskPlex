@@ -34,7 +34,9 @@ const createLazyComponent = <T extends React.ComponentType<Record<string, unknow
 // Lazy load all page components for code splitting
 const HomeDashboard = createLazyComponent(() => import('./pages/HomeDashboard'), 'HomeDashboard');
 const VideoScreen = createLazyComponent(() => import('./pages/VideoScreen'), 'VideoScreen');
+const RotateVideoScreen = createLazyComponent(() => import('./pages/RotateVideoScreen'), 'RotateVideoScreen');
 const ImageScreen = createLazyComponent(() => import('./pages/ImageScreen'), 'ImageScreen');
+const RotateImageScreen = createLazyComponent(() => import('./pages/RotateImageScreen'), 'RotateImageScreen');
 const RegexScreen = createLazyComponent(() => import('./pages/RegexScreen'), 'RegexScreen');
 const UnitsScreen = createLazyComponent(() => import('./pages/UnitsScreen'), 'UnitsScreen');
 const QRCodeScreen = createLazyComponent(() => import('./pages/QRCodeScreen'), 'QRCodeScreen');
@@ -66,10 +68,12 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   // Video
   'video-compress': VideoScreen,
   'video-convert': VideoScreen,
+  'video-rotate': RotateVideoScreen,
   
   // Image
   'image-compress': ImageScreen,
   'image-convert': ImageScreen,
+  'image-rotate': RotateImageScreen,
   
   // PDF
   'pdf-compress': PDFCompress,

@@ -98,6 +98,14 @@ export const ApiService = {
     return response.data;
   },
 
+  rotateVideo: async (file: File, angle: number) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('angle', angle.toString());
+    const response = await api.post<VideoProcessingResponse>('/video/rotate', formData);
+    return response.data;
+  },
+
   // PDF
   compressPDF: async (file: File) => {
     const formData = new FormData();
@@ -170,6 +178,14 @@ export const ApiService = {
     formData.append('output_format', outputFormat);
     formData.append('quality', quality);
     const response = await api.post<ImageProcessingResponse>('/image/convert', formData);
+    return response.data;
+  },
+
+  rotateImage: async (file: File, angle: number) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('angle', angle.toString());
+    const response = await api.post<ImageProcessingResponse>('/image/rotate', formData);
     return response.data;
   },
 

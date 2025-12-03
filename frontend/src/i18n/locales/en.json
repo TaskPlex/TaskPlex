@@ -136,6 +136,30 @@
     "original": "Original",
     "reducedBy": "Reduced by"
   },
+  "rotateImage": {
+    "title": "Rotate Image",
+    "imageFile": "Image File",
+    "dragDrop": "Drag and drop or click to select",
+    "angle": "Rotation Angle",
+    "rotateImage": "Rotate Image",
+    "processing": "Processing...",
+    "result": "Result",
+    "preview": "Preview will appear here",
+    "original": "Original",
+    "downloadResult": "Download Result"
+  },
+  "rotateVideo": {
+    "title": "Rotate Video",
+    "videoFile": "Video File",
+    "dragDrop": "Drag and drop or click to select",
+    "angle": "Rotation Angle",
+    "rotateVideo": "Rotate Video",
+    "processing": "Processing...",
+    "result": "Result",
+    "preview": "Preview will appear here",
+    "original": "Original",
+    "downloadResult": "Download Result"
+  },
   "pdf": {
     "title": "PDF Tools",
     "subtitle": "Merge, split, compress, and organize your PDFs in just a few clicks.",
