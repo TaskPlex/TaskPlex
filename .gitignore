@@ -52,3 +52,12 @@ docker-compose.override.yml
 *.dmg
 *.exe
 
+# Coverage
+.coverage
+coverage.xml
+htmlcov/
+junit.xml
+
+# Testing
+.pytest_cache/
+
