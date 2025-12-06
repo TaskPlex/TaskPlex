@@ -175,6 +175,25 @@
     "preview": "Preview will appear here",
     "downloadResult": "Download Result"
   },
+  "textFormatter": {
+    "title": "Format Text",
+    "subtitle": "Replace literal \\n sequences by real line breaks.",
+    "inputLabel": "Input (with \\n)",
+    "outputLabel": "Formatted output",
+    "outputHint": "Line breaks are applied below",
+    "literalInfo": "Literal \\n will become real lines",
+    "placeholder": "Paste your text containing literal \\n characters...",
+    "outputPlaceholder": "Formatted text will appear here...",
+    "formatButton": "Format text",
+    "processing": "Formatting...",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "success": "Formatted",
+    "stats": {
+      "original": "Original: {{count}} chars",
+      "formatted": "Formatted: {{count}} chars"
+    }
+  },
   "resizeImage": {
     "title": "Resize Image",
     "imageFile": "Image File",
@@ -989,6 +1008,10 @@
       "slugGenerator": {
         "title": "Slug Generator",
         "description": "Create URL-friendly slugs"
+      },
+      "textFormatter": {
+        "title": "Format Text",
+        "description": "Convert literal \\n into real line breaks"
       },
       "textDiff": {
         "title": "Text Diff",

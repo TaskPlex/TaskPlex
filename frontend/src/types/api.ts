@@ -177,6 +177,13 @@ export interface XMLMinifierResponse extends ApiResponse {
   compression_ratio?: number;
 }
 
+// Text Formatter
+export interface TextFormatResponse extends ApiResponse {
+  formatted_text?: string;
+  original_length?: number;
+  formatted_length?: number;
+}
+
 // Generic file processing result (useful for UI components)
 export interface ProcessingResult {
   success: boolean;

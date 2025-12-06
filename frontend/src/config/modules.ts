@@ -892,6 +892,17 @@ export const MODULES: ModuleDefinition[] = [
   // TEXT TOOLS (Placeholder)
   // ============================================
   {
+    id: 'text-format',
+    path: '/text/format',
+    icon: 'text-format',
+    labelKey: 'modules.text.textFormatter.title',
+    descriptionKey: 'modules.text.textFormatter.description',
+    category: 'text',
+    status: 'implemented',
+    color: 'text-orange-700',
+    isNew: true,
+  },
+  {
     id: 'word-counter',
     path: '/text/word-counter',
     icon: 'word-counter',
