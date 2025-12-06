@@ -161,6 +161,20 @@
     "palettePlaceholder": "Upload an image and extract to see the palette",
     "copied": "Copied!"
   },
+  "adjustImage": {
+    "title": "Adjust Image",
+    "imageFile": "Image File",
+    "dragDrop": "Drag and drop or click to select",
+    "brightness": "Brightness",
+    "contrast": "Contrast",
+    "saturation": "Saturation",
+    "adjustButton": "Apply adjustments",
+    "processing": "Processing...",
+    "original": "Original",
+    "result": "Adjusted",
+    "preview": "Preview will appear here",
+    "downloadResult": "Download Result"
+  },
   "resizeImage": {
     "title": "Resize Image",
     "imageFile": "Image File",

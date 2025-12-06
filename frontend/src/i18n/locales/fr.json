@@ -161,6 +161,20 @@
     "palettePlaceholder": "Importez une image puis lancez l'extraction pour voir la palette",
     "copied": "Copié !"
   },
+  "adjustImage": {
+    "title": "Ajuster l'image",
+    "imageFile": "Fichier image",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "brightness": "Luminosité",
+    "contrast": "Contraste",
+    "saturation": "Saturation",
+    "adjustButton": "Appliquer les ajustements",
+    "processing": "Traitement en cours...",
+    "original": "Original",
+    "result": "Ajusté",
+    "preview": "L'aperçu apparaîtra ici",
+    "downloadResult": "Télécharger le résultat"
+  },
   "resizeImage": {
     "title": "Redimensionner l'image",
     "imageFile": "Fichier image",
