@@ -161,6 +161,20 @@
     "palettePlaceholder": "Sube una imagen y extrae para ver la paleta",
     "copied": "¡Copiado!"
   },
+  "adjustImage": {
+    "title": "Ajustar imagen",
+    "imageFile": "Archivo de imagen",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "brightness": "Brillo",
+    "contrast": "Contraste",
+    "saturation": "Saturación",
+    "adjustButton": "Aplicar ajustes",
+    "processing": "Procesando...",
+    "original": "Original",
+    "result": "Ajustado",
+    "preview": "La vista previa aparecerá aquí",
+    "downloadResult": "Descargar resultado"
+  },
   "resizeImage": {
     "title": "Redimensionar imagen",
     "imageFile": "Archivo de imagen",

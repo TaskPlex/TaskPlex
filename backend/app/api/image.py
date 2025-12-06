@@ -9,6 +9,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.config import TEMP_DIR
 from app.models.image import ColorExtractionResponse, ImageProcessingResponse
 from app.services.image_service import (
+    adjust_image,
     compress_image,
     convert_image,
     extract_colors,
@@ -249,6 +250,64 @@ async def resize_image_endpoint(
             height=height,
             maintain_aspect_ratio=maintain_aspect_ratio,
             resample=resample.lower(),
+        )
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input file
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/adjust", response_model=ImageProcessingResponse)
+async def adjust_image_endpoint(
+    file: UploadFile = File(..., description="Image file to adjust"),
+    brightness: float = Form(1.0, description="Brightness factor (0.1 - 3.0, 1.0 = original)"),
+    contrast: float = Form(1.0, description="Contrast factor (0.1 - 3.0, 1.0 = original)"),
+    saturation: float = Form(1.0, description="Saturation factor (0.1 - 3.0, 1.0 = original)"),
+):
+    """
+    Adjust brightness, contrast, and saturation of an image.
+
+    Supported formats: JPG, JPEG, PNG, GIF, BMP, WEBP
+    """
+    # Validate file format
+    if not validate_image_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported image format")
+
+    # Validate factors
+    for value, name in [
+        (brightness, "brightness"),
+        (contrast, "contrast"),
+        (saturation, "saturation"),
+    ]:
+        if value <= 0 or value > 3:
+            raise HTTPException(
+                status_code=400, detail=f"{name} must be greater than 0 and at most 3.0"
+            )
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Create output path
+        output_filename = generate_unique_filename(f"adjusted_{file.filename}")
+        output_path = TEMP_DIR / output_filename
+
+        # Adjust image
+        result = adjust_image(
+            input_path,
+            output_path,
+            brightness=brightness,
+            contrast=contrast,
+            saturation=saturation,
         )
 
         if not result.success:

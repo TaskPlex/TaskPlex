@@ -4,7 +4,7 @@ Image processing service using Pillow
 
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 from app.config import IMAGE_COMPRESSION_QUALITY
 from app.models.image import ColorExtractionResponse, ColorInfo, ImageProcessingResponse
@@ -254,6 +254,68 @@ def extract_colors(
             message=f"Error extracting colors: {str(e)}",
             filename=input_path.name,
             colors=[],
+        )
+
+
+def adjust_image(
+    input_path: Path,
+    output_path: Path,
+    brightness: float = 1.0,
+    contrast: float = 1.0,
+    saturation: float = 1.0,
+) -> ImageProcessingResponse:
+    """
+    Adjust brightness, contrast, and saturation of an image.
+
+    Args:
+        input_path: Path to input image.
+        output_path: Path to save adjusted image.
+        brightness: Brightness factor (1.0 = original).
+        contrast: Contrast factor (1.0 = original).
+        saturation: Color factor (1.0 = original).
+    """
+    try:
+        original_size = get_file_size(input_path)
+
+        with Image.open(input_path) as img:
+            # Preserve dimensions
+            dimensions = {"width": img.width, "height": img.height}
+
+            work = img.convert("RGB")
+            if brightness != 1.0:
+                work = ImageEnhance.Brightness(work).enhance(brightness)
+            if contrast != 1.0:
+                work = ImageEnhance.Contrast(work).enhance(contrast)
+            if saturation != 1.0:
+                work = ImageEnhance.Color(work).enhance(saturation)
+
+            output_format = img.format or "PNG"
+            if output_format in ["JPEG", "JPG"] and work.mode == "RGBA":
+                rgb_img = Image.new("RGB", work.size, (255, 255, 255))
+                rgb_img.paste(work, mask=work.split()[3] if len(work.split()) == 4 else None)
+                work = rgb_img
+
+            if output_format in ["JPEG", "JPG"]:
+                work.save(output_path, format=output_format, quality=95, optimize=True)
+            else:
+                work.save(output_path, format=output_format, optimize=True)
+
+        processed_size = get_file_size(output_path)
+
+        return ImageProcessingResponse(
+            success=True,
+            message="Image adjusted successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=processed_size,
+            dimensions=dimensions,
+        )
+    except Exception as e:
+        return ImageProcessingResponse(
+            success=False,
+            message=f"Error adjusting image: {str(e)}",
+            filename=output_path.name if output_path else None,
         )
 
 

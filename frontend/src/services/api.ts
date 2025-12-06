@@ -199,6 +199,21 @@ export const ApiService = {
     return response.data;
   },
 
+  adjustImage: async (
+    file: File,
+    brightness: number = 1.0,
+    contrast: number = 1.0,
+    saturation: number = 1.0
+  ) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('brightness', brightness.toString());
+    formData.append('contrast', contrast.toString());
+    formData.append('saturation', saturation.toString());
+    const response = await api.post<ImageProcessingResponse>('/image/adjust', formData);
+    return response.data;
+  },
+
   resizeImage: async (
     file: File,
     width?: number,

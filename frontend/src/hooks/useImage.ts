@@ -34,6 +34,18 @@ export const useExtractColors = () => {
   });
 };
 
+export const useAdjustImage = () => {
+  return useMutation<
+    ImageProcessingResponse,
+    Error,
+    { file: File; brightness: number; contrast: number; saturation: number }
+  >({
+    mutationFn: async ({ file, brightness, contrast, saturation }) => {
+      return ApiService.adjustImage(file, brightness, contrast, saturation);
+    },
+  });
+};
+
 export const useResizeImage = () => {
   return useMutation<
     ImageProcessingResponse,
