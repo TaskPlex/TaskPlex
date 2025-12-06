@@ -55,6 +55,7 @@ const HTMLMinifierScreen = createLazyComponent(() => import('./pages/HTMLMinifie
 const CSSFormatterScreen = createLazyComponent(() => import('./pages/CSSFormatterScreen'), 'CSSFormatterScreen');
 const JSFormatterScreen = createLazyComponent(() => import('./pages/JSFormatterScreen'), 'JSFormatterScreen');
 const XMLMinifierScreen = createLazyComponent(() => import('./pages/XMLMinifierScreen'), 'XMLMinifierScreen');
+const TextFormatterScreen = createLazyComponent(() => import('./pages/TextFormatterScreen'), 'TextFormatterScreen');
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
 
@@ -105,6 +106,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'json-minifier': JSONMinifierScreen,
   'xml-formatter': XMLFormatterScreen,
   'xml-minifier': XMLMinifierScreen,
+  'text-format': TextFormatterScreen,
 };
 
 // Create a client

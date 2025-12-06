@@ -26,6 +26,7 @@ from app.api import (
     pdf,
     qrcode,
     regex,
+    text,
     units,
     video,
     xml_formatter,
@@ -170,6 +171,7 @@ app.include_router(json_formatter.router, prefix="/api/v1")
 app.include_router(json_minifier.router, prefix="/api/v1")
 app.include_router(xml_formatter.router, prefix="/api/v1")
 app.include_router(xml_minifier.router, prefix="/api/v1")
+app.include_router(text.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
 

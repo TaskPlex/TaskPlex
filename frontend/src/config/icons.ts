@@ -158,6 +158,7 @@ export const iconMap = {
   'text-summarizer': FileText,
   'keyword-extractor': HashIcon,
   'case-converter': CaseSensitive,
+  'text-format': Type,
   'accent-remover': Type,
   'slug-generator': Link,
   'language-detector': Type,

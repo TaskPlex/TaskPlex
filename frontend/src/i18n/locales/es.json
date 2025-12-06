@@ -175,6 +175,25 @@
     "preview": "La vista previa aparecerá aquí",
     "downloadResult": "Descargar resultado"
   },
+  "textFormatter": {
+    "title": "Formatear texto",
+    "subtitle": "Reemplaza los \\n literales por saltos de línea reales.",
+    "inputLabel": "Entrada (con \\n)",
+    "outputLabel": "Salida formateada",
+    "outputHint": "Los saltos de línea se aplican abajo",
+    "literalInfo": "Los \\n literales se convierten en líneas reales",
+    "placeholder": "Pega tu texto que contiene caracteres \\n literales...",
+    "outputPlaceholder": "El texto formateado aparecerá aquí...",
+    "formatButton": "Formatear texto",
+    "processing": "Formateando...",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "success": "Formateado",
+    "stats": {
+      "original": "Original: {{count}} caracteres",
+      "formatted": "Formateado: {{count}} caracteres"
+    }
+  },
   "resizeImage": {
     "title": "Redimensionar imagen",
     "imageFile": "Archivo de imagen",
@@ -989,6 +1008,10 @@
       "slugGenerator": {
         "title": "Generador de slug",
         "description": "Crear slugs compatibles con URL"
+      },
+      "textFormatter": {
+        "title": "Formatear texto",
+        "description": "Convertir \\n literales en saltos reales"
       },
       "textDiff": {
         "title": "Comparación de textos",

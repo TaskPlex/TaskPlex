@@ -19,6 +19,7 @@ import type {
   CSSFormatterResponse,
   JSFormatterResponse,
   XMLMinifierResponse,
+  TextFormatResponse,
 } from '../types/api';
 
 // Re-export types for backwards compatibility
@@ -43,6 +44,7 @@ export type {
   JSFormatterResponse,
   XMLMinifierResponse,
   ColorExtractionResponse,
+  TextFormatResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -372,6 +374,14 @@ export const ApiService = {
   minifyXML: async (xml: string) => {
     const response = await api.post<XMLMinifierResponse>('/xml-minifier/minify', {
       xml
+    });
+    return response.data;
+  },
+
+  // Text Formatter (literal newline conversion)
+  formatText: async (text: string) => {
+    const response = await api.post<TextFormatResponse>('/text/format', {
+      text,
     });
     return response.data;
   },
