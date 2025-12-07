@@ -175,6 +175,26 @@
     "preview": "L'aperçu apparaîtra ici",
     "downloadResult": "Télécharger le résultat"
   },
+  "filterImage": {
+    "title": "Filtres images",
+    "subtitle": "Appliquer rapidement des filtres à vos images.",
+    "imageFile": "Fichier image",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "selectFilter": "Choisir un filtre",
+    "applyFilter": "Appliquer le filtre",
+    "processing": "Traitement en cours...",
+    "original": "Original",
+    "result": "Filtré",
+    "preview": "L'aperçu apparaîtra ici",
+    "downloadResult": "Télécharger le résultat",
+    "filters": {
+      "grayscale": "Niveaux de gris",
+      "sepia": "Sépia",
+      "blur": "Flou",
+      "sharpen": "Netteté",
+      "invert": "Inverser"
+    }
+  },
   "textFormatter": {
     "title": "Formater du texte",
     "subtitle": "Remplacer les séquences littérales \\n par de vrais retours à la ligne.",

@@ -237,6 +237,14 @@ export const ApiService = {
     return response.data;
   },
 
+  filterImage: async (file: File, filter: string) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filter_name', filter);
+    const response = await api.post<ImageProcessingResponse>('/image/filters', formData);
+    return response.data;
+  },
+
   // Regex
   testRegex: async (pattern: string, text: string, flags: string) => {
     const response = await api.post<RegexResponse>('/regex/validate', {

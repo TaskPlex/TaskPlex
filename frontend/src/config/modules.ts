@@ -288,8 +288,9 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.image.filters.title',
     descriptionKey: 'modules.image.filters.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-blue-500',
+    status: 'implemented',
+    color: 'text-blue-600',
+    isNew: true,
   },
   {
     id: 'image-remove-bg',

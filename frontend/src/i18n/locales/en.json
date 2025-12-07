@@ -175,6 +175,26 @@
     "preview": "Preview will appear here",
     "downloadResult": "Download Result"
   },
+  "filterImage": {
+    "title": "Image Filters",
+    "subtitle": "Apply quick filters to your images.",
+    "imageFile": "Image File",
+    "dragDrop": "Drag and drop or click to select",
+    "selectFilter": "Choose a filter",
+    "applyFilter": "Apply filter",
+    "processing": "Processing...",
+    "original": "Original",
+    "result": "Filtered",
+    "preview": "Preview will appear here",
+    "downloadResult": "Download Result",
+    "filters": {
+      "grayscale": "Grayscale",
+      "sepia": "Sepia",
+      "blur": "Blur",
+      "sharpen": "Sharpen",
+      "invert": "Invert"
+    }
+  },
   "textFormatter": {
     "title": "Format Text",
     "subtitle": "Replace literal \\n sequences by real line breaks.",

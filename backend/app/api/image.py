@@ -10,6 +10,7 @@ from app.config import TEMP_DIR
 from app.models.image import ColorExtractionResponse, ImageProcessingResponse
 from app.services.image_service import (
     adjust_image,
+    apply_filter,
     compress_image,
     convert_image,
     extract_colors,
@@ -317,5 +318,44 @@ async def adjust_image_endpoint(
 
     finally:
         # Clean up input file
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/filters", response_model=ImageProcessingResponse)
+async def filter_image_endpoint(
+    file: UploadFile = File(..., description="Image file to filter"),
+    filter_name: str = Form(
+        ..., description="Filter to apply (grayscale, sepia, blur, sharpen, invert)"
+    ),
+):
+    """
+    Apply a visual filter to an image.
+    """
+    if not validate_image_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported image format")
+
+    supported_filters = {"grayscale", "sepia", "blur", "sharpen", "invert"}
+    if filter_name.lower() not in supported_filters:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported filter. Supported: {', '.join(sorted(supported_filters))}",
+        )
+
+    input_path = None
+    output_path = None
+
+    try:
+        input_path = await save_upload_file(file)
+        output_filename = generate_unique_filename(f"filtered_{file.filename}")
+        output_path = TEMP_DIR / output_filename
+
+        result = apply_filter(input_path, output_path, filter_name)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+    finally:
         if input_path:
             delete_file(input_path)

@@ -56,6 +56,7 @@ const CSSFormatterScreen = createLazyComponent(() => import('./pages/CSSFormatte
 const JSFormatterScreen = createLazyComponent(() => import('./pages/JSFormatterScreen'), 'JSFormatterScreen');
 const XMLMinifierScreen = createLazyComponent(() => import('./pages/XMLMinifierScreen'), 'XMLMinifierScreen');
 const TextFormatterScreen = createLazyComponent(() => import('./pages/TextFormatterScreen'), 'TextFormatterScreen');
+const FilterImageScreen = createLazyComponent(() => import('./pages/FilterImageScreen'), 'FilterImageScreen');
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
 
@@ -79,6 +80,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'image-convert': ImageScreen,
   'image-rotate': RotateImageScreen,
   'image-adjust': AdjustImageScreen,
+  'image-filters': FilterImageScreen,
   'image-extract-colors': ExtractColorsScreen,
   'image-resize': ResizeImageScreen,
   

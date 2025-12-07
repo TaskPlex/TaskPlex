@@ -46,6 +46,12 @@ export const useAdjustImage = () => {
   });
 };
 
+export const useFilterImage = () => {
+  return useMutation<ImageProcessingResponse, Error, { file: File; filter: string }>({
+    mutationFn: async ({ file, filter }) => ApiService.filterImage(file, filter),
+  });
+};
+
 export const useResizeImage = () => {
   return useMutation<
     ImageProcessingResponse,

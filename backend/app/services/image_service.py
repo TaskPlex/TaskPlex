@@ -4,7 +4,7 @@ Image processing service using Pillow
 
 from pathlib import Path
 
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
 from app.config import IMAGE_COMPRESSION_QUALITY
 from app.models.image import ColorExtractionResponse, ColorInfo, ImageProcessingResponse
@@ -315,6 +315,59 @@ def adjust_image(
         return ImageProcessingResponse(
             success=False,
             message=f"Error adjusting image: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
+
+
+def apply_filter(input_path: Path, output_path: Path, filter_name: str) -> ImageProcessingResponse:
+    """
+    Apply a visual filter to an image.
+
+    Supported filters: grayscale, sepia, blur, sharpen, invert
+    """
+    try:
+        original_size = get_file_size(input_path)
+
+        with Image.open(input_path) as img:
+            work = img.convert("RGB")
+            filter_key = filter_name.lower()
+
+            if filter_key == "grayscale":
+                work = ImageOps.grayscale(work).convert("RGB")
+            elif filter_key == "sepia":
+                sepia_img = ImageOps.colorize(ImageOps.grayscale(work), "#704214", "#C0A080")
+                work = sepia_img
+            elif filter_key == "blur":
+                work = work.filter(ImageFilter.BLUR)
+            elif filter_key == "sharpen":
+                work = work.filter(ImageFilter.SHARPEN)
+            elif filter_key == "invert":
+                work = ImageOps.invert(work)
+            else:
+                return ImageProcessingResponse(
+                    success=False,
+                    message=f"Unsupported filter: {filter_name}",
+                    filename=output_path.name if output_path else None,
+                )
+
+            output_format = img.format or "PNG"
+            work.save(output_path, format=output_format, optimize=True)
+
+        processed_size = get_file_size(output_path)
+
+        return ImageProcessingResponse(
+            success=True,
+            message="Filter applied successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=processed_size,
+            dimensions={"width": work.width, "height": work.height},
+        )
+    except Exception as e:
+        return ImageProcessingResponse(
+            success=False,
+            message=f"Error applying filter: {str(e)}",
             filename=output_path.name if output_path else None,
         )
 
