@@ -4,6 +4,7 @@ import type {
   PDFProcessingResponse,
   ImageProcessingResponse,
   ColorExtractionResponse,
+  ColorConversionResponse,
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
@@ -44,6 +45,7 @@ export type {
   JSFormatterResponse,
   XMLMinifierResponse,
   ColorExtractionResponse,
+  ColorConversionResponse,
   TextFormatResponse,
 } from '../types/api';
 
@@ -404,6 +406,14 @@ export const ApiService = {
   formatText: async (text: string) => {
     const response = await api.post<TextFormatResponse>('/text/format', {
       text,
+    });
+    return response.data;
+  },
+
+  // Color Converter
+  convertColor: async (color: string) => {
+    const response = await api.post<ColorConversionResponse>('/color/convert', {
+      color,
     });
     return response.data;
   },

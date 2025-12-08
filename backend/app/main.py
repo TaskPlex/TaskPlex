@@ -14,6 +14,7 @@ import uvicorn
 from app.api import (
     code_formatter,
     code_minifier,
+    color,
     css_formatter,
     css_minifier,
     html_formatter,
@@ -172,6 +173,7 @@ app.include_router(json_minifier.router, prefix="/api/v1")
 app.include_router(xml_formatter.router, prefix="/api/v1")
 app.include_router(xml_minifier.router, prefix="/api/v1")
 app.include_router(text.router, prefix="/api/v1")
+app.include_router(color.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
 

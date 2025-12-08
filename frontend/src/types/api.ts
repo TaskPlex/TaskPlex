@@ -49,9 +49,36 @@ export interface ColorInfo {
   ratio: number;
 }
 
+export interface ColorFormats {
+  hex: string;
+  rgb: string;
+  hsl: string;
+  cmyk: string;
+}
+
+export interface ColorComponents {
+  r: number;
+  g: number;
+  b: number;
+  h: number;
+  s: number;
+  l: number;
+  c: number;
+  m: number;
+  y: number;
+  k: number;
+}
+
 export interface ColorExtractionResponse extends ApiResponse {
   filename: string;
   colors: ColorInfo[];
+}
+
+export interface ColorConversionResponse extends ApiResponse {
+  input_format: string;
+  normalized_hex: string;
+  formats: ColorFormats;
+  components: ColorComponents;
 }
 
 // Regex

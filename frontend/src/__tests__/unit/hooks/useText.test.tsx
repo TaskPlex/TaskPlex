@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFormatText } from '../../../hooks/useText';
+import { useConvertColor } from '../../../hooks/useColor';
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -28,6 +29,23 @@ describe('useFormatText', () => {
     const { result } = renderHook(() => useFormatText(), { wrapper: createWrapper() });
 
     result.current.mutate({ text: 'Hello\\nWorld' });
+
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
+  });
+});
+
+describe('useConvertColor', () => {
+  it('exposes mutation methods', () => {
+    const { result } = renderHook(() => useConvertColor(), { wrapper: createWrapper() });
+    expect(result.current.mutate).toBeDefined();
+    expect(result.current.isPending).toBe(false);
+  });
+
+  it('converts a hex color', async () => {
+    const { result } = renderHook(() => useConvertColor(), { wrapper: createWrapper() });
+    result.current.mutate({ color: '#ff3366' });
 
     await waitFor(() => {
       expect(result.current.isPending).toBe(false);

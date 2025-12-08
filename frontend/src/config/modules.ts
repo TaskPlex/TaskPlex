@@ -629,8 +629,9 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.colorConverter.title',
     descriptionKey: 'modules.dev.colorConverter.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-yellow-600',
+    isNew: true,
   },
   {
     id: 'lorem-ipsum',

@@ -385,6 +385,44 @@ export const qrcodeHandlers = [
 ];
 
 // ============================================
+// COLOR HANDLERS
+// ============================================
+export const colorHandlers = [
+  http.post(`${API_PATTERN}/color/convert`, async ({ request }) => {
+    await delay(40);
+    const body = await request.json() as { color?: string };
+    const normalizedHex = body.color && typeof body.color === 'string' && body.color.startsWith('#')
+      ? body.color
+      : '#112233';
+
+    return HttpResponse.json({
+      success: true,
+      message: 'Color converted successfully',
+      input_format: 'hex',
+      normalized_hex: normalizedHex,
+      formats: {
+        hex: normalizedHex,
+        rgb: 'rgb(17, 34, 51)',
+        hsl: 'hsl(210, 50%, 13%)',
+        cmyk: 'cmyk(67%, 33%, 0%, 80%)',
+      },
+      components: {
+        r: 17,
+        g: 34,
+        b: 51,
+        h: 210,
+        s: 50,
+        l: 13,
+        c: 66.67,
+        m: 33.33,
+        y: 0,
+        k: 80,
+      },
+    });
+  }),
+];
+
+// ============================================
 // DOWNLOAD HANDLER
 // ============================================
 export const downloadHandlers = [
@@ -440,6 +478,7 @@ export const handlers = [
   ...regexHandlers,
   ...unitsHandlers,
   ...qrcodeHandlers,
+  ...colorHandlers,
   ...downloadHandlers,
 ];
 

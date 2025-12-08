@@ -236,6 +236,27 @@
       "formatted": "Formatted: {{count}} chars"
     }
   },
+  "colorConverter": {
+    "title": "Color Converter",
+    "subtitle": "Convert between HEX, RGB, HSL and CMYK. Pick a color or paste a value.",
+    "inputLabel": "Color value",
+    "inputPlaceholder": "e.g. #4f46e5, rgb(79, 70, 229), hsl(245, 64%, 59%)",
+    "inputHelp": "Accepts HEX (#fff or #ffffff), RGB, or HSL values",
+    "pickerLabel": "Pick a color",
+    "quickColors": "Quick colors",
+    "convertButton": "Convert color",
+    "processing": "Converting...",
+    "preview": "Preview",
+    "formats": "Formats",
+    "components": "Components",
+    "hex": "HEX",
+    "rgb": "RGB",
+    "hsl": "HSL",
+    "cmyk": "CMYK",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "inputFormat": "Detected: {{format}}"
+  },
   "resizeImage": {
     "title": "Resize Image",
     "imageFile": "Image File",

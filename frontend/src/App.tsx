@@ -59,6 +59,7 @@ const TextFormatterScreen = createLazyComponent(() => import('./pages/TextFormat
 const FilterImageScreen = createLazyComponent(() => import('./pages/FilterImageScreen'), 'FilterImageScreen');
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
+const ColorConverterScreen = createLazyComponent(() => import('./pages/ColorConverterScreen'), 'ColorConverterScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFCompress = createLazyComponent(() => import('./pages/pdf/PDFCompress'), 'PDFCompress');
@@ -100,6 +101,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'regex': RegexScreen,
   'units': UnitsScreen,
   'qr-generator': QRCodeScreen,
+  'color-converter': ColorConverterScreen,
   'code-formatter': CodeFormatterScreen,
   'code-minifier': CodeMinifierScreen,
   'html-formatter': HTMLFormatterScreen,
