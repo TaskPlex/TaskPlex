@@ -11,9 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 import uvicorn
 
-from app.api import (
-    base64 as base64_api,
-)
+from app.api import base64 as base64_api
 from app.api import (
     code_formatter,
     code_minifier,
@@ -28,6 +26,7 @@ from app.api import (
     js_minifier,
     json_formatter,
     json_minifier,
+    password,
     pdf,
     qrcode,
     regex,
@@ -179,6 +178,7 @@ app.include_router(xml_minifier.router, prefix="/api/v1")
 app.include_router(text.router, prefix="/api/v1")
 app.include_router(color.router, prefix="/api/v1")
 app.include_router(hash.router, prefix="/api/v1")
+app.include_router(password.router, prefix="/api/v1")
 app.include_router(base64_api.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 

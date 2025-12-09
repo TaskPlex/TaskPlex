@@ -60,6 +60,8 @@ const XMLMinifierScreen = createLazyComponent(() => import('./pages/XMLMinifierS
 const TextFormatterScreen = createLazyComponent(() => import('./pages/TextFormatterScreen'), 'TextFormatterScreen');
 const FilterImageScreen = createLazyComponent(() => import('./pages/FilterImageScreen'), 'FilterImageScreen');
 const HashGeneratorScreen = createLazyComponent(() => import('./pages/HashGeneratorScreen'), 'HashGeneratorScreen');
+const PasswordGeneratorScreen = createLazyComponent(() => import('./pages/PasswordGeneratorScreen'), 'PasswordGeneratorScreen');
+const PasswordCheckerScreen = createLazyComponent(() => import('./pages/PasswordCheckerScreen'), 'PasswordCheckerScreen');
 const Base64Screen = createLazyComponent(() => import('./pages/Base64Screen'), 'Base64Screen');
 const Base64EncodeScreen = createLazyComponent(() => import('./pages/Base64EncodeScreen'), 'Base64EncodeScreen');
 const Base64DecodeScreen = createLazyComponent(() => import('./pages/Base64DecodeScreen'), 'Base64DecodeScreen');
@@ -124,6 +126,8 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'xml-minifier': XMLMinifierScreen,
   'text-format': TextFormatterScreen,
   'hash-generator': HashGeneratorScreen,
+  'password-generator': PasswordGeneratorScreen,
+  'password-checker': PasswordCheckerScreen,
   'base64-encoder': Base64Screen,
   'base64-only-encode': Base64EncodeScreen,
   'base64-only-decode': Base64DecodeScreen,

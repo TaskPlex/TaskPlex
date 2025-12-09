@@ -123,6 +123,34 @@ export const videoHandlers = [
     );
   }),
 
+  // Password generator
+  http.post(`${API_PATTERN}/password/generate`, async () => {
+    await delay(20);
+    return HttpResponse.json(
+      successResponse({
+        password: 'S3cur3!Passw0rd',
+      })
+    );
+  }),
+
+  // Password checker
+  http.post(`${API_PATTERN}/password/check`, async () => {
+    await delay(20);
+    return HttpResponse.json(
+      successResponse({
+        score: 82,
+        strength: 'strong',
+        length: 14,
+        has_lowercase: true,
+        has_uppercase: true,
+        has_digits: true,
+        has_symbols: true,
+        suggestions: [],
+        entropy: 70.5,
+      })
+    );
+  }),
+
   // Convert video (async with SSE progress)
   http.post(`${API_PATTERN}/video/convert/async`, async () => {
     await delay(30);

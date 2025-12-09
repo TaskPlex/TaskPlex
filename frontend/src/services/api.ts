@@ -24,6 +24,10 @@ import type {
   XMLMinifierResponse,
   TextFormatResponse,
   HashResponse,
+  PasswordGenerateRequest,
+  PasswordGenerateResponse,
+  PasswordCheckRequest,
+  PasswordCheckResponse,
   Base64Response,
 } from '../types/api';
 
@@ -54,6 +58,10 @@ export type {
   VideoExtractAudioOptions,
   TextFormatResponse,
   HashResponse,
+  PasswordGenerateRequest,
+  PasswordGenerateResponse,
+  PasswordCheckRequest,
+  PasswordCheckResponse,
   Base64Response,
 } from '../types/api';
 
@@ -464,6 +472,17 @@ export const ApiService = {
       uppercase,
       ...(salt ? { salt } : {}),
     });
+    return response.data;
+  },
+
+  // Password tools
+  generatePassword: async (payload: PasswordGenerateRequest) => {
+    const response = await api.post<PasswordGenerateResponse>('/password/generate', payload);
+    return response.data;
+  },
+
+  checkPassword: async (payload: PasswordCheckRequest) => {
+    const response = await api.post<PasswordCheckResponse>('/password/check', payload);
     return response.data;
   },
 

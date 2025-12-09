@@ -231,6 +231,35 @@ export interface HashResponse extends ApiResponse {
   salt_used?: string | null;
 }
 
+export interface PasswordGenerateRequest {
+  length?: number;
+  include_lowercase?: boolean;
+  include_uppercase?: boolean;
+  include_digits?: boolean;
+  include_symbols?: boolean;
+  exclude_ambiguous?: boolean;
+}
+
+export interface PasswordGenerateResponse extends ApiResponse {
+  password: string;
+}
+
+export interface PasswordCheckRequest {
+  password: string;
+}
+
+export interface PasswordCheckResponse extends ApiResponse {
+  score: number;
+  strength: string;
+  length: number;
+  has_lowercase: boolean;
+  has_uppercase: boolean;
+  has_digits: boolean;
+  has_symbols: boolean;
+  suggestions: string[];
+  entropy: number;
+}
+
 export interface Base64Response extends ApiResponse {
   result: string;
 }

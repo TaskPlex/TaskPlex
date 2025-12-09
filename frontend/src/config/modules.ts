@@ -623,8 +623,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.passwordGenerator.title',
     descriptionKey: 'modules.dev.passwordGenerator.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-yellow-600',
   },
   {
     id: 'qr-generator',
@@ -912,7 +912,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.security.passwordChecker.title',
     descriptionKey: 'modules.security.passwordChecker.description',
     category: 'security',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-indigo-600',
   },
 
