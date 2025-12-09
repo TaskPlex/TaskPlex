@@ -21,6 +21,7 @@ import type {
   JSFormatterResponse,
   XMLMinifierResponse,
   TextFormatResponse,
+  HashResponse,
 } from '../types/api';
 
 // Re-export types for backwards compatibility
@@ -46,8 +47,6 @@ export type {
   XMLMinifierResponse,
   ColorExtractionResponse,
   ColorConversionResponse,
-  TextFormatResponse,
-  HashResponse,
   TextFormatResponse,
   HashResponse,
 } from '../types/api';
