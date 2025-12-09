@@ -6,6 +6,7 @@ import type {
   ColorExtractionResponse,
   ColorConversionResponse,
   VideoToGifOptions,
+  VideoExtractAudioOptions,
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
@@ -50,6 +51,7 @@ export type {
   ColorExtractionResponse,
   ColorConversionResponse,
   VideoToGifOptions,
+  VideoExtractAudioOptions,
   TextFormatResponse,
   HashResponse,
   Base64Response,
@@ -139,6 +141,15 @@ export const ApiService = {
     }
 
     const response = await api.post<VideoProcessingResponse>('/video/to-gif', formData);
+    return response.data;
+  },
+
+  extractAudio: async (file: File, options: VideoExtractAudioOptions = {}) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    if (options.output_format) formData.append('output_format', options.output_format);
+    if (options.bitrate) formData.append('bitrate', options.bitrate);
+    const response = await api.post<VideoProcessingResponse>('/video/extract-audio', formData);
     return response.data;
   },
 

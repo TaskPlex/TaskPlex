@@ -11,6 +11,7 @@ import pytest
 from app.services.video_service import (
     compress_video,
     convert_video,
+    extract_audio,
     get_available_h264_encoder,
     video_to_gif,
 )
@@ -334,6 +335,83 @@ class TestVideoToGif:
 
         assert result.success is False
         assert "error converting video to gif" in result.message.lower()
+
+
+class TestExtractAudio:
+    """Tests for extract_audio function"""
+
+    @patch("app.services.video_service.ffmpeg.run")
+    @patch("app.services.video_service.ffmpeg.output")
+    @patch("app.services.video_service.ffmpeg.input")
+    @patch("app.services.video_service.get_file_size")
+    def test_successful_extract_audio(self, mock_size, mock_input, mock_output, mock_run):
+        """Extract audio to mp3 successfully"""
+        mock_size.side_effect = [1_000_000, 200_000]
+        mock_input.return_value = MagicMock()
+        mock_output.return_value = MagicMock()
+
+        result = extract_audio(
+            input_path=Path("/tmp/input.mp4"),
+            output_path=Path("/tmp/output.mp3"),
+            output_format="mp3",
+            bitrate="192k",
+        )
+
+        assert result.success is True
+        assert result.filename == "output.mp3"
+        assert result.download_url == "/api/v1/download/output.mp3"
+
+    def test_unsupported_format(self):
+        """Reject unsupported audio format"""
+        result = extract_audio(
+            input_path=Path("/tmp/input.mp4"),
+            output_path=Path("/tmp/output.xyz"),
+            output_format="xyz",
+        )
+
+        assert result.success is False
+        assert "unsupported" in result.message.lower()
+
+    @patch("app.services.video_service.ffmpeg.run")
+    @patch("app.services.video_service.ffmpeg.output")
+    @patch("app.services.video_service.ffmpeg.input")
+    @patch("app.services.video_service.get_file_size")
+    def test_ffmpeg_error_extract_audio(self, mock_size, mock_input, mock_output, mock_run):
+        """Handle ffmpeg error"""
+        import ffmpeg
+
+        mock_size.side_effect = [1_000_000, 200_000]
+        mock_input.return_value = MagicMock()
+        mock_output.return_value = MagicMock()
+        mock_run.side_effect = ffmpeg.Error("ffmpeg", b"", b"audio error")
+
+        result = extract_audio(
+            input_path=Path("/tmp/input.mp4"),
+            output_path=Path("/tmp/output.mp3"),
+            output_format="mp3",
+        )
+
+        assert result.success is False
+        assert "ffmpeg" in result.message.lower()
+
+    @patch("app.services.video_service.ffmpeg.run", side_effect=Exception("boom"))
+    @patch("app.services.video_service.ffmpeg.output")
+    @patch("app.services.video_service.ffmpeg.input")
+    @patch("app.services.video_service.get_file_size")
+    def test_general_exception_extract_audio(self, mock_size, mock_input, mock_output, mock_run):
+        """Handle general error"""
+        mock_size.side_effect = [1_000_000, 200_000]
+        mock_input.return_value = MagicMock()
+        mock_output.return_value = MagicMock()
+
+        result = extract_audio(
+            input_path=Path("/tmp/input.mp4"),
+            output_path=Path("/tmp/output.mp3"),
+            output_format="mp3",
+        )
+
+        assert result.success is False
+        assert "error extracting audio" in result.message.lower()
 
     @patch("app.services.video_service.ffmpeg.run")
     @patch("app.services.video_service.ffmpeg.output")

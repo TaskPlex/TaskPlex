@@ -6,7 +6,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach } from 'vitest';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useCompressVideo, useConvertVideo, useVideoToGif } from '../../../hooks/useVideo';
+import { useCompressVideo, useConvertVideo, useVideoToGif, useExtractAudio } from '../../../hooks/useVideo';
 
 // Create a fresh QueryClient for each test
 const createWrapper = () => {
@@ -123,6 +123,31 @@ describe('useVideoToGif', () => {
     const file = createMockFile('test.mp4', 'video/mp4');
 
     result.current.mutate({ file, options: { fps: 12, width: 320 } });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess || result.current.isError).toBe(true);
+    }, { timeout: 3000 });
+  });
+});
+
+describe('useExtractAudio', () => {
+  it('returns mutation object with correct structure', () => {
+    const { result } = renderHook(() => useExtractAudio(), {
+      wrapper: createWrapper(),
+    });
+
+    expect(result.current.mutate).toBeDefined();
+    expect(result.current.isPending).toBe(false);
+  });
+
+  it('can trigger extract audio mutation', async () => {
+    const { result } = renderHook(() => useExtractAudio(), {
+      wrapper: createWrapper(),
+    });
+
+    const file = createMockFile('test.mp4', 'video/mp4');
+
+    result.current.mutate({ file, options: { output_format: 'mp3', bitrate: '192k' } });
 
     await waitFor(() => {
       expect(result.current.isSuccess || result.current.isError).toBe(true);

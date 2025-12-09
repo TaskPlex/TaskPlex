@@ -288,6 +288,67 @@ def rotate_video(input_path: Path, output_path: Path, angle: int) -> VideoProces
         )
 
 
+def extract_audio(
+    input_path: Path, output_path: Path, output_format: str = "mp3", bitrate: str = "192k"
+) -> VideoProcessingResponse:
+    """
+    Extract audio from a video file and export to the desired audio format.
+    """
+    try:
+        original_size = get_file_size(input_path)
+
+        # Map codecs per format
+        codec_map = {
+            "mp3": "libmp3lame",
+            "wav": "pcm_s16le",
+            "flac": "flac",
+            "ogg": "libvorbis",
+        }
+
+        codec = codec_map.get(output_format.lower())
+        if codec is None:
+            return VideoProcessingResponse(
+                success=False,
+                message="Unsupported output audio format",
+                filename=output_path.name if output_path else None,
+            )
+
+        stream = ffmpeg.input(str(input_path))
+        output_kwargs = {"vn": None, "acodec": codec}
+        # Bitrate only if relevant
+        if output_format.lower() in ["mp3", "ogg"]:
+            output_kwargs["b:a"] = bitrate
+
+        stream = ffmpeg.output(stream, str(output_path), **output_kwargs)
+        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
+
+        processed_size = get_file_size(output_path)
+
+        return VideoProcessingResponse(
+            success=True,
+            message="Audio extracted successfully",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=processed_size,
+        )
+
+    except ffmpeg.Error as e:
+        error_message = e.stderr.decode() if e.stderr else str(e)
+        return VideoProcessingResponse(
+            success=False,
+            message=f"FFmpeg error: {error_message}",
+            filename=output_path.name if output_path else None,
+        )
+
+    except Exception as e:
+        return VideoProcessingResponse(
+            success=False,
+            message=f"Error extracting audio: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
+
+
 def video_to_gif(
     input_path: Path,
     output_path: Path,

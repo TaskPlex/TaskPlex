@@ -110,6 +110,19 @@ export const videoHandlers = [
     );
   }),
 
+  // Extract audio from video
+  http.post(`${API_PATTERN}/video/extract-audio`, async () => {
+    await delay(35);
+    return HttpResponse.json(
+      successResponse({
+        download_url: '/api/v1/download/audio.mp3',
+        filename: 'audio.mp3',
+        original_size: 10485760,
+        processed_size: 1048576,
+      })
+    );
+  }),
+
   // Convert video (async with SSE progress)
   http.post(`${API_PATTERN}/video/convert/async`, async () => {
     await delay(30);
