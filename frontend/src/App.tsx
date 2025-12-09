@@ -57,6 +57,7 @@ const JSFormatterScreen = createLazyComponent(() => import('./pages/JSFormatterS
 const XMLMinifierScreen = createLazyComponent(() => import('./pages/XMLMinifierScreen'), 'XMLMinifierScreen');
 const TextFormatterScreen = createLazyComponent(() => import('./pages/TextFormatterScreen'), 'TextFormatterScreen');
 const FilterImageScreen = createLazyComponent(() => import('./pages/FilterImageScreen'), 'FilterImageScreen');
+const HashGeneratorScreen = createLazyComponent(() => import('./pages/HashGeneratorScreen'), 'HashGeneratorScreen');
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
 const ColorConverterScreen = createLazyComponent(() => import('./pages/ColorConverterScreen'), 'ColorConverterScreen');
@@ -115,6 +116,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'xml-formatter': XMLFormatterScreen,
   'xml-minifier': XMLMinifierScreen,
   'text-format': TextFormatterScreen,
+  'hash-generator': HashGeneratorScreen,
 };
 
 // Create a client

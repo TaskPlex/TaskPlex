@@ -470,6 +470,25 @@ export const errorHandlers = {
 // ============================================
 // ALL HANDLERS
 // ============================================
+// Hash handler
+export const hashHandlers = [
+  http.post(`${API_PATTERN}/hash/generate`, async ({ request }) => {
+    const body = (await request.json()) as { text?: string; algorithm?: string; uppercase?: boolean };
+    const algo = (body.algorithm || 'sha256').toLowerCase();
+    const uppercase = body.uppercase ?? false;
+    const fakeHex = uppercase ? 'FAKEHASH' : 'fakehash';
+
+    return HttpResponse.json(
+      successResponse({
+        message: 'Hash generated successfully',
+        algorithm: algo,
+        hex_digest: fakeHex,
+        base64_digest: 'ZmFrZWhhc2g=',
+      })
+    );
+  }),
+];
+
 export const handlers = [
   ...videoHandlers,
   ...taskHandlers,
@@ -479,6 +498,7 @@ export const handlers = [
   ...unitsHandlers,
   ...qrcodeHandlers,
   ...colorHandlers,
+  ...hashHandlers,
   ...downloadHandlers,
 ];
 
