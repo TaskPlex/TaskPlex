@@ -3,14 +3,21 @@ import { Music, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useExtractAudio } from '../hooks/useVideo';
 import { FileDropzone, ProcessButton, ErrorAlert, ResultCard, FormatSelector } from '../components/ui';
+import type { VideoExtractAudioOptions } from '../types/api';
 
-const AUDIO_FORMATS = ['mp3', 'wav', 'flac', 'ogg'];
+const AUDIO_FORMATS: Array<NonNullable<VideoExtractAudioOptions['output_format']>> = [
+  'mp3',
+  'wav',
+  'flac',
+  'ogg',
+];
 const AUDIO_BITRATES = ['128k', '160k', '192k', '256k', '320k'];
 
 export const ExtractAudioScreen: React.FC = () => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File | null>(null);
-  const [format, setFormat] = useState<string>('mp3');
+  const [format, setFormat] =
+    useState<NonNullable<VideoExtractAudioOptions['output_format']>>('mp3');
   const [bitrate, setBitrate] = useState<string>('192k');
   const [localError, setLocalError] = useState<string | null>(null);
 
@@ -60,7 +67,9 @@ export const ExtractAudioScreen: React.FC = () => {
             <FormatSelector
               formats={AUDIO_FORMATS}
               value={format}
-              onChange={setFormat}
+              onChange={(val) =>
+                setFormat(val as NonNullable<VideoExtractAudioOptions['output_format']>)
+              }
               labelKey="videoExtractAudio.outputFormat"
               disabled={isPending}
             />
