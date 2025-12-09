@@ -60,8 +60,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.video.extractAudio.title',
     descriptionKey: 'modules.video.extractAudio.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-purple-500',
+    status: 'implemented',
+    color: 'text-purple-600',
   },
   {
     id: 'video-trim',

@@ -135,6 +135,21 @@
       "fileRequired": "Selecciona primero un archivo de video."
     }
   },
+  "videoExtractAudio": {
+    "title": "Extraer audio",
+    "description": "Extrae la pista de audio de tu video y expórtala a MP3, WAV, FLAC u OGG.",
+    "videoFile": "Archivo de video",
+    "dragDrop": "Arrastra y suelta un video o haz clic para subir",
+    "outputFormat": "Formato de audio",
+    "bitrate": "Bitrate",
+    "extract": "Extraer audio",
+    "processing": "Extrayendo audio...",
+    "result": "Resultado",
+    "previewPlaceholder": "Los detalles del resultado aparecerán aquí",
+    "validation": {
+      "fileRequired": "Selecciona primero un archivo de video."
+    }
+  },
   "image": {
     "title": "Procesamiento de imagen",
     "operation": "Operación",

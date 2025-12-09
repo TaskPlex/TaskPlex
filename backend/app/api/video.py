@@ -9,7 +9,13 @@ from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Uploa
 
 from app.config import TEMP_DIR
 from app.models.video import VideoProcessingResponse
-from app.services.video_service import compress_video, convert_video, rotate_video, video_to_gif
+from app.services.video_service import (
+    compress_video,
+    convert_video,
+    extract_audio,
+    rotate_video,
+    video_to_gif,
+)
 from app.services.video_service_async import (
     compress_video_with_progress,
     convert_video_with_progress,
@@ -208,6 +214,51 @@ async def video_to_gif_endpoint(
             width=width,
             fps=fps,
             loop=loop,
+        )
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/extract-audio", response_model=VideoProcessingResponse)
+async def extract_audio_endpoint(
+    file: UploadFile = File(..., description="Video file to extract audio from"),
+    output_format: str = Form("mp3", description="Output audio format (mp3, wav, flac, ogg)"),
+    bitrate: str = Form("192k", description="Audio bitrate, e.g., 128k, 192k"),
+):
+    """
+    Extract the audio track from a video and export it to an audio file.
+    """
+    if not validate_video_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported video format")
+
+    allowed_formats = {"mp3", "wav", "flac", "ogg"}
+    if output_format.lower() not in allowed_formats:
+        raise HTTPException(status_code=400, detail="Unsupported output audio format")
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Build output filename
+        base_name = Path(file.filename).stem
+        output_filename = generate_unique_filename(f"{base_name}_audio.{output_format}")
+        output_path = TEMP_DIR / output_filename
+
+        result = extract_audio(
+            input_path=input_path,
+            output_path=output_path,
+            output_format=output_format,
+            bitrate=bitrate,
         )
 
         if not result.success:

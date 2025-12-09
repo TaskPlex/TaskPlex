@@ -26,6 +26,11 @@ export interface VideoToGifOptions {
   loop?: boolean;
 }
 
+export interface VideoExtractAudioOptions {
+  output_format?: 'mp3' | 'wav' | 'flac' | 'ogg';
+  bitrate?: string;
+}
+
 // PDF Processing
 export interface PDFProcessingResponse extends ApiResponse {
   filename?: string;

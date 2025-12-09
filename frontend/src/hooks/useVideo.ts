@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { ApiService } from '../services/api';
-import type { VideoProcessingResponse, VideoToGifOptions } from '../services/api';
+import type { VideoProcessingResponse, VideoToGifOptions, VideoExtractAudioOptions } from '../services/api';
 
 export const useCompressVideo = () => {
   return useMutation<VideoProcessingResponse, Error, { file: File; quality: string }>({
@@ -30,6 +30,18 @@ export const useVideoToGif = () => {
   return useMutation<VideoProcessingResponse, Error, { file: File; options?: VideoToGifOptions }>({
     mutationFn: async ({ file, options }) => {
       return ApiService.videoToGif(file, options);
+    },
+  });
+};
+
+export const useExtractAudio = () => {
+  return useMutation<
+    VideoProcessingResponse,
+    Error,
+    { file: File; options?: VideoExtractAudioOptions }
+  >({
+    mutationFn: async ({ file, options }) => {
+      return ApiService.extractAudio(file, options);
     },
   });
 };

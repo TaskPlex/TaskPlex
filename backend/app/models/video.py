@@ -46,3 +46,12 @@ class VideoToGifRequest(BaseModel):
     width: Optional[int] = Field(default=None, ge=32, le=3840, description="Target width in pixels")
     fps: int = Field(default=12, ge=1, le=60, description="Frames per second for GIF")
     loop: bool = Field(default=True, description="Whether the GIF should loop")
+
+
+class AudioExtractionRequest(BaseModel):
+    """Request model for extracting audio from a video"""
+
+    output_format: Literal["mp3", "wav", "flac", "ogg"] = Field(
+        default="mp3", description="Target audio format"
+    )
+    bitrate: str = Field(default="192k", description="Audio bitrate (e.g., 128k, 192k, 256k)")

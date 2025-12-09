@@ -135,6 +135,21 @@
       "fileRequired": "Please select a video file first."
     }
   },
+  "videoExtractAudio": {
+    "title": "Extract Audio",
+    "description": "Extract the audio track from your video and export to MP3, WAV, FLAC, or OGG.",
+    "videoFile": "Video File",
+    "dragDrop": "Drag and drop a video or click to upload",
+    "outputFormat": "Audio format",
+    "bitrate": "Bitrate",
+    "extract": "Extract audio",
+    "processing": "Extracting audio...",
+    "result": "Result",
+    "previewPlaceholder": "Result details will appear here",
+    "validation": {
+      "fileRequired": "Please select a video file first."
+    }
+  },
   "image": {
     "title": "Image Processing",
     "operation": "Operation",
