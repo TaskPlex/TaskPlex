@@ -236,6 +236,30 @@
       "formatted": "Formatted: {{count}} chars"
     }
   },
+  "hashGenerator": {
+    "title": "Hash Generator",
+    "subtitle": "Generate hashes (MD5, SHA1, SHA256, SHA512) and copy them.",
+    "inputLabel": "Text to hash",
+    "placeholder": "Paste text to hash...",
+    "algorithm": "Algorithm",
+    "uppercase": "Uppercase hex",
+    "useSalt": "Add salt",
+    "saltLabel": "Salt value",
+    "saltPlaceholder": "Optional salt (prepended to text before hashing)",
+    "generate": "Generate hash",
+    "generating": "Generating...",
+    "hex": "Hex digest",
+    "base64": "Base64 digest",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "waiting": "Waiting for input...",
+    "algos": {
+      "md5": "MD5",
+      "sha1": "SHA1",
+      "sha256": "SHA256",
+      "sha512": "SHA512"
+    }
+  },
   "colorConverter": {
     "title": "Color Converter",
     "subtitle": "Convert between HEX, RGB, HSL and CMYK. Pick a color or paste a value.",

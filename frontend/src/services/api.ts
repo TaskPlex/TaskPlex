@@ -47,6 +47,9 @@ export type {
   ColorExtractionResponse,
   ColorConversionResponse,
   TextFormatResponse,
+  HashResponse,
+  TextFormatResponse,
+  HashResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -410,6 +413,22 @@ export const ApiService = {
     return response.data;
   },
 
+  // Hash Generator
+  generateHash: async (
+    text: string,
+    algorithm: 'md5' | 'sha1' | 'sha256' | 'sha512' = 'sha256',
+    uppercase = false,
+    salt?: string
+  ) => {
+    const response = await api.post<HashResponse>('/hash/generate', {
+      text,
+      algorithm,
+      uppercase,
+      ...(salt ? { salt } : {}),
+    });
+    return response.data;
+  },
+ 
   // Color Converter
   convertColor: async (color: string) => {
     const response = await api.post<ColorConversionResponse>('/color/convert', {

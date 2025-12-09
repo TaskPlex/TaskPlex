@@ -211,6 +211,13 @@ export interface TextFormatResponse extends ApiResponse {
   formatted_length?: number;
 }
 
+export interface HashResponse extends ApiResponse {
+  algorithm: 'md5' | 'sha1' | 'sha256' | 'sha512';
+  hex_digest: string;
+  base64_digest: string;
+  salt_used?: string | null;
+}
+
 // Generic file processing result (useful for UI components)
 export interface ProcessingResult {
   success: boolean;

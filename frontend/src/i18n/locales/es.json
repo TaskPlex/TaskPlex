@@ -257,6 +257,30 @@
     "copied": "¡Copiado!",
     "inputFormat": "Detectado: {{format}}"
   },
+  "hashGenerator": {
+    "title": "Generador de hash",
+    "subtitle": "Genera hashes (MD5, SHA1, SHA256, SHA512) y cópialos.",
+    "inputLabel": "Texto a hashear",
+    "placeholder": "Pega el texto a hashear...",
+    "algorithm": "Algoritmo",
+    "uppercase": "Hex en mayúsculas",
+    "useSalt": "Agregar salt",
+    "saltLabel": "Valor de salt",
+    "saltPlaceholder": "Salt opcional (prefijo al texto antes de hashear)",
+    "generate": "Generar hash",
+    "generating": "Generando...",
+    "hex": "Hex digest",
+    "base64": "Digest Base64",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "waiting": "Esperando entrada...",
+    "algos": {
+      "md5": "MD5",
+      "sha1": "SHA1",
+      "sha256": "SHA256",
+      "sha512": "SHA512"
+    }
+  },
   "resizeImage": {
     "title": "Redimensionar imagen",
     "imageFile": "Archivo de imagen",

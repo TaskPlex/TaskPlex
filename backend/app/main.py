@@ -17,6 +17,7 @@ from app.api import (
     color,
     css_formatter,
     css_minifier,
+    hash,
     html_formatter,
     html_minifier,
     image,
@@ -174,6 +175,7 @@ app.include_router(xml_formatter.router, prefix="/api/v1")
 app.include_router(xml_minifier.router, prefix="/api/v1")
 app.include_router(text.router, prefix="/api/v1")
 app.include_router(color.router, prefix="/api/v1")
+app.include_router(hash.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
 

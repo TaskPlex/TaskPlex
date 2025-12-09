@@ -4,6 +4,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useFormatText } from '../../../hooks/useText';
 import { useConvertColor } from '../../../hooks/useColor';
+import { useHash } from '../../../hooks/useHash';
 
 const createWrapper = () => {
   const queryClient = new QueryClient({
@@ -46,6 +47,23 @@ describe('useConvertColor', () => {
   it('converts a hex color', async () => {
     const { result } = renderHook(() => useConvertColor(), { wrapper: createWrapper() });
     result.current.mutate({ color: '#ff3366' });
+
+    await waitFor(() => {
+      expect(result.current.isPending).toBe(false);
+    });
+  });
+});
+
+describe('useHash', () => {
+  it('exposes mutation methods', () => {
+    const { result } = renderHook(() => useHash(), { wrapper: createWrapper() });
+    expect(result.current.mutate).toBeDefined();
+    expect(result.current.isPending).toBe(false);
+  });
+
+  it('generates a hash', async () => {
+    const { result } = renderHook(() => useHash(), { wrapper: createWrapper() });
+    result.current.mutate({ text: 'hello', algorithm: 'md5', uppercase: true });
 
     await waitFor(() => {
       expect(result.current.isPending).toBe(false);

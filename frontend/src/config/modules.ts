@@ -559,8 +559,9 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.hashGenerator.title',
     descriptionKey: 'modules.dev.hashGenerator.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-green-600',
+    isNew: true,
   },
   {
     id: 'base64-encoder',
