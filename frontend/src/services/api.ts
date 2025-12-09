@@ -22,6 +22,7 @@ import type {
   XMLMinifierResponse,
   TextFormatResponse,
   HashResponse,
+  Base64Response,
 } from '../types/api';
 
 // Re-export types for backwards compatibility
@@ -49,7 +50,6 @@ export type {
   ColorConversionResponse,
   TextFormatResponse,
   HashResponse,
-  Base64Response,
   Base64Response,
 } from '../types/api';
 
