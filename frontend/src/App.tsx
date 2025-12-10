@@ -45,6 +45,7 @@ const ResizeImageScreen = createLazyComponent(() => import('./pages/ResizeImageS
 const RegexScreen = createLazyComponent(() => import('./pages/RegexScreen'), 'RegexScreen');
 const UnitsScreen = createLazyComponent(() => import('./pages/UnitsScreen'), 'UnitsScreen');
 const QRCodeScreen = createLazyComponent(() => import('./pages/QRCodeScreen'), 'QRCodeScreen');
+const QRCodeReaderScreen = createLazyComponent(() => import('./pages/QRCodeReaderScreen'), 'QRCodeReaderScreen');
 const BarcodeGeneratorScreen = createLazyComponent(() => import('./pages/BarcodeGeneratorScreen'), 'BarcodeGeneratorScreen');
 const CodeFormatterScreen = createLazyComponent(() => import('./pages/CodeFormatterScreen'), 'CodeFormatterScreen');
 const CSSMinifierScreen = createLazyComponent(() => import('./pages/CSSMinifierScreen'), 'CSSMinifierScreen');
@@ -117,6 +118,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'regex': RegexScreen,
   'units': UnitsScreen,
   'qr-generator': QRCodeScreen,
+  'qr-reader': QRCodeReaderScreen,
   'barcode-generator': BarcodeGeneratorScreen,
   'color-converter': ColorConverterScreen,
   'code-formatter': CodeFormatterScreen,

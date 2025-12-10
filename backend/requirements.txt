@@ -22,6 +22,7 @@ pint>=0.23
 
 # QR Code generation
 qrcode[pil]>=8.0
+pyzbar>=0.1.9
 
 # Barcode generation
 python-barcode>=0.15.1

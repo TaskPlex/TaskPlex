@@ -643,8 +643,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.qrReader.title',
     descriptionKey: 'modules.dev.qrReader.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-yellow-600',
   },
   {
     id: 'color-converter',

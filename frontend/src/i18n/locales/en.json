@@ -686,6 +686,20 @@
     "noPreview": "Enter data and click Generate to see QR code",
     "characters": "characters"
   },
+  "qrcodeReader": {
+    "title": "QR Code Reader",
+    "description": "Read and decode QR codes from images",
+    "imageFile": "Image with QR Code",
+    "dragDrop": "Drag & drop an image or click to browse",
+    "supportedFormats": "Supported formats: JPG, PNG, GIF, BMP, WEBP",
+    "readQRCode": "Read QR Code",
+    "reading": "Reading...",
+    "preview": "Preview",
+    "result": "Decoded Data",
+    "decodedData": "Decoded Data",
+    "type": "Type",
+    "noPreview": "Upload an image containing a QR code to get started"
+  },
   "barcode": {
     "title": "Barcode Generator",
     "description": "Generate barcodes (EAN, UPC, Code128, Code39, ISBN, etc.)",

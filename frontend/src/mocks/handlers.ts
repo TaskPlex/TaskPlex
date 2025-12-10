@@ -482,6 +482,28 @@ export const qrcodeHandlers = [
       filename,
     });
   }),
+  http.post(`${API_PATTERN}/qrcode/read`, async ({ request }) => {
+    await delay(100);
+    
+    const formData = await request.formData();
+    const file = formData.get('file') as File;
+
+    if (!file) {
+      return errorResponse('File is required');
+    }
+
+    // Mock successful QR code reading
+    // In a real scenario, this would decode the actual QR code
+    const mockData = 'https://example.com';
+    const mockType = 'QRCODE';
+
+    return HttpResponse.json({
+      success: true,
+      message: 'QR code read successfully',
+      data: mockData,
+      qr_type: mockType,
+    });
+  }),
 ];
 
 // ============================================

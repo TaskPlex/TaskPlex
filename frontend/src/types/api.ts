@@ -146,6 +146,12 @@ export interface BarcodeResponse extends ApiResponse {
   filename?: string;
 }
 
+// QR Code Reader
+export interface QRCodeReadResponse extends ApiResponse {
+  data?: string;
+  qr_type?: string;
+}
+
 // Code Formatter
 export interface CodeFormatterResponse extends ApiResponse {
   formatted_code?: string;

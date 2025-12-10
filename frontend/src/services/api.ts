@@ -10,6 +10,7 @@ import type {
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
+  QRCodeReadResponse,
   CodeFormatterResponse,
   CSSMinifierResponse,
   JSMinifierResponse,
@@ -46,6 +47,7 @@ export type {
   RegexResponse,
   UnitConversionResponse,
   QRCodeResponse,
+  QRCodeReadResponse,
   CodeFormatterResponse,
   CSSMinifierResponse,
   JSMinifierResponse,
@@ -363,6 +365,18 @@ export const ApiService = {
       size,
       border,
       error_correction: errorCorrection
+    });
+    return response.data;
+  },
+
+  // QR Code Reader
+  readQRCode: async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post<QRCodeReadResponse>('/qrcode/read', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response.data;
   },

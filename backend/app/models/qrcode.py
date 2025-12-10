@@ -32,3 +32,18 @@ class QRCodeResponse(BaseModel):
     message: str
     qr_code_url: Optional[str] = None
     filename: Optional[str] = None
+
+
+class QRCodeReadRequest(BaseModel):
+    """Request model for QR code reading (file upload handled separately)"""
+
+    pass  # File is uploaded via Form, not JSON
+
+
+class QRCodeReadResponse(BaseModel):
+    """Response model for QR code reading"""
+
+    success: bool
+    message: str
+    data: Optional[str] = None  # Decoded QR code data
+    qr_type: Optional[str] = None  # Type of QR code (QRCODE, etc.)

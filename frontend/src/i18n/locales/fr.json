@@ -698,6 +698,20 @@
     "noPreview": "Entrez des données et cliquez sur Générer pour voir le QR code",
     "characters": "caractères"
   },
+  "qrcodeReader": {
+    "title": "Lecteur de QR Code",
+    "description": "Lire et décoder les QR codes à partir d'images",
+    "imageFile": "Image avec QR Code",
+    "dragDrop": "Glissez-déposez une image ou cliquez pour parcourir",
+    "supportedFormats": "Formats supportés : JPG, PNG, GIF, BMP, WEBP",
+    "readQRCode": "Lire QR Code",
+    "reading": "Lecture...",
+    "preview": "Aperçu",
+    "result": "Données décodées",
+    "decodedData": "Données décodées",
+    "type": "Type",
+    "noPreview": "Téléchargez une image contenant un QR code pour commencer"
+  },
   "barcode": {
     "title": "Générateur de code-barres",
     "description": "Générer des codes-barres (EAN, UPC, Code128, Code39, ISBN, etc.)",
