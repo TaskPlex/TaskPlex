@@ -206,6 +206,15 @@
     "suggestions": "Suggestions",
     "disclaimer": "Avertissement : cette vérification n'utilise pas de listes de mots de passe compromis/dictionnaires ; elle se base uniquement sur la variété de caractères et la longueur."
   },
+  "uuidGenerator": {
+    "title": "Générateur UUID",
+    "description": "Générer des identifiants UUID v4 en série.",
+    "count": "Combien d'UUID ?",
+    "generate": "Générer",
+    "generating": "Génération...",
+    "result": "Résultat",
+    "placeholder": "Générez des UUID pour les voir ici"
+  },
   "image": {
     "title": "Traitement d'image",
     "operation": "Opération",

@@ -260,6 +260,15 @@ export interface PasswordCheckResponse extends ApiResponse {
   entropy: number;
 }
 
+export interface UUIDGenerateRequest {
+  version?: 'v4';
+  count?: number;
+}
+
+export interface UUIDGenerateResponse extends ApiResponse {
+  uuids: string[];
+}
+
 export interface Base64Response extends ApiResponse {
   result: string;
 }

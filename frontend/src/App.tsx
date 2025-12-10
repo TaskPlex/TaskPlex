@@ -62,6 +62,7 @@ const FilterImageScreen = createLazyComponent(() => import('./pages/FilterImageS
 const HashGeneratorScreen = createLazyComponent(() => import('./pages/HashGeneratorScreen'), 'HashGeneratorScreen');
 const PasswordGeneratorScreen = createLazyComponent(() => import('./pages/PasswordGeneratorScreen'), 'PasswordGeneratorScreen');
 const PasswordCheckerScreen = createLazyComponent(() => import('./pages/PasswordCheckerScreen'), 'PasswordCheckerScreen');
+const UUIDGeneratorScreen = createLazyComponent(() => import('./pages/UUIDGeneratorScreen'), 'UUIDGeneratorScreen');
 const Base64Screen = createLazyComponent(() => import('./pages/Base64Screen'), 'Base64Screen');
 const Base64EncodeScreen = createLazyComponent(() => import('./pages/Base64EncodeScreen'), 'Base64EncodeScreen');
 const Base64DecodeScreen = createLazyComponent(() => import('./pages/Base64DecodeScreen'), 'Base64DecodeScreen');
@@ -128,6 +129,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'hash-generator': HashGeneratorScreen,
   'password-generator': PasswordGeneratorScreen,
   'password-checker': PasswordCheckerScreen,
+  'uuid-generator': UUIDGeneratorScreen,
   'base64-encoder': Base64Screen,
   'base64-only-encode': Base64EncodeScreen,
   'base64-only-decode': Base64DecodeScreen,

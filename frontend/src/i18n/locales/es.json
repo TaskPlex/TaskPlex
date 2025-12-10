@@ -206,6 +206,15 @@
     "suggestions": "Sugerencias",
     "disclaimer": "Aviso: esta verificación no usa listas de contraseñas comprometidas/diccionarios; solo evalúa variedad de caracteres y longitud."
   },
+  "uuidGenerator": {
+    "title": "Generador UUID",
+    "description": "Genera identificadores UUID v4 en lote.",
+    "count": "¿Cuántos UUID?",
+    "generate": "Generar",
+    "generating": "Generando...",
+    "result": "Resultado",
+    "placeholder": "Genera UUID para verlos aquí"
+  },
   "image": {
     "title": "Procesamiento de imagen",
     "operation": "Operación",

@@ -28,6 +28,8 @@ import type {
   PasswordGenerateResponse,
   PasswordCheckRequest,
   PasswordCheckResponse,
+  UUIDGenerateRequest,
+  UUIDGenerateResponse,
   Base64Response,
 } from '../types/api';
 
@@ -62,6 +64,8 @@ export type {
   PasswordGenerateResponse,
   PasswordCheckRequest,
   PasswordCheckResponse,
+  UUIDGenerateRequest,
+  UUIDGenerateResponse,
   Base64Response,
 } from '../types/api';
 
@@ -483,6 +487,12 @@ export const ApiService = {
 
   checkPassword: async (payload: PasswordCheckRequest) => {
     const response = await api.post<PasswordCheckResponse>('/password/check', payload);
+    return response.data;
+  },
+
+  // UUID Generator
+  generateUUIDs: async (payload: UUIDGenerateRequest = {}) => {
+    const response = await api.post<UUIDGenerateResponse>('/uuid/generate', payload);
     return response.data;
   },
 

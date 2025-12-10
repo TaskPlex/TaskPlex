@@ -194,6 +194,15 @@
     "suggestions": "Suggestions",
     "disclaimer": "Disclaimer: this check does not use breach/dictionary lists; it only scores character variety and length."
   },
+  "uuidGenerator": {
+    "title": "UUID Generator",
+    "description": "Generate UUID v4 identifiers in bulk.",
+    "count": "How many UUIDs?",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "result": "Result",
+    "placeholder": "Generate UUIDs to see them here"
+  },
   "image": {
     "title": "Image Processing",
     "operation": "Operation",

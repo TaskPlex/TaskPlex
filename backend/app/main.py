@@ -28,6 +28,7 @@ from app.api import (
     json_minifier,
     password,
     pdf,
+    uuid_generator,
     qrcode,
     regex,
     text,
@@ -179,6 +180,7 @@ app.include_router(text.router, prefix="/api/v1")
 app.include_router(color.router, prefix="/api/v1")
 app.include_router(hash.router, prefix="/api/v1")
 app.include_router(password.router, prefix="/api/v1")
+app.include_router(uuid_generator.router, prefix="/api/v1")
 app.include_router(base64_api.router, prefix="/api/v1")
 app.include_router(tasks_router, prefix="/api/v1")
 
