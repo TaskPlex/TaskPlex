@@ -21,6 +21,7 @@ from app.api import (
     hash,
     html_formatter,
     html_minifier,
+    html_validator,
     image,
     js_formatter,
     js_minifier,
@@ -145,6 +146,7 @@ async def health_check():
             "code-formatter": "/api/v1/code-formatter",
             "code-minifier": "/api/v1/code-minifier",
             "html-formatter": "/api/v1/html-formatter",
+            "html-validator": "/api/v1/html-validator",
             "html-minifier": "/api/v1/html-minifier",
             "css-formatter": "/api/v1/css-formatter",
             "css-minifier": "/api/v1/css-minifier",
@@ -168,6 +170,7 @@ app.include_router(qrcode.router, prefix="/api/v1")
 app.include_router(code_formatter.router, prefix="/api/v1")
 app.include_router(code_minifier.router, prefix="/api/v1")
 app.include_router(html_formatter.router, prefix="/api/v1")
+app.include_router(html_validator.router, prefix="/api/v1")
 app.include_router(html_minifier.router, prefix="/api/v1")
 app.include_router(css_formatter.router, prefix="/api/v1")
 app.include_router(css_minifier.router, prefix="/api/v1")

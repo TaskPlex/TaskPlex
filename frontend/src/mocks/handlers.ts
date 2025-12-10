@@ -591,6 +591,39 @@ export const base64Handlers = [
   }),
 ];
 
+// HTML Validator handlers
+export const htmlValidatorHandlers = [
+  http.post(`${API_PATTERN}/html-validator/validate`, async ({ request }) => {
+    await delay(15);
+    const body = (await request.json()) as { html?: string };
+    const html = body.html?.trim() || '';
+
+    if (!html) {
+      return errorResponse('HTML cannot be empty', 400);
+    }
+
+    // Very lightweight mock: consider HTML valid if it has matching angle brackets
+    const hasTags = html.includes('<') && html.includes('>');
+    if (!hasTags) {
+      return HttpResponse.json(
+        successResponse({
+          valid: false,
+          errors: [{ message: 'No HTML tags detected' }],
+          warnings: [],
+        })
+      );
+    }
+
+    return HttpResponse.json(
+      successResponse({
+        valid: true,
+        errors: [],
+        warnings: [],
+      })
+    );
+  }),
+];
+
 export const handlers = [
   ...videoHandlers,
   ...taskHandlers,
@@ -602,6 +635,7 @@ export const handlers = [
   ...colorHandlers,
   ...hashHandlers,
   ...base64Handlers,
+  ...htmlValidatorHandlers,
   ...downloadHandlers,
 ];
 

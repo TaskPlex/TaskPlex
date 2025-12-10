@@ -187,6 +187,19 @@ export interface HTMLFormatterResponse extends ApiResponse {
   formatted_length?: number;
 }
 
+export interface HTMLErrorDetail {
+  message: string;
+  line?: number;
+  column?: number;
+  context?: string;
+}
+
+export interface HTMLValidationResponse extends ApiResponse {
+  valid: boolean;
+  errors: HTMLErrorDetail[];
+  warnings?: string[];
+}
+
 // HTML Minifier
 export interface HTMLMinifierResponse extends ApiResponse {
   minified_html?: string;

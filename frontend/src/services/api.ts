@@ -18,6 +18,7 @@ import type {
   XMLFormatterResponse,
   CodeMinifierResponse,
   HTMLFormatterResponse,
+  HTMLValidationResponse,
   HTMLMinifierResponse,
   CSSFormatterResponse,
   JSFormatterResponse,
@@ -52,6 +53,7 @@ export type {
   XMLFormatterResponse,
   CodeMinifierResponse,
   HTMLFormatterResponse,
+  HTMLValidationResponse,
   HTMLMinifierResponse,
   CSSFormatterResponse,
   JSFormatterResponse,
@@ -418,6 +420,14 @@ export const ApiService = {
       html,
       indent_size: indentSize,
       indent_char: indentChar
+    });
+    return response.data;
+  },
+
+  // HTML Validator
+  validateHTML: async (html: string) => {
+    const response = await api.post<HTMLValidationResponse>('/html-validator/validate', {
+      html,
     });
     return response.data;
   },

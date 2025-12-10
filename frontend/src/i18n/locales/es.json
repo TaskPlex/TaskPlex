@@ -590,6 +590,22 @@
     "group": "Grupo",
     "enterPattern": "Ingresa un patrón regex y texto de prueba para ver resultados."
   },
+  "htmlValidator": {
+    "title": "Validador HTML",
+    "description": "Revisa tu HTML para encontrar etiquetas sin cerrar o mal emparejadas.",
+    "inputLabel": "HTML a validar",
+    "inputPlaceholder": "Pega o escribe tu HTML aquí...",
+    "inputHint": "Comprobamos el balance de etiquetas y la estructura básica.",
+    "validateButton": "Validar HTML",
+    "validating": "Validando...",
+    "results": "Resultados",
+    "resultsHint": "Los problemas detectados se listarán con línea y columna si están disponibles.",
+    "valid": "HTML válido",
+    "invalid": "Problemas encontrados",
+    "placeholder": "Los resultados de validación aparecerán aquí.",
+    "noErrors": "No se detectaron problemas estructurales.",
+    "location": "Línea {{line}}, columna {{column}}"
+  },
   "units": {
     "title": "Convertidor de unidades",
     "from": "De",

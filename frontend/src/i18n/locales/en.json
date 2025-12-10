@@ -578,6 +578,22 @@
     "group": "Group",
     "enterPattern": "Enter a regex pattern and test text to see results."
   },
+  "htmlValidator": {
+    "title": "HTML Validator",
+    "description": "Check your HTML for unclosed or mismatched tags.",
+    "inputLabel": "HTML to validate",
+    "inputPlaceholder": "Paste or type HTML here...",
+    "inputHint": "We check tag balance and basic structure.",
+    "validateButton": "Validate HTML",
+    "validating": "Validating...",
+    "results": "Results",
+    "resultsHint": "Detected issues will be listed with their line and column when available.",
+    "valid": "Valid HTML",
+    "invalid": "Issues found",
+    "placeholder": "Validation results will appear here.",
+    "noErrors": "No structural issues detected.",
+    "location": "Line {{line}}, column {{column}}"
+  },
   "units": {
     "title": "Unit Converter",
     "from": "From",

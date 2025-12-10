@@ -53,6 +53,7 @@ const JSONMinifierScreen = createLazyComponent(() => import('./pages/JSONMinifie
 const XMLFormatterScreen = createLazyComponent(() => import('./pages/XMLFormatterScreen'), 'XMLFormatterScreen');
 const CodeMinifierScreen = createLazyComponent(() => import('./pages/CodeMinifierScreen'), 'CodeMinifierScreen');
 const HTMLFormatterScreen = createLazyComponent(() => import('./pages/HTMLFormatterScreen'), 'HTMLFormatterScreen');
+const HTMLValidatorScreen = createLazyComponent(() => import('./pages/HTMLValidatorScreen'), 'HTMLValidatorScreen');
 const HTMLMinifierScreen = createLazyComponent(() => import('./pages/HTMLMinifierScreen'), 'HTMLMinifierScreen');
 const CSSFormatterScreen = createLazyComponent(() => import('./pages/CSSFormatterScreen'), 'CSSFormatterScreen');
 const JSFormatterScreen = createLazyComponent(() => import('./pages/JSFormatterScreen'), 'JSFormatterScreen');
@@ -117,6 +118,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'code-formatter': CodeFormatterScreen,
   'code-minifier': CodeMinifierScreen,
   'html-formatter': HTMLFormatterScreen,
+  'html-validator': HTMLValidatorScreen,
   'html-minifier': HTMLMinifierScreen,
   'css-formatter': CSSFormatterScreen,
   'css-minifier': CSSMinifierScreen,

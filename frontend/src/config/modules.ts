@@ -764,8 +764,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.htmlValidator.title',
     descriptionKey: 'modules.dev.htmlValidator.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-green-600',
   },
   {
     id: 'barcode-generator',
