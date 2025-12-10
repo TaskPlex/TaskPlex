@@ -45,18 +45,6 @@
       "finalizing": "Finalizing..."
     }
   },
-    "dev": {
-      "passwordGenerator": {
-        "title": "Password Generator",
-        "description": "Generate strong passwords with customizable options."
-      }
-    },
-    "security": {
-      "passwordChecker": {
-        "title": "Password Checker",
-        "description": "Check password strength and get suggestions to improve it."
-      }
-    },
   "sidebar": {
     "noFavorites": "No favorites yet",
     "addFavoritesHint": "Add favorites from the dashboard"
@@ -161,6 +149,50 @@
     "validation": {
       "fileRequired": "Please select a video file first."
     }
+  },
+  "passwordGenerator": {
+    "title": "Password Generator",
+    "description": "Generate strong passwords with customizable options.",
+    "length": "Length",
+    "includeLower": "Include lowercase",
+    "includeUpper": "Include uppercase",
+    "includeDigits": "Include digits",
+    "includeSymbols": "Include symbols",
+    "excludeAmbiguous": "Exclude ambiguous characters (0, O, 1, l, I)",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "result": "Result",
+    "noPassword": "No password generated yet",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "analyzing": "Analyzing strength...",
+    "strength": "Strength",
+    "strong": "Strong",
+    "medium": "Medium",
+    "weak": "Weak",
+    "badgeLower": "Lowercase",
+    "badgeUpper": "Uppercase",
+    "badgeDigit": "Digit",
+    "badgeSymbol": "Symbol",
+    "badgeLength": "12+ chars"
+  },
+  "passwordChecker": {
+    "title": "Password Checker",
+    "description": "Check password strength and get suggestions to improve it.",
+    "password": "Password",
+    "placeholder": "Enter a password to check",
+    "check": "Check strength",
+    "checking": "Checking...",
+    "strength": "Strength",
+    "length": "Length",
+    "score": "Score",
+    "entropy": "Entropy",
+    "badgeLower": "Lowercase",
+    "badgeUpper": "Uppercase",
+    "badgeDigit": "Digit",
+    "badgeSymbol": "Symbol",
+    "suggestions": "Suggestions",
+    "disclaimer": "Disclaimer: this check does not use breach/dictionary lists; it only scores character variety and length."
   },
   "image": {
     "title": "Image Processing",
@@ -869,7 +901,7 @@
       "toGif": {
         "title": "Video to GIF",
         "description": "Create animated GIF from video"
-  },
+      },
       "changeSpeed": {
         "title": "Change Speed",
         "description": "Speed up or slow down video playback"
