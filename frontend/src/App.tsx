@@ -74,6 +74,7 @@ const Base64DecodeScreen = createLazyComponent(() => import('./pages/Base64Decod
 const SettingsScreen = createLazyComponent(() => import('./pages/SettingsScreen'), 'SettingsScreen');
 const PlaceholderScreen = createLazyComponent(() => import('./pages/PlaceholderScreen'), 'PlaceholderScreen');
 const ColorConverterScreen = createLazyComponent(() => import('./pages/ColorConverterScreen'), 'ColorConverterScreen');
+const NumberConverterScreen = createLazyComponent(() => import('./pages/NumberConverterScreen'), 'NumberConverterScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFCompress = createLazyComponent(() => import('./pages/pdf/PDFCompress'), 'PDFCompress');
@@ -121,6 +122,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'qr-reader': QRCodeReaderScreen,
   'barcode-generator': BarcodeGeneratorScreen,
   'color-converter': ColorConverterScreen,
+  'number-converter': NumberConverterScreen,
   'code-formatter': CodeFormatterScreen,
   'code-minifier': CodeMinifierScreen,
   'html-formatter': HTMLFormatterScreen,

@@ -11,6 +11,7 @@ import type {
   UnitConversionResponse,
   QRCodeResponse,
   QRCodeReadResponse,
+  NumberConversionResponse,
   CodeFormatterResponse,
   CSSMinifierResponse,
   JSMinifierResponse,
@@ -78,6 +79,7 @@ export type {
   Base64Response,
   BarcodeRequest,
   BarcodeResponse,
+  NumberConversionResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -377,6 +379,20 @@ export const ApiService = {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+    });
+    return response.data;
+  },
+
+  // Number Converter
+  convertNumber: async (
+    number: string,
+    fromBase: 'binary' | 'decimal' | 'hexadecimal' | 'octal',
+    toBase: 'binary' | 'decimal' | 'hexadecimal' | 'octal'
+  ) => {
+    const response = await api.post<NumberConversionResponse>('/number-converter/convert', {
+      number,
+      from_base: fromBase,
+      to_base: toBase,
     });
     return response.data;
   },

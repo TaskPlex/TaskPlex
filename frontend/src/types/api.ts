@@ -152,6 +152,20 @@ export interface QRCodeReadResponse extends ApiResponse {
   qr_type?: string;
 }
 
+// Number Converter
+export interface NumberConversionRequest {
+  number: string;
+  from_base: 'binary' | 'decimal' | 'hexadecimal' | 'octal';
+  to_base: 'binary' | 'decimal' | 'hexadecimal' | 'octal';
+}
+
+export interface NumberConversionResponse extends ApiResponse {
+  original_number?: string;
+  original_base?: string;
+  converted_number?: string;
+  converted_base?: string;
+}
+
 // Code Formatter
 export interface CodeFormatterResponse extends ApiResponse {
   formatted_code?: string;

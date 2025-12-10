@@ -509,6 +509,60 @@ export const qrcodeHandlers = [
 // ============================================
 // BARCODE HANDLERS
 // ============================================
+// ============================================
+// NUMBER CONVERTER HANDLERS
+// ============================================
+export const numberConverterHandlers = [
+  http.post(`${API_PATTERN}/number-converter/convert`, async ({ request }) => {
+    await delay(50);
+    const body = (await request.json()) as {
+      number: string;
+      from_base: string;
+      to_base: string;
+    };
+    const { number, from_base, to_base } = body;
+
+    if (!number || number.trim().length === 0) {
+      return errorResponse('Number is required');
+    }
+
+    // Simple mock conversion logic
+    let converted = number;
+    if (from_base === 'binary' && to_base === 'decimal') {
+      converted = parseInt(number, 2).toString();
+    } else if (from_base === 'decimal' && to_base === 'hexadecimal') {
+      converted = parseInt(number, 10).toString(16).toUpperCase();
+    } else if (from_base === 'hexadecimal' && to_base === 'decimal') {
+      converted = parseInt(number, 16).toString();
+    } else if (from_base === 'octal' && to_base === 'decimal') {
+      converted = parseInt(number, 8).toString();
+    } else if (from_base === 'decimal' && to_base === 'binary') {
+      converted = parseInt(number, 10).toString(2);
+    } else if (from_base === 'decimal' && to_base === 'octal') {
+      converted = parseInt(number, 10).toString(8);
+    } else if (from_base === 'hexadecimal' && to_base === 'binary') {
+      converted = parseInt(number, 16).toString(2);
+    } else if (from_base === 'octal' && to_base === 'binary') {
+      converted = parseInt(number, 8).toString(2);
+    } else if (from_base === to_base) {
+      converted = number;
+    }
+
+    return HttpResponse.json(
+      successResponse({
+        message: 'Number converted successfully',
+        original_number: number,
+        original_base: from_base,
+        converted_number: converted,
+        converted_base: to_base,
+      })
+    );
+  }),
+];
+
+// ============================================
+// BARCODE HANDLERS
+// ============================================
 export const barcodeHandlers = [
   http.post(`${API_PATTERN}/barcode/generate`, async ({ request }) => {
     await delay(100);
@@ -709,6 +763,7 @@ export const handlers = [
   ...qrcodeHandlers,
   ...barcodeHandlers,
   ...colorHandlers,
+  ...numberConverterHandlers,
   ...hashHandlers,
   ...base64Handlers,
   ...htmlValidatorHandlers,
