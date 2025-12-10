@@ -16,4 +16,3 @@ def test_uuid_generate_success():
 def test_uuid_generate_invalid_version():
     resp = client.post("/api/v1/uuid/generate", json={"version": "v1"})
     assert resp.status_code == 400
-

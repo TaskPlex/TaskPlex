@@ -10,4 +10,3 @@ class UUIDGenerateResponse(BaseModel):
     success: bool
     message: str
     uuids: list[str]
-

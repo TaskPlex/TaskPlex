@@ -16,4 +16,3 @@ async def generate_uuid_endpoint(request: UUIDGenerateRequest) -> UUIDGenerateRe
     if not result.success:
         raise HTTPException(status_code=400, detail=result.message)
     return result
-

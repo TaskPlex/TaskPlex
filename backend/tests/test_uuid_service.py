@@ -17,4 +17,3 @@ def test_generate_uuids_invalid_count():
     res = generate_uuids(count=0)
     assert res.success is False
     assert "between 1 and 50" in res.message.lower()
-

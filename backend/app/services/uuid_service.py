@@ -1,5 +1,5 @@
-import uuid
 from typing import List
+import uuid
 
 from app.models.uuid_generator import UUIDGenerateResponse
 
@@ -26,4 +26,3 @@ def generate_uuids(version: str = "v4", count: int = 1) -> UUIDGenerateResponse:
         message="UUIDs generated successfully",
         uuids=generated,
     )
-
