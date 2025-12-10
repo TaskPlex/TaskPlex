@@ -13,4 +13,3 @@ class URLResponse(BaseModel):
     success: bool
     message: str
     result: str
-

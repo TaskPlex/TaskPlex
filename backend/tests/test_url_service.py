@@ -11,4 +11,3 @@ def test_decode_url_success():
     res = decode_url("https%3A%2F%2Fexample.com%2Ftest%20param")
     assert res.success is True
     assert "test param" in res.result
-

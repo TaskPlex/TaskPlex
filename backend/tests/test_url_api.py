@@ -19,4 +19,3 @@ def test_url_decode_endpoint_success():
     data = resp.json()
     assert data["success"] is True
     assert data["result"] == "hello world"
-

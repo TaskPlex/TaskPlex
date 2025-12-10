@@ -28,4 +28,3 @@ async def decode_url_endpoint(request: URLDecodeRequest) -> URLResponse:
     if not result.success:
         raise HTTPException(status_code=400, detail=result.message)
     return result
-

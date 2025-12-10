@@ -21,4 +21,3 @@ def decode_url(text: str) -> URLResponse:
         return URLResponse(success=True, message="URL decoded successfully", result=result)
     except Exception as exc:
         return URLResponse(success=False, message=f"Error decoding URL: {exc}", result="")
-
