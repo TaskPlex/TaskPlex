@@ -784,8 +784,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.numberConverter.title',
     descriptionKey: 'modules.dev.numberConverter.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-yellow-600',
   },
   {
     id: 'fake-data-generator',

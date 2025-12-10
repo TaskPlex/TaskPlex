@@ -712,6 +712,25 @@
     "type": "Type",
     "noPreview": "Téléchargez une image contenant un QR code pour commencer"
   },
+  "numberConverter": {
+    "title": "Convertisseur de Bases Numériques",
+    "description": "Convertir des nombres entre les bases binaire, décimale, hexadécimale et octale",
+    "number": "Nombre",
+    "fromBase": "Base Source",
+    "toBase": "Base Cible",
+    "bases": {
+      "binary": "Binaire (Base 2)",
+      "decimal": "Décimal (Base 10)",
+      "hexadecimal": "Hexadécimal (Base 16)",
+      "octal": "Octal (Base 8)"
+    },
+    "convert": "Convertir",
+    "converting": "Conversion...",
+    "result": "Résultat de la Conversion",
+    "original": "Nombre Original",
+    "converted": "Nombre Converti",
+    "noResult": "Entrez un nombre et cliquez sur Convertir pour voir le résultat"
+  },
   "barcode": {
     "title": "Générateur de code-barres",
     "description": "Générer des codes-barres (EAN, UPC, Code128, Code39, ISBN, etc.)",
