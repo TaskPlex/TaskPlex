@@ -12,6 +12,7 @@ import type {
   QRCodeResponse,
   QRCodeReadResponse,
   NumberConversionResponse,
+  JSONDataGeneratorResponse,
   CodeFormatterResponse,
   CSSMinifierResponse,
   JSMinifierResponse,
@@ -80,6 +81,7 @@ export type {
   BarcodeRequest,
   BarcodeResponse,
   NumberConversionResponse,
+  JSONDataGeneratorResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -393,6 +395,15 @@ export const ApiService = {
       number,
       from_base: fromBase,
       to_base: toBase,
+    });
+    return response.data;
+  },
+
+  // JSON Data Generator
+  generateJSONData: async (template: string, iterations: number) => {
+    const response = await api.post<JSONDataGeneratorResponse>('/json-data-generator/generate', {
+      template,
+      iterations,
     });
     return response.data;
   },

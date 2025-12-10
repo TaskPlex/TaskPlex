@@ -166,6 +166,17 @@ export interface NumberConversionResponse extends ApiResponse {
   converted_base?: string;
 }
 
+// JSON Data Generator
+export interface JSONDataGeneratorRequest {
+  template: string;
+  iterations: number;
+}
+
+export interface JSONDataGeneratorResponse extends ApiResponse {
+  generated_data?: Record<string, unknown>[];
+  count?: number;
+}
+
 // Code Formatter
 export interface CodeFormatterResponse extends ApiResponse {
   formatted_code?: string;

@@ -719,6 +719,21 @@
     "converted": "Converted Number",
     "noResult": "Enter a number and click Convert to see the result"
   },
+  "jsonDataGenerator": {
+    "title": "JSON Data Generator",
+    "description": "Generate multiple JSON objects from a template with regex patterns",
+    "template": "JSON Template",
+    "templatePlaceholder": "Enter JSON template with {{regex:pattern}} placeholders...",
+    "templateHint": "Use {{regex:pattern}} syntax in string values to generate random data. Example: \"{{regex:\\d{1,5}}}\" for numbers.",
+    "iterations": "Number of Items",
+    "generate": "Generate Data",
+    "generating": "Generating...",
+    "result": "Generated Data",
+    "items": "items",
+    "loadExample": "Load Example",
+    "noResult": "Enter a template and click Generate to see the results",
+    "example": "Example Template"
+  },
   "barcode": {
     "title": "Barcode Generator",
     "description": "Generate barcodes (EAN, UPC, Code128, Code39, ISBN, etc.)",

@@ -52,6 +52,7 @@ const CSSMinifierScreen = createLazyComponent(() => import('./pages/CSSMinifierS
 const JSMinifierScreen = createLazyComponent(() => import('./pages/JSMinifierScreen'), 'JSMinifierScreen');
 const JSONFormatterScreen = createLazyComponent(() => import('./pages/JSONFormatterScreen'), 'JSONFormatterScreen');
 const JSONMinifierScreen = createLazyComponent(() => import('./pages/JSONMinifierScreen'), 'JSONMinifierScreen');
+const JSONDataGeneratorScreen = createLazyComponent(() => import('./pages/JSONDataGeneratorScreen'), 'JSONDataGeneratorScreen');
 const XMLFormatterScreen = createLazyComponent(() => import('./pages/XMLFormatterScreen'), 'XMLFormatterScreen');
 const CodeMinifierScreen = createLazyComponent(() => import('./pages/CodeMinifierScreen'), 'CodeMinifierScreen');
 const HTMLFormatterScreen = createLazyComponent(() => import('./pages/HTMLFormatterScreen'), 'HTMLFormatterScreen');
@@ -123,6 +124,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'barcode-generator': BarcodeGeneratorScreen,
   'color-converter': ColorConverterScreen,
   'number-converter': NumberConverterScreen,
+  'fake-data-generator': JSONDataGeneratorScreen,
   'code-formatter': CodeFormatterScreen,
   'code-minifier': CodeMinifierScreen,
   'html-formatter': HTMLFormatterScreen,

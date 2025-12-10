@@ -731,6 +731,21 @@
     "converted": "Nombre Converti",
     "noResult": "Entrez un nombre et cliquez sur Convertir pour voir le résultat"
   },
+  "jsonDataGenerator": {
+    "title": "Générateur de Données JSON",
+    "description": "Générer plusieurs objets JSON à partir d'un modèle avec des motifs regex",
+    "template": "Modèle JSON",
+    "templatePlaceholder": "Entrez un modèle JSON avec des placeholders {{regex:pattern}}...",
+    "templateHint": "Utilisez la syntaxe {{regex:pattern}} dans les valeurs string pour générer des données aléatoires. Exemple: \"{{regex:\\d{1,5}}}\" pour des nombres.",
+    "iterations": "Nombre d'Éléments",
+    "generate": "Générer les Données",
+    "generating": "Génération...",
+    "result": "Données Générées",
+    "items": "éléments",
+    "loadExample": "Charger l'Exemple",
+    "noResult": "Entrez un modèle et cliquez sur Générer pour voir les résultats",
+    "example": "Modèle d'Exemple"
+  },
   "barcode": {
     "title": "Générateur de code-barres",
     "description": "Générer des codes-barres (EAN, UPC, Code128, Code39, ISBN, etc.)",

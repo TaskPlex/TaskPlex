@@ -597,6 +597,46 @@ export const barcodeHandlers = [
 ];
 
 // ============================================
+// JSON DATA GENERATOR HANDLERS
+// ============================================
+export const jsonDataGeneratorHandlers = [
+  http.post(`${API_PATTERN}/json-data-generator/generate`, async ({ request }) => {
+    await delay(100);
+    const body = (await request.json()) as {
+      template: string;
+      iterations: number;
+    };
+    const { template, iterations } = body;
+
+    if (!template || template.trim().length === 0) {
+      return errorResponse('Template is required');
+    }
+
+    if (iterations < 1 || iterations > 1000) {
+      return errorResponse('Iterations must be between 1 and 1000');
+    }
+
+    // Mock generation - in real scenario, this would parse regex patterns
+    const mockData = [];
+    for (let i = 0; i < iterations; i++) {
+      mockData.push({
+        id: `${Math.floor(Math.random() * 1000)}`,
+        name: `User${i + 1}`,
+        email: `user${i + 1}@example.com`,
+      });
+    }
+
+    return HttpResponse.json(
+      successResponse({
+        message: `Generated ${iterations} JSON object(s) successfully`,
+        generated_data: mockData,
+        count: iterations,
+      })
+    );
+  }),
+];
+
+// ============================================
 // COLOR HANDLERS
 // ============================================
 export const colorHandlers = [
@@ -764,6 +804,7 @@ export const handlers = [
   ...barcodeHandlers,
   ...colorHandlers,
   ...numberConverterHandlers,
+  ...jsonDataGeneratorHandlers,
   ...hashHandlers,
   ...base64Handlers,
   ...htmlValidatorHandlers,

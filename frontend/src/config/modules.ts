@@ -794,8 +794,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.dev.fakeDataGenerator.title',
     descriptionKey: 'modules.dev.fakeDataGenerator.description',
     category: 'developer',
-    status: 'placeholder',
-    color: 'text-yellow-500',
+    status: 'implemented',
+    color: 'text-yellow-600',
   },
 
   // ============================================

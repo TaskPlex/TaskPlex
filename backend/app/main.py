@@ -25,6 +25,7 @@ from app.api import (
     image,
     js_formatter,
     js_minifier,
+    json_data_generator,
     json_formatter,
     json_minifier,
     number_converter,
@@ -182,6 +183,7 @@ app.include_router(js_formatter.router, prefix="/api/v1")
 app.include_router(js_minifier.router, prefix="/api/v1")
 app.include_router(json_formatter.router, prefix="/api/v1")
 app.include_router(json_minifier.router, prefix="/api/v1")
+app.include_router(json_data_generator.router, prefix="/api/v1")
 app.include_router(xml_formatter.router, prefix="/api/v1")
 app.include_router(xml_minifier.router, prefix="/api/v1")
 app.include_router(text.router, prefix="/api/v1")
