@@ -14,8 +14,6 @@ from app.models.pdf import PDFInfoResponse, PDFProcessingResponse
 from app.services.pdf_service import (
     add_password_pdf,
     compress_pdf,
-    convert_pdf_to_word,
-    convert_word_to_pdf,
     extract_text_with_ocr,
     get_pdf_info,
     merge_pdfs,
@@ -30,7 +28,7 @@ from app.utils.file_handler import (
     generate_unique_filename,
     save_upload_file,
 )
-from app.utils.validators import validate_docx_format, validate_pdf_format
+from app.utils.validators import validate_pdf_format
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
 
@@ -54,64 +52,6 @@ async def get_pdf_file_info(
             raise HTTPException(status_code=500, detail="Could not read PDF info")
 
         return info
-    finally:
-        if input_path:
-            delete_file(input_path)
-
-
-@router.post("/to-word", response_model=PDFProcessingResponse)
-async def pdf_to_word(
-    file: UploadFile = File(..., description="PDF file to convert to Word"),
-):
-    """
-    Convert a PDF to a Word document (text-only extraction).
-    """
-    if not validate_pdf_format(file.filename):
-        raise HTTPException(status_code=400, detail="File is not a valid PDF")
-
-    input_path = None
-    output_path = None
-
-    try:
-        input_path = await save_upload_file(file)
-        output_filename = generate_unique_filename(f"{Path(file.filename).stem}.docx")
-        output_path = TEMP_DIR / output_filename
-
-        result = convert_pdf_to_word(input_path, output_path)
-
-        if not result.success:
-            raise HTTPException(status_code=500, detail=result.message)
-
-        return result
-    finally:
-        if input_path:
-            delete_file(input_path)
-
-
-@router.post("/word-to-pdf", response_model=PDFProcessingResponse)
-async def word_to_pdf(
-    file: UploadFile = File(..., description="Word (DOCX) file to convert to PDF"),
-):
-    """
-    Convert a Word document to PDF (text-only rendering).
-    """
-    if not validate_docx_format(file.filename):
-        raise HTTPException(status_code=400, detail="File is not a valid DOCX document")
-
-    input_path = None
-    output_path = None
-
-    try:
-        input_path = await save_upload_file(file)
-        output_filename = generate_unique_filename(f"{Path(file.filename).stem}.pdf")
-        output_path = TEMP_DIR / output_filename
-
-        result = convert_word_to_pdf(input_path, output_path)
-
-        if not result.success:
-            raise HTTPException(status_code=500, detail=result.message)
-
-        return result
     finally:
         if input_path:
             delete_file(input_path)

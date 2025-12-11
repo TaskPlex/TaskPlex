@@ -56,8 +56,16 @@ docker-compose.override.yml
 .coverage
 coverage.xml
 htmlcov/
+**/coverage/
+**/coverage.xml
 junit.xml
+*.coverage
 
 # Testing
 .pytest_cache/
+# Large test files (videos, large binaries) - Note: Tests create these files automatically if missing
+backend/tests/test_data/*.mp4
+backend/tests/test_data/*.avi
+backend/tests/test_data/*.mov
+backend/tests/test_data/*.mkv
 

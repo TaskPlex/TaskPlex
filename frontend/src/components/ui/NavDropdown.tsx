@@ -93,11 +93,6 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
             {t('home.comingSoon')}
           </span>
         )}
-        {module.isNew && (
-          <span className="text-[10px] px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 rounded uppercase font-medium">
-            {t('home.new')}
-          </span>
-        )}
       </Link>
     );
   };

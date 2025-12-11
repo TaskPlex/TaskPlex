@@ -90,8 +90,6 @@ const PDFSplit = createLazyComponent(() => import('./pages/pdf/PDFSplit'), 'PDFS
 const PDFReorganize = createLazyComponent(() => import('./pages/pdf/PDFReorganize'), 'PDFReorganize');
 const PDFOCR = createLazyComponent(() => import('./pages/pdf/PDFOCR'), 'PDFOCR');
 const PDFPassword = createLazyComponent(() => import('./pages/pdf/PDFPassword'), 'PDFPassword');
-const PDFToWord = createLazyComponent(() => import('./pages/pdf/PDFToWord'), 'PDFToWord');
-const WordToPDF = createLazyComponent(() => import('./pages/pdf/WordToPDF'), 'WordToPDF');
 
 // Map module IDs to their corresponding React components
 const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType<Record<string, unknown>>>> = {
@@ -119,8 +117,6 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'pdf-reorganize': PDFReorganize,
   'pdf-ocr': PDFOCR,
   'pdf-password': PDFPassword,
-  'pdf-to-word': PDFToWord,
-  'pdf-word-to-pdf': WordToPDF,
   
   // Developer
   'regex': RegexScreen,

@@ -68,13 +68,6 @@ const ModuleCard = React.memo<ModuleCardProps>(({
         />
       </button>
 
-      {/* New Badge */}
-      {module.isNew && (
-        <span className="absolute top-4 left-4 px-2.5 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 text-[10px] font-bold uppercase tracking-wider rounded-full">
-          {t('home.new')}
-        </span>
-      )}
-
       {/* Placeholder Badge */}
       {module.status === 'placeholder' && (
         <span className="absolute bottom-4 left-4 px-2.5 py-1 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 text-[10px] font-bold uppercase tracking-wider rounded-full">
