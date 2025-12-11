@@ -18,6 +18,7 @@ from app.api import (
     color,
     css_formatter,
     css_minifier,
+    gradient_generator,
     hash,
     html_formatter,
     html_minifier,
@@ -32,6 +33,7 @@ from app.api import (
     json_validator,
     lorem_ipsum,
     number_converter,
+    palette_generator,
     password,
     pdf,
     py_validator,
@@ -174,6 +176,8 @@ async def health_check():
             "xml-validator": "/api/v1/xml-validator",
             "py-validator": "/api/v1/py-validator",
             "text-extractor": "/api/v1/text-extractor",
+            "palette-generator": "/api/v1/palette-generator",
+            "gradient-generator": "/api/v1/gradient-generator",
         },
     }
 
@@ -209,6 +213,8 @@ app.include_router(text.router, prefix="/api/v1")
 app.include_router(text_extractor.router, prefix="/api/v1")
 app.include_router(word_counter.router, prefix="/api/v1")
 app.include_router(color.router, prefix="/api/v1")
+app.include_router(palette_generator.router, prefix="/api/v1")
+app.include_router(gradient_generator.router, prefix="/api/v1")
 app.include_router(hash.router, prefix="/api/v1")
 app.include_router(password.router, prefix="/api/v1")
 app.include_router(url_encoder.router, prefix="/api/v1")

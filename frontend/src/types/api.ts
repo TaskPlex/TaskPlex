@@ -349,6 +349,49 @@ export interface URLExtractorResponse extends ApiResponse {
   count?: number;
 }
 
+// Palette Generator
+export type PaletteScheme = 'monochromatic' | 'complementary' | 'triadic' | 'analogous' | 'split_complementary' | 'tetradic';
+
+export interface PaletteColorInfo {
+  hex: string;
+  rgb: string;
+  hsl: string;
+  name?: string;
+}
+
+export interface PaletteGeneratorRequest {
+  base_color: string;
+  scheme?: PaletteScheme;
+  count?: number;
+}
+
+export interface PaletteGeneratorResponse extends ApiResponse {
+  colors?: PaletteColorInfo[];
+  scheme?: string;
+  base_color?: string;
+}
+
+// Gradient Generator
+export type GradientType = 'linear' | 'radial' | 'conic';
+
+export interface GradientGeneratorRequest {
+  colors: string[];
+  type?: GradientType;
+  width?: number;
+  height?: number;
+  angle?: number;
+  stops?: number[];
+}
+
+export interface GradientGeneratorResponse extends ApiResponse {
+  filename?: string;
+  download_url?: string;
+  css_code?: string;
+  svg_code?: string;
+  width?: number;
+  height?: number;
+}
+
 // HTML Minifier
 export interface HTMLMinifierResponse extends ApiResponse {
   minified_html?: string;
