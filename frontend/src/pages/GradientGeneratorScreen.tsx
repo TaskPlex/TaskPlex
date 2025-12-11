@@ -277,12 +277,14 @@ export const GradientGeneratorScreen: React.FC = () => {
                   </button>
                 </div>
                 <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <img
-                    src={ApiService.getDownloadUrl(result.download_url)}
-                    alt="Gradient preview"
-                    className="w-full h-auto"
-                    style={{ maxHeight: '400px', objectFit: 'contain' }}
-                  />
+                  {result.download_url && (
+                    <img
+                      src={ApiService.getDownloadUrl(result.download_url)}
+                      alt="Gradient preview"
+                      className="w-full h-auto"
+                      style={{ maxHeight: '400px', objectFit: 'contain' }}
+                    />
+                  )}
                 </div>
               </div>
 
