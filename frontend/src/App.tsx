@@ -85,6 +85,8 @@ const WordCounterScreen = createLazyComponent(() => import('./pages/WordCounterS
 const KeywordExtractorScreen = createLazyComponent(() => import('./pages/KeywordExtractorScreen'), 'KeywordExtractorScreen');
 const EmailExtractorScreen = createLazyComponent(() => import('./pages/EmailExtractorScreen'), 'EmailExtractorScreen');
 const URLExtractorScreen = createLazyComponent(() => import('./pages/URLExtractorScreen'), 'URLExtractorScreen');
+const PaletteGeneratorScreen = createLazyComponent(() => import('./pages/PaletteGeneratorScreen'), 'PaletteGeneratorScreen');
+const GradientGeneratorScreen = createLazyComponent(() => import('./pages/GradientGeneratorScreen'), 'GradientGeneratorScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFCompress = createLazyComponent(() => import('./pages/pdf/PDFCompress'), 'PDFCompress');
@@ -133,8 +135,10 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'word-counter': WordCounterScreen,
   'keyword-extractor': KeywordExtractorScreen,
   'email-extractor': EmailExtractorScreen,
-  'url-extractor': URLExtractorScreen,
-  'fake-data-generator': JSONDataGeneratorScreen,
+    'url-extractor': URLExtractorScreen,
+    'palette-generator': PaletteGeneratorScreen,
+    'gradient-generator': GradientGeneratorScreen,
+    'fake-data-generator': JSONDataGeneratorScreen,
   'code-formatter': CodeFormatterScreen,
   'code-minifier': CodeMinifierScreen,
   'html-formatter': HTMLFormatterScreen,

@@ -928,23 +928,23 @@ export const MODULES: ModuleDefinition[] = [
   // ============================================
   {
     id: 'palette-generator',
-    path: '/design/palette',
+    path: '/design/palette-generator',
     icon: 'palette-generator',
-    labelKey: 'modules.design.palette.title',
-    descriptionKey: 'modules.design.palette.description',
+    labelKey: 'modules.design.paletteGenerator.title',
+    descriptionKey: 'modules.design.paletteGenerator.description',
     category: 'design',
-    status: 'placeholder',
-    color: 'text-pink-600',
+    status: 'implemented',
+    color: 'text-indigo-600',
   },
   {
     id: 'gradient-generator',
-    path: '/design/gradient',
+    path: '/design/gradient-generator',
     icon: 'gradient-generator',
-    labelKey: 'modules.design.gradient.title',
-    descriptionKey: 'modules.design.gradient.description',
+    labelKey: 'modules.design.gradientGenerator.title',
+    descriptionKey: 'modules.design.gradientGenerator.description',
     category: 'design',
-    status: 'placeholder',
-    color: 'text-pink-600',
+    status: 'implemented',
+    color: 'text-cyan-600',
   },
 ];
 

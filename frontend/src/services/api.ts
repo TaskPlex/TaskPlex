@@ -47,6 +47,10 @@ import type {
   URLResponse,
   Base64Response,
   BarcodeResponse,
+  PaletteScheme,
+  PaletteGeneratorResponse,
+  GradientType,
+  GradientGeneratorResponse,
 } from '../types/api';
 
 // Re-export types for backwards compatibility
@@ -102,6 +106,13 @@ export type {
   BarcodeResponse,
   NumberConversionResponse,
   JSONDataGeneratorResponse,
+  PaletteScheme,
+  PaletteColorInfo,
+  PaletteGeneratorRequest,
+  PaletteGeneratorResponse,
+  GradientType,
+  GradientGeneratorRequest,
+  GradientGeneratorResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
@@ -589,6 +600,36 @@ export const ApiService = {
   extractURLs: async (text: string) => {
     const response = await api.post<URLExtractorResponse>('/text-extractor/urls', {
       text,
+    });
+    return response.data;
+  },
+
+  // Palette Generator
+  generatePalette: async (baseColor: string, scheme: PaletteScheme, count: number) => {
+    const response = await api.post<PaletteGeneratorResponse>('/palette-generator/generate', {
+      base_color: baseColor,
+      scheme,
+      count,
+    });
+    return response.data;
+  },
+
+  // Gradient Generator
+  generateGradient: async (
+    colors: string[],
+    type: GradientType,
+    width: number,
+    height: number,
+    angle: number,
+    stops?: number[]
+  ) => {
+    const response = await api.post<GradientGeneratorResponse>('/gradient-generator/generate', {
+      colors,
+      type,
+      width,
+      height,
+      angle,
+      stops,
     });
     return response.data;
   },

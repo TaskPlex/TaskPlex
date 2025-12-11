@@ -14,6 +14,7 @@
     "upload": "Téléverser",
     "download": "Télécharger",
     "copy": "Copier",
+    "copied": "Copié !",
     "process": "Traiter",
     "reset": "Réinitialiser",
     "back": "Retour",
@@ -1673,6 +1674,40 @@
       "favicon": {
         "title": "Générateur de favicon",
         "description": "Créer des favicons depuis des images"
+      },
+      "paletteGenerator": {
+        "title": "Générateur de palette",
+        "description": "Générer des palettes de couleurs harmonieuses à partir d'une couleur de base",
+        "baseColorLabel": "Couleur de base",
+        "baseColorHint": "Entrez une couleur au format HEX (ex: #4f46e5)",
+        "colorPickerLabel": "Sélecteur de couleur",
+        "quickColors": "Couleurs rapides",
+        "schemeLabel": "Schéma de couleurs",
+        "countLabel": "Nombre de couleurs",
+        "generate": "Générer la palette",
+        "generating": "Génération...",
+        "generatedPalette": "Palette générée",
+        "scheme": "Schéma",
+        "color": "Couleur",
+        "noPalette": "Générez une palette pour voir les résultats ici"
+      },
+      "gradientGenerator": {
+        "title": "Générateur de dégradé",
+        "description": "Créer de beaux dégradés et les exporter en CSS, SVG ou PNG",
+        "colorsLabel": "Couleurs",
+        "addColor": "Ajouter une couleur",
+        "quickColors": "Couleurs rapides",
+        "typeLabel": "Type de dégradé",
+        "angleLabel": "Angle",
+        "widthLabel": "Largeur",
+        "heightLabel": "Hauteur",
+        "generate": "Générer le dégradé",
+        "generating": "Génération...",
+        "preview": "Aperçu",
+        "download": "Télécharger",
+        "cssCode": "Code CSS",
+        "svgCode": "Code SVG",
+        "noGradient": "Générez un dégradé pour voir les résultats ici"
       },
       "palette": {
         "title": "Générateur de palettes",

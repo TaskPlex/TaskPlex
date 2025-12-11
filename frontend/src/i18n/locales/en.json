@@ -14,6 +14,7 @@
     "upload": "Upload",
     "download": "Download",
     "copy": "Copy",
+    "copied": "Copied!",
     "process": "Process",
     "reset": "Reset",
     "back": "Back",
@@ -1597,6 +1598,40 @@
       "favicon": {
         "title": "Favicon Generator",
         "description": "Create favicons from images"
+      },
+      "paletteGenerator": {
+        "title": "Palette Generator",
+        "description": "Generate harmonious color palettes from a base color",
+        "baseColorLabel": "Base Color",
+        "baseColorHint": "Enter a color in HEX format (e.g., #4f46e5)",
+        "colorPickerLabel": "Color Picker",
+        "quickColors": "Quick Colors",
+        "schemeLabel": "Color Scheme",
+        "countLabel": "Number of Colors",
+        "generate": "Generate Palette",
+        "generating": "Generating...",
+        "generatedPalette": "Generated Palette",
+        "scheme": "Scheme",
+        "color": "Color",
+        "noPalette": "Generate a palette to see results here"
+      },
+      "gradientGenerator": {
+        "title": "Gradient Generator",
+        "description": "Create beautiful gradients and export as CSS, SVG, or PNG",
+        "colorsLabel": "Colors",
+        "addColor": "Add Color",
+        "quickColors": "Quick Colors",
+        "typeLabel": "Gradient Type",
+        "angleLabel": "Angle",
+        "widthLabel": "Width",
+        "heightLabel": "Height",
+        "generate": "Generate Gradient",
+        "generating": "Generating...",
+        "preview": "Preview",
+        "download": "Download",
+        "cssCode": "CSS Code",
+        "svgCode": "SVG Code",
+        "noGradient": "Generate a gradient to see results here"
       },
       "palette": {
         "title": "Palette Generator",
