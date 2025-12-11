@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Palette, Pipette, Copy, Check, Sparkles, RefreshCw } from 'lucide-react';
 import { usePaletteGenerator } from '../hooks/usePaletteGenerator';
 import { ErrorAlert, ProcessButton } from '../components/ui';
-import type { PaletteScheme } from '../services/api';
+import type { PaletteScheme, PaletteColorInfo } from '../services/api';
 
 const quickSwatches = ['#2563eb', '#16a34a', '#f59e0b', '#ef4444', '#9333ea', '#0ea5e9', '#ec4899', '#14b8a6'];
 
@@ -214,7 +214,7 @@ export const PaletteGeneratorScreen: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                  {result.colors.map((color, idx) => (
+                  {result.colors.map((color: PaletteColorInfo, idx: number) => (
                     <div
                       key={`${color.hex}-${idx}`}
                       className="bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden"

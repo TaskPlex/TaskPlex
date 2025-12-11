@@ -106,6 +106,13 @@ export type {
   BarcodeResponse,
   NumberConversionResponse,
   JSONDataGeneratorResponse,
+  PaletteScheme,
+  PaletteColorInfo,
+  PaletteGeneratorRequest,
+  PaletteGeneratorResponse,
+  GradientType,
+  GradientGeneratorRequest,
+  GradientGeneratorResponse,
 } from '../types/api';
 
 // API URL from environment variable with fallback
