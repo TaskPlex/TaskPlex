@@ -451,3 +451,122 @@ def video_to_gif(
             message=f"Error converting video to GIF: {str(e)}",
             filename=output_path.name if output_path else None,
         )
+
+
+def merge_videos(
+    input_paths: list[Path],
+    output_path: Path,
+    output_format: str = "mp4",
+    quality: str = "medium",
+    merge_mode: str = "quality",
+) -> VideoProcessingResponse:
+    """
+    Merge multiple video files into one using FFmpeg concat demuxer
+
+    Args:
+        input_paths: List of paths to input videos (in order)
+        output_path: Path to save merged video
+        output_format: Output video format (mp4, avi, mov, etc.)
+        quality: Output quality preset (low, medium, high)
+
+    Returns:
+        VideoProcessingResponse with merge results
+    """
+    try:
+        if len(input_paths) < 2:
+            return VideoProcessingResponse(
+                success=False,
+                message="At least 2 video files are required for merging",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Calculate total original size
+        total_original_size = sum(get_file_size(path) for path in input_paths)
+
+        # Create concat file for FFmpeg concat demuxer
+        # This is the most reliable method for merging videos
+        concat_file = output_path.parent / f"concat_{output_path.stem}.txt"
+        try:
+            with open(concat_file, "w") as f:
+                for input_path in input_paths:
+                    # Use absolute path and escape single quotes
+                    abs_path = input_path.resolve()
+                    escaped_path = str(abs_path).replace("'", "'\\''")
+                    f.write(f"file '{escaped_path}'\n")
+        except Exception as e:
+            return VideoProcessingResponse(
+                success=False,
+                message=f"Error creating concat file: {str(e)}",
+                filename=output_path.name if output_path else None,
+            )
+
+        try:
+            # Use concat demuxer for merging
+            stream = ffmpeg.input(str(concat_file), format="concat", safe=0)
+
+            if merge_mode == "fast":
+                # Fast mode: copy streams without re-encoding (very fast)
+                # Warning: requires all videos to have identical codecs, resolution, fps, etc.
+                output_options = {"c": "copy"}  # Copy all streams without re-encoding
+            else:
+                # Quality mode: re-encode for compatibility (slower but more reliable)
+                # Detect available H.264 encoder
+                encoder = get_available_h264_encoder()
+                if encoder is None:
+                    return VideoProcessingResponse(
+                        success=False,
+                        message="No H.264 encoder available. Please install FFmpeg with H.264 support.",
+                        filename=output_path.name if output_path else None,
+                    )
+
+                # Get compression preset
+                preset = VIDEO_COMPRESSION_PRESETS.get(quality, VIDEO_COMPRESSION_PRESETS["medium"])
+
+                # Build output options based on encoder
+                output_options = {"c:v": encoder, "c:a": "aac", "b:a": "128k"}
+
+                # Add quality parameters based on encoder type
+                if encoder == "libx264":
+                    output_options["crf"] = preset["crf"]
+                    output_options["preset"] = preset["preset"]
+                elif encoder in ["libopenh264", "h264_vaapi"]:
+                    quality_map = {"low": "1M", "medium": "2.5M", "high": "5M"}
+                    output_options["b:v"] = quality_map.get(quality, "2.5M")
+
+            stream = ffmpeg.output(stream, str(output_path), **output_options)
+            ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
+
+            # Get merged file size
+            merged_size = get_file_size(output_path)
+
+            return VideoProcessingResponse(
+                success=True,
+                message=f"Successfully merged {len(input_paths)} videos",
+                filename=output_path.name,
+                download_url=f"/api/v1/download/{output_path.name}",
+                original_size=total_original_size,
+                processed_size=merged_size,
+            )
+
+        finally:
+            # Clean up concat file
+            if concat_file.exists():
+                try:
+                    concat_file.unlink()
+                except Exception:
+                    pass
+
+    except ffmpeg.Error as e:
+        error_message = e.stderr.decode() if e.stderr else str(e)
+        return VideoProcessingResponse(
+            success=False,
+            message=f"FFmpeg error: {error_message}",
+            filename=output_path.name if output_path else None,
+        )
+
+    except Exception as e:
+        return VideoProcessingResponse(
+            success=False,
+            message=f"Error merging videos: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )

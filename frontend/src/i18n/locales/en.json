@@ -1171,7 +1171,22 @@
       },
       "merge": {
         "title": "Merge Videos",
-        "description": "Combine multiple videos into one"
+        "description": "Combine multiple videos into one",
+        "selectFiles": "Select Video Files",
+        "dropFiles": "Drop video files here or click to browse",
+        "addMore": "Add More Videos",
+        "merging": "Merging...",
+        "mergeBtn": "Merge Videos",
+        "successTitle": "Videos Merged!",
+        "successMessage": "Your videos have been combined into one file.",
+        "downloadResult": "Download Merged Video",
+        "outputFormat": "Output Format",
+        "quality": "Quality",
+        "modeLabel": "Merge Mode",
+        "modeFast": "Fast (Copy)",
+        "modeQuality": "Quality (Re-encode)",
+        "fastModeWarning": "Fast Mode Warning",
+        "fastModeDescription": "Fast mode copies video streams without re-encoding. This is very fast but requires all videos to have identical codecs, resolution, frame rate, and audio format. If videos differ, the merge may fail or produce incorrect results. Use Quality mode for automatic compatibility."
       },
       "rotate": {
         "title": "Rotate Video",
@@ -1188,10 +1203,6 @@
       "toGif": {
         "title": "Video to GIF",
         "description": "Create animated GIF from video"
-      },
-      "changeSpeed": {
-        "title": "Change Speed",
-        "description": "Speed up or slow down video playback"
       }
     },
     "audio": {

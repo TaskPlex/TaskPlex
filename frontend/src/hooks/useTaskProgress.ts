@@ -112,6 +112,17 @@ export function useTaskProgress<T = unknown>() {
       }
     });
 
+    // Handle cancellation
+    eventSource.addEventListener('cancelled', () => {
+      setState(prev => ({
+        ...prev,
+        status: 'idle',
+        progress: 0,
+        message: 'Cancelled',
+      }));
+      cleanup();
+    });
+
     // Handle errors
     eventSource.addEventListener('error', (event: MessageEvent | Event) => {
       if ('data' in event && event.data) {
@@ -225,15 +236,26 @@ export function useTaskProgress<T = unknown>() {
   /**
    * Cancel the current task
    */
-  const cancel = useCallback(() => {
+  const cancel = useCallback(async () => {
+    if (state.taskId) {
+      try {
+        // Call API to cancel the task on the backend
+        await fetch(`${API_URL}/tasks/${state.taskId}/cancel`, {
+          method: 'POST',
+        });
+      } catch (error) {
+        console.error('Failed to cancel task:', error);
+      }
+    }
     cleanup();
     setState(prev => ({
       ...prev,
       status: 'idle',
       progress: 0,
       message: 'Cancelled',
+      taskId: null,
     }));
-  }, [cleanup]);
+  }, [cleanup, state.taskId]);
 
   /**
    * Reset to initial state

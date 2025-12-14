@@ -1,6 +1,6 @@
 import {
   // Media - Video
-  Video, Minimize2, Play, Scissors, Merge, RotateCw, Subtitles, ImageIcon, Film, Gauge,
+  Video, Minimize2, Play, Scissors, Merge, RotateCw, Subtitles, ImageIcon, Film,
   // Media - Audio
   Music, Volume2, AudioWaveform, Split, Volume, VolumeX,
   // Media - Image
@@ -41,7 +41,6 @@ export const iconMap = {
   'video-add-subtitles': Subtitles,
   'video-extract-frames': ImageIcon,
   'video-to-gif': Film,
-  'video-change-speed': Gauge,
   
   // Media - Audio
   'audio': Music,

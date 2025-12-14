@@ -1247,7 +1247,22 @@
       },
       "merge": {
         "title": "Fusionner vidéos",
-        "description": "Combiner plusieurs vidéos en une seule"
+        "description": "Combiner plusieurs vidéos en une seule",
+        "selectFiles": "Sélectionner des fichiers vidéo",
+        "dropFiles": "Déposez les fichiers vidéo ici ou cliquez pour parcourir",
+        "addMore": "Ajouter plus de vidéos",
+        "merging": "Fusion en cours...",
+        "mergeBtn": "Fusionner les vidéos",
+        "successTitle": "Vidéos fusionnées !",
+        "successMessage": "Vos vidéos ont été combinées en un seul fichier.",
+        "downloadResult": "Télécharger la vidéo fusionnée",
+        "outputFormat": "Format de sortie",
+        "quality": "Qualité",
+        "modeLabel": "Mode de fusion",
+        "modeFast": "Rapide (Copie)",
+        "modeQuality": "Qualité (Re-encodage)",
+        "fastModeWarning": "Avertissement Mode Rapide",
+        "fastModeDescription": "Le mode rapide copie les flux vidéo sans re-encodage. C'est très rapide mais nécessite que toutes les vidéos aient des codecs, résolution, fréquence d'images et format audio identiques. Si les vidéos diffèrent, la fusion peut échouer ou produire des résultats incorrects. Utilisez le mode Qualité pour une compatibilité automatique."
       },
       "rotate": {
         "title": "Pivoter vidéo",
@@ -1264,10 +1279,6 @@
       "toGif": {
         "title": "Vidéo vers GIF",
         "description": "Créer un GIF animé depuis une vidéo"
-      },
-      "changeSpeed": {
-        "title": "Changer vitesse",
-        "description": "Accélérer ou ralentir la lecture vidéo"
       }
     },
     "audio": {

@@ -79,6 +79,11 @@ vi.stubGlobal('EventSource', createMockEventSource);
 describe('useTaskProgress', () => {
   beforeEach(() => {
     mockEventSourceInstance = null;
+    // Mock fetch for cancel API calls
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true, message: 'Task cancelled' }),
+    });
   });
 
   afterEach(() => {
@@ -261,7 +266,11 @@ describe('useTaskProgress', () => {
     });
 
     await act(async () => {
-      result.current.cancel();
+      await result.current.cancel();
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('idle');
     });
 
     expect(result.current.status).toBe('idle');
