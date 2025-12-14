@@ -1,6 +1,7 @@
 """
 CSV converter API endpoints
 """
+
 from pathlib import Path
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
@@ -29,7 +30,7 @@ async def csv_to_json_endpoint(
     Returns JSON data and optional download URL
     """
     # Validate file format
-    if not file.filename or not file.filename.lower().endswith('.csv'):
+    if not file.filename or not file.filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="File must be a CSV file")
 
     input_path = None
@@ -70,7 +71,7 @@ async def json_to_csv_endpoint(
     Returns CSV data and optional download URL
     """
     # Validate file format
-    if not file.filename or not file.filename.lower().endswith('.json'):
+    if not file.filename or not file.filename.lower().endswith(".json"):
         raise HTTPException(status_code=400, detail="File must be a JSON file")
 
     input_path = None
@@ -97,4 +98,3 @@ async def json_to_csv_endpoint(
         # Clean up input file
         if input_path:
             delete_file(input_path)
-
