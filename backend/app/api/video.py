@@ -4,6 +4,7 @@ Video processing API endpoints
 
 import asyncio
 from pathlib import Path
+from typing import List
 
 from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, UploadFile
 
@@ -13,12 +14,14 @@ from app.services.video_service import (
     compress_video,
     convert_video,
     extract_audio,
+    merge_videos,
     rotate_video,
     video_to_gif,
 )
 from app.services.video_service_async import (
     compress_video_with_progress,
     convert_video_with_progress,
+    merge_videos_with_progress,
 )
 from app.tasks import task_store
 from app.utils.file_handler import (
@@ -271,6 +274,73 @@ async def extract_audio_endpoint(
             delete_file(input_path)
 
 
+@router.post("/merge", response_model=VideoProcessingResponse)
+async def merge_videos_endpoint(
+    files: List[UploadFile] = File(..., description="Video files to merge (in order)"),
+    output_format: str = Form("mp4", description="Output format (mp4, avi, mov, etc.)"),
+    quality: str = Form("medium", description="Output quality (low, medium, high)"),
+    merge_mode: str = Form(
+        "quality",
+        description="Merge mode: 'fast' (copy without re-encoding) or 'quality' (re-encode for compatibility)",
+    ),
+):
+    """
+    Merge multiple video files into one
+
+    Supported formats: MP4, AVI, MOV, MKV, FLV, WMV
+
+    Merge modes:
+    - 'fast': Copies streams without re-encoding (very fast, but requires identical video parameters)
+    - 'quality': Re-encodes for compatibility (slower but more reliable)
+    """
+    if len(files) < 2:
+        raise HTTPException(
+            status_code=400, detail="At least 2 video files are required for merging"
+        )
+
+    # Validate merge_mode
+    if merge_mode not in ["fast", "quality"]:
+        raise HTTPException(status_code=400, detail="merge_mode must be 'fast' or 'quality'")
+
+    # Validate all files
+    for file in files:
+        if not validate_video_format(file.filename):
+            raise HTTPException(
+                status_code=400, detail=f"File {file.filename} is not a valid video format"
+            )
+
+    # Validate output format
+    if output_format.lower() not in ["mp4", "avi", "mov", "mkv", "flv", "wmv"]:
+        raise HTTPException(status_code=400, detail="Unsupported output format")
+
+    input_paths = []
+    output_path = None
+
+    try:
+        # Save all uploaded files
+        for file in files:
+            input_path = await save_upload_file(file)
+            input_paths.append(input_path)
+
+        # Create output path
+        output_filename = generate_unique_filename(f"merged.{output_format}")
+        output_path = TEMP_DIR / output_filename
+
+        # Merge videos
+        result = merge_videos(input_paths, output_path, output_format, quality, merge_mode)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input files
+        for input_path in input_paths:
+            if input_path:
+                delete_file(input_path)
+
+
 # ============================================
 # ASYNC ENDPOINTS WITH SSE PROGRESS TRACKING
 # ============================================
@@ -293,6 +363,26 @@ async def run_convert_task(
         await convert_video_with_progress(task_id, input_path, output_path, output_format, quality)
     finally:
         delete_file(input_path)
+
+
+async def run_merge_task(
+    task_id: str,
+    input_paths: list[Path],
+    output_path: Path,
+    output_format: str,
+    quality: str,
+    merge_mode: str,
+):
+    """Background task for video merging with progress"""
+    try:
+        await merge_videos_with_progress(
+            task_id, input_paths, output_path, output_format, quality, merge_mode
+        )
+    finally:
+        # Clean up input files
+        for input_path in input_paths:
+            if input_path:
+                delete_file(input_path)
 
 
 @router.post("/compress/async")
@@ -376,5 +466,78 @@ async def convert_video_async(
 
     # Start background processing
     asyncio.create_task(run_convert_task(task.id, input_path, output_path, output_format, quality))
+
+    return {"task_id": task.id}
+
+
+@router.post("/merge/async")
+async def merge_videos_async(
+    background_tasks: BackgroundTasks,
+    files: List[UploadFile] = File(..., description="Video files to merge (in order)"),
+    output_format: str = Form("mp4", description="Output format (mp4, avi, mov, etc.)"),
+    quality: str = Form("medium", description="Output quality (low, medium, high)"),
+    merge_mode: str = Form(
+        "quality",
+        description="Merge mode: 'fast' (copy without re-encoding) or 'quality' (re-encode for compatibility)",
+    ),
+):
+    """
+    Start async video merging with progress tracking
+
+    Returns a task_id that can be used to:
+    - Poll status: GET /api/v1/tasks/{task_id}/status
+    - Stream progress: GET /api/v1/tasks/{task_id}/stream (SSE)
+
+    Merge modes:
+    - 'fast': Copies streams without re-encoding (very fast, but requires identical video parameters)
+    - 'quality': Re-encodes for compatibility (slower but more reliable)
+
+    Progress events include: analyzing, encoding, finalizing stages
+    """
+    if len(files) < 2:
+        raise HTTPException(
+            status_code=400, detail="At least 2 video files are required for merging"
+        )
+
+    # Validate merge_mode
+    if merge_mode not in ["fast", "quality"]:
+        raise HTTPException(status_code=400, detail="merge_mode must be 'fast' or 'quality'")
+
+    # Validate all files
+    for file in files:
+        if not validate_video_format(file.filename):
+            raise HTTPException(
+                status_code=400, detail=f"File {file.filename} is not a valid video format"
+            )
+
+    # Validate output format
+    if output_format.lower() not in ["mp4", "avi", "mov", "mkv", "flv", "wmv"]:
+        raise HTTPException(status_code=400, detail="Unsupported output format")
+
+    # Save all uploaded files
+    input_paths = []
+    for file in files:
+        input_path = await save_upload_file(file)
+        input_paths.append(input_path)
+
+    # Create output path
+    output_filename = generate_unique_filename(f"merged.{output_format}")
+    output_path = TEMP_DIR / output_filename
+
+    # Create task
+    task = task_store.create_task(
+        task_type="video_merge",
+        metadata={
+            "filenames": [f.filename for f in files],
+            "output_format": output_format,
+            "quality": quality,
+            "merge_mode": merge_mode,
+        },
+    )
+
+    # Start background processing
+    asyncio.create_task(
+        run_merge_task(task.id, input_paths, output_path, output_format, quality, merge_mode)
+    )
 
     return {"task_id": task.id}

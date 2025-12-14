@@ -55,3 +55,18 @@ class AudioExtractionRequest(BaseModel):
         default="mp3", description="Target audio format"
     )
     bitrate: str = Field(default="192k", description="Audio bitrate (e.g., 128k, 192k, 256k)")
+
+
+class VideoMergeRequest(BaseModel):
+    """Request model for merging multiple videos"""
+
+    output_format: str = Field(
+        default="mp4", description="Output video format (mp4, avi, mov, etc.)"
+    )
+    quality: Literal["low", "medium", "high"] = Field(
+        default="medium", description="Output quality preset (only used in quality mode)"
+    )
+    merge_mode: Literal["fast", "quality"] = Field(
+        default="quality",
+        description="Merge mode: 'fast' copies streams without re-encoding (very fast but requires identical video parameters), 'quality' re-encodes for compatibility (slower but more reliable)",
+    )

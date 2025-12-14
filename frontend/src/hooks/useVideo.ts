@@ -46,3 +46,11 @@ export const useExtractAudio = () => {
   });
 };
 
+export const useMergeVideos = () => {
+  return useMutation<VideoProcessingResponse, Error, { files: File[]; outputFormat: string; quality: string }>({
+    mutationFn: async ({ files, outputFormat, quality }) => {
+      return ApiService.mergeVideos(files, outputFormat, quality);
+    },
+  });
+};
+

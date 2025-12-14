@@ -70,8 +70,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.video.merge.title',
     descriptionKey: 'modules.video.merge.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-purple-500',
+    status: 'implemented',
+    color: 'text-purple-600',
   },
   {
     id: 'video-rotate',
@@ -92,16 +92,6 @@ export const MODULES: ModuleDefinition[] = [
     category: 'media',
     status: 'implemented',
     color: 'text-purple-600',
-  },
-  {
-    id: 'video-change-speed',
-    path: '/video/change-speed',
-    icon: 'video-change-speed',
-    labelKey: 'modules.video.changeSpeed.title',
-    descriptionKey: 'modules.video.changeSpeed.description',
-    category: 'media',
-    status: 'placeholder',
-    color: 'text-purple-500',
   },
 
   // ============================================

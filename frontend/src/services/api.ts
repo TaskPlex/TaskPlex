@@ -214,6 +214,26 @@ export const ApiService = {
     return response.data;
   },
 
+  mergeVideos: async (files: File[], outputFormat: string = 'mp4', quality: string = 'medium', mergeMode: 'fast' | 'quality' = 'quality') => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    formData.append('output_format', outputFormat);
+    formData.append('quality', quality);
+    formData.append('merge_mode', mergeMode);
+    const response = await api.post<VideoProcessingResponse>('/video/merge', formData);
+    return response.data;
+  },
+
+  mergeVideosAsync: async (files: File[], outputFormat: string = 'mp4', quality: string = 'medium', mergeMode: 'fast' | 'quality' = 'quality', signal?: AbortSignal) => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    formData.append('output_format', outputFormat);
+    formData.append('quality', quality);
+    formData.append('merge_mode', mergeMode);
+    const response = await api.post<TaskResponse>('/video/merge/async', formData, { signal });
+    return response.data;
+  },
+
   // PDF
   compressPDF: async (file: File) => {
     const formData = new FormData();
@@ -752,5 +772,11 @@ export const ApiService = {
   },
   
   // Helper for download URL
-  getDownloadUrl: (path: string) => `${BASE_URL}${path}`
+  getDownloadUrl: (path: string) => `${BASE_URL}${path}`,
+  
+  // Task cancellation
+  cancelTask: async (taskId: string) => {
+    const response = await api.post(`/tasks/${taskId}/cancel`);
+    return response.data;
+  }
 };
