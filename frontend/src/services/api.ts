@@ -3,6 +3,7 @@ import type {
   VideoProcessingResponse,
   PDFProcessingResponse,
   ImageProcessingResponse,
+  AudioProcessingResponse,
   ColorExtractionResponse,
   ColorConversionResponse,
   VideoToGifOptions,
@@ -63,6 +64,7 @@ export type {
   VideoProcessingResponse,
   PDFProcessingResponse,
   ImageProcessingResponse,
+  AudioProcessingResponse,
   RegexMatch,
   RegexResponse,
   UnitConversionResponse,
@@ -402,6 +404,17 @@ export const ApiService = {
     formData.append('cols', cols.toString());
     formData.append('image_order', imageOrder.join(','));
     const response = await api.post<ImageProcessingResponse>('/image/collage', formData);
+    return response.data;
+  },
+
+  // Audio
+  convertAudio: async (file: File, outputFormat: string, quality: string = 'medium', bitrate: string = '192k') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('output_format', outputFormat);
+    formData.append('quality', quality);
+    formData.append('bitrate', bitrate);
+    const response = await api.post<AudioProcessingResponse>('/audio/convert', formData);
     return response.data;
   },
 

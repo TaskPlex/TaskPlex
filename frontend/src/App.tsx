@@ -92,6 +92,7 @@ const PaletteGeneratorScreen = createLazyComponent(() => import('./pages/Palette
 const GradientGeneratorScreen = createLazyComponent(() => import('./pages/GradientGeneratorScreen'), 'GradientGeneratorScreen');
 const CSVToJSONScreen = createLazyComponent(() => import('./pages/CSVToJSONScreen'), 'CSVToJSONScreen');
 const JSONToCSVScreen = createLazyComponent(() => import('./pages/JSONToCSVScreen'), 'JSONToCSVScreen');
+const AudioConvertScreen = createLazyComponent(() => import('./pages/AudioConvertScreen'), 'AudioConvertScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFCompress = createLazyComponent(() => import('./pages/pdf/PDFCompress'), 'PDFCompress');
@@ -109,6 +110,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'video-rotate': RotateVideoScreen,
   'video-extract-audio': ExtractAudioScreen,
   'video-to-gif': VideoToGIFScreen,
+  'audio-convert': AudioConvertScreen,
   'video-merge': VideoMergeScreen,
   
   // Image

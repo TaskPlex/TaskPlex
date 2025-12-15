@@ -13,6 +13,7 @@ import uvicorn
 
 from app.api import (
     accent_remover,
+    audio,
     barcode,
     case_converter,
     code_formatter,
@@ -187,6 +188,7 @@ async def health_check():
 
 # Include routers with /api/v1 prefix
 app.include_router(video.router, prefix="/api/v1")
+app.include_router(audio.router, prefix="/api/v1")
 app.include_router(image.router, prefix="/api/v1")
 app.include_router(pdf.router, prefix="/api/v1")
 app.include_router(regex.router, prefix="/api/v1")

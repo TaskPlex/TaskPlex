@@ -7,7 +7,7 @@ interface QualitySelectorProps {
   value: QualityLevel;
   onChange: (quality: QualityLevel) => void;
   labelKey?: string;
-  color?: 'purple' | 'blue' | 'red' | 'green';
+  color?: 'purple' | 'blue' | 'red' | 'green' | 'pink';
   className?: string;
   disabled?: boolean;
 }
@@ -27,6 +27,10 @@ const colorClasses = {
   },
   green: {
     active: 'border-green-600 dark:border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+    inactive: 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500',
+  },
+  pink: {
+    active: 'border-pink-600 dark:border-pink-400 bg-pink-50 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300',
     inactive: 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500',
   },
 };

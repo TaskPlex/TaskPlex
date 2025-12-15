@@ -785,6 +785,24 @@
     "results": "Extracted URLs",
     "placeholder": "Enter text above and click 'Extract URLs' to see results"
   },
+  "audioConvert": {
+    "title": "Convert Audio",
+    "description": "Convert your audio files between different formats (MP3, WAV, FLAC, OGG, AAC, M4A)",
+    "audioFile": "Audio File",
+    "dragDrop": "Drop your audio file here or click to browse",
+    "outputFormat": "Output Format",
+    "quality": "Quality",
+    "bitrate": "Bitrate",
+    "bitrateHint": "Bitrate for lossy formats (MP3, OGG, AAC, M4A)",
+    "convert": "Convert",
+    "converting": "Converting...",
+    "result": "Result",
+    "downloadResult": "Download Converted File",
+    "previewPlaceholder": "Upload an audio file and select a format to get started",
+    "validation": {
+      "fileRequired": "Please select an audio file"
+    }
+  },
   "units": {
     "title": "Unit Converter",
     "from": "From",
