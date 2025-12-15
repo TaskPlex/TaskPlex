@@ -1478,10 +1478,6 @@
         "title": "Images vers PDF",
         "description": "Combiner des images en PDF"
       },
-      "extractText": {
-        "title": "Extraire texte",
-        "description": "Extraire le texte d'un PDF"
-      },
       "watermark": {
         "title": "Ajouter filigrane",
         "description": "Ajouter un filigrane texte ou image au PDF"
@@ -1746,42 +1742,6 @@
       }
     },
     "files": {
-      "zipCompress": {
-        "title": "Créer ZIP",
-        "description": "Compresser des fichiers en archive ZIP"
-      },
-      "zipExtract": {
-        "title": "Extraire ZIP",
-        "description": "Extraire des archives ZIP"
-      },
-      "batchRename": {
-        "title": "Renommage par lot",
-        "description": "Renommer plusieurs fichiers en une fois"
-      },
-      "duplicateFinder": {
-        "title": "Recherche de doublons",
-        "description": "Trouver les fichiers en double"
-      },
-      "rarCompress": {
-        "title": "Créer RAR",
-        "description": "Compresser des fichiers en archive RAR"
-      },
-      "rarExtract": {
-        "title": "Extraire RAR",
-        "description": "Extraire des archives RAR"
-      },
-      "7zCompress": {
-        "title": "Créer 7Z",
-        "description": "Compresser des fichiers en archive 7Z"
-      },
-      "7zExtract": {
-        "title": "Extraire 7Z",
-        "description": "Extraire des archives 7Z"
-      },
-      "fileCompare": {
-        "title": "Comparaison de fichiers",
-        "description": "Comparer deux fichiers (diff)"
-      }
     },
     "design": {
       "favicon": {

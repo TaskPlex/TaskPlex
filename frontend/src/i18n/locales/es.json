@@ -1478,10 +1478,6 @@
         "title": "Imágenes a PDF",
         "description": "Combinar imágenes en PDF"
       },
-      "extractText": {
-        "title": "Extraer texto",
-        "description": "Extraer texto de un PDF"
-      },
       "watermark": {
         "title": "Agregar marca de agua",
         "description": "Agregar marca de agua de texto o imagen al PDF"
@@ -1746,42 +1742,6 @@
       }
     },
     "files": {
-      "zipCompress": {
-        "title": "Crear ZIP",
-        "description": "Comprimir archivos en archivo ZIP"
-      },
-      "zipExtract": {
-        "title": "Extraer ZIP",
-        "description": "Extraer archivos ZIP"
-      },
-      "batchRename": {
-        "title": "Renombrado por lotes",
-        "description": "Renombrar múltiples archivos a la vez"
-      },
-      "duplicateFinder": {
-        "title": "Buscador de duplicados",
-        "description": "Encontrar archivos duplicados"
-      },
-      "rarCompress": {
-        "title": "Crear RAR",
-        "description": "Comprimir archivos en archivo RAR"
-      },
-      "rarExtract": {
-        "title": "Extraer RAR",
-        "description": "Extraer archivos RAR"
-      },
-      "7zCompress": {
-        "title": "Crear 7Z",
-        "description": "Comprimir archivos en archivo 7Z"
-      },
-      "7zExtract": {
-        "title": "Extraer 7Z",
-        "description": "Extraer archivos 7Z"
-      },
-      "fileCompare": {
-        "title": "Comparación de archivos",
-        "description": "Comparar dos archivos (diff)"
-      }
     },
     "design": {
       "favicon": {

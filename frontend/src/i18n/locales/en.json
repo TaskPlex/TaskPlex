@@ -1402,10 +1402,6 @@
         "title": "Images to PDF",
         "description": "Combine images into PDF"
       },
-      "extractText": {
-        "title": "Extract Text",
-        "description": "Extract text from PDF"
-      },
       "watermark": {
         "title": "Add Watermark",
         "description": "Add text or image watermark to PDF"
@@ -1670,42 +1666,6 @@
       }
     },
     "files": {
-      "zipCompress": {
-        "title": "Create ZIP",
-        "description": "Compress files to ZIP archive"
-      },
-      "zipExtract": {
-        "title": "Extract ZIP",
-        "description": "Extract ZIP archives"
-      },
-      "batchRename": {
-        "title": "Batch Rename",
-        "description": "Rename multiple files at once"
-      },
-      "duplicateFinder": {
-        "title": "Duplicate Finder",
-        "description": "Find duplicate files"
-      },
-      "rarCompress": {
-        "title": "Create RAR",
-        "description": "Compress files to RAR archive"
-      },
-      "rarExtract": {
-        "title": "Extract RAR",
-        "description": "Extract RAR archives"
-      },
-      "7zCompress": {
-        "title": "Create 7Z",
-        "description": "Compress files to 7Z archive"
-      },
-      "7zExtract": {
-        "title": "Extract 7Z",
-        "description": "Extract 7Z archives"
-      },
-      "fileCompare": {
-        "title": "File Compare",
-        "description": "Compare two files (diff)"
-      }
     },
     "design": {
       "favicon": {
