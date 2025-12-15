@@ -64,6 +64,7 @@ export type {
   VideoProcessingResponse,
   PDFProcessingResponse,
   ImageProcessingResponse,
+  AudioProcessingResponse,
   RegexMatch,
   RegexResponse,
   UnitConversionResponse,

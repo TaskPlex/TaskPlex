@@ -127,11 +127,9 @@ export const AudioConvertScreen: React.FC = () => {
               downloadUrl={data.download_url}
               downloadLabelKey="audioConvert.downloadResult"
               color="green"
-              stats={{
-                originalSize: data.original_size,
-                processedSize: data.processed_size,
-                compressionRatio: data.compression_ratio,
-              }}
+              originalSize={data.original_size}
+              processedSize={data.processed_size}
+              compressionRatio={data.compression_ratio}
             />
           )}
 
