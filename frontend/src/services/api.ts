@@ -418,6 +418,15 @@ export const ApiService = {
     return response.data;
   },
 
+  compressAudio: async (file: File, quality: string = 'medium', targetBitrate: string = '128k') => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('quality', quality);
+    formData.append('target_bitrate', targetBitrate);
+    const response = await api.post<AudioProcessingResponse>('/audio/compress', formData);
+    return response.data;
+  },
+
   // Regex
   testRegex: async (pattern: string, text: string, flags: string) => {
     const response = await api.post<RegexResponse>('/regex/validate', {

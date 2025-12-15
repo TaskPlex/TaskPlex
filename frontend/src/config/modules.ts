@@ -114,7 +114,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.audio.compress.title',
     descriptionKey: 'modules.audio.compress.description',
     category: 'media',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-pink-600',
   },
   {

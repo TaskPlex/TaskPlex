@@ -8,7 +8,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.audio import AudioProcessingResponse
-from app.services.audio_service import convert_audio
+from app.services.audio_service import compress_audio, convert_audio
 from app.utils.file_handler import delete_file, generate_unique_filename, save_upload_file
 
 router = APIRouter(prefix="/audio", tags=["Audio"])
@@ -99,6 +99,82 @@ async def convert_audio_endpoint(
             output_format=output_format,
             quality=quality,
             bitrate=bitrate,
+        )
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/compress", response_model=AudioProcessingResponse)
+async def compress_audio_endpoint(
+    file: UploadFile = File(..., description="Audio file to compress"),
+    quality: str = Form("medium", description="Compression quality (low, medium, high)"),
+    target_bitrate: str = Form(
+        "128k", description="Target audio bitrate (e.g., 64k, 96k, 128k, 160k, 192k)"
+    ),
+):
+    """
+    Compress an audio file to reduce its size
+
+    - **file**: Audio file to compress
+    - **quality**: Compression quality preset (low, medium, high)
+    - **target_bitrate**: Target audio bitrate for compression (64k, 96k, 128k, 160k, 192k)
+
+    Supported input formats: MP3, WAV, FLAC, OGG, AAC, M4A, WMA, OPUS, MP4, M4V
+
+    The compression will:
+    - Convert lossless formats (WAV, FLAC) to MP3
+    - Reduce bitrate for lossy formats (MP3, OGG, AAC)
+    - Maintain the original format when possible
+    """
+    if not validate_audio_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported audio format")
+
+    allowed_qualities = {"low", "medium", "high"}
+    if quality.lower() not in allowed_qualities:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid quality. Allowed values: {', '.join(allowed_qualities)}",
+        )
+
+    # Validate bitrate format (should end with 'k' or be a number)
+    if not target_bitrate.endswith("k"):
+        raise HTTPException(
+            status_code=400,
+            detail="Bitrate must be in format like '128k', '192k', etc.",
+        )
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Build output filename (keep original extension or use mp3 for lossless)
+        base_name = Path(file.filename).stem
+        input_ext = Path(file.filename).suffix.lower()
+
+        # Determine output format
+        if input_ext in [".wav", ".flac"]:
+            output_ext = "mp3"
+        else:
+            output_ext = input_ext.lstrip(".")
+
+        output_filename = generate_unique_filename(f"{base_name}_compressed.{output_ext}")
+        output_path = TEMP_DIR / output_filename
+
+        result = compress_audio(
+            input_path=input_path,
+            output_path=output_path,
+            quality=quality,
+            target_bitrate=target_bitrate,
         )
 
         if not result.success:

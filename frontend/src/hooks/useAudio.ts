@@ -14,3 +14,15 @@ export const useConvertAudio = () => {
   });
 };
 
+export const useCompressAudio = () => {
+  return useMutation<
+    AudioProcessingResponse,
+    Error,
+    { file: File; quality: string; targetBitrate: string }
+  >({
+    mutationFn: async ({ file, quality, targetBitrate }) => {
+      return ApiService.compressAudio(file, quality, targetBitrate);
+    },
+  });
+};
+

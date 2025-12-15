@@ -803,6 +803,23 @@
       "fileRequired": "Please select an audio file"
     }
   },
+  "audioCompress": {
+    "title": "Compress Audio",
+    "description": "Reduce the size of your audio files by adjusting quality and bitrate",
+    "audioFile": "Audio File",
+    "dragDrop": "Drop your audio file here or click to browse",
+    "quality": "Quality",
+    "bitrate": "Target Bitrate",
+    "bitrateHint": "Lower bitrate = smaller file but reduced quality",
+    "compress": "Compress",
+    "compressing": "Compressing...",
+    "result": "Result",
+    "downloadResult": "Download Compressed File",
+    "previewPlaceholder": "Upload an audio file to start compression",
+    "validation": {
+      "fileRequired": "Please select an audio file"
+    }
+  },
   "units": {
     "title": "Unit Converter",
     "from": "From",

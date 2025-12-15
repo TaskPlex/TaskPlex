@@ -815,6 +815,23 @@
       "fileRequired": "Veuillez sélectionner un fichier audio"
     }
   },
+  "audioCompress": {
+    "title": "Compresser Audio",
+    "description": "Réduisez la taille de vos fichiers audio en ajustant la qualité et le débit binaire",
+    "audioFile": "Fichier audio",
+    "dragDrop": "Déposez votre fichier audio ici ou cliquez pour parcourir",
+    "quality": "Qualité",
+    "bitrate": "Débit binaire cible",
+    "bitrateHint": "Débit binaire plus bas = fichier plus petit mais qualité réduite",
+    "compress": "Compresser",
+    "compressing": "Compression...",
+    "result": "Résultat",
+    "downloadResult": "Télécharger le fichier compressé",
+    "previewPlaceholder": "Téléchargez un fichier audio pour commencer la compression",
+    "validation": {
+      "fileRequired": "Veuillez sélectionner un fichier audio"
+    }
+  },
   "jsonValidator": {
     "title": "Validateur JSON",
     "description": "Valider la syntaxe et la structure JSON.",
