@@ -427,6 +427,22 @@ export const ApiService = {
     return response.data;
   },
 
+  mergeAudio: async (files: File[], outputFormat: string = 'mp3', quality: string = 'medium', bitrate: string = '192k') => {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+    formData.append('output_format', outputFormat);
+    formData.append('quality', quality);
+    formData.append('bitrate', bitrate);
+    const response = await api.post<AudioProcessingResponse>('/audio/merge', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
   // Regex
   testRegex: async (pattern: string, text: string, flags: string) => {
     const response = await api.post<RegexResponse>('/regex/validate', {

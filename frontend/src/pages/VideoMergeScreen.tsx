@@ -5,6 +5,7 @@ import { ApiService } from '../services/api';
 import { useTaskProgress } from '../hooks/useTaskProgress';
 import { useDownload } from '../hooks/useDownload';
 import { QualitySelector, FormatSelector, ProgressBar, OperationToggle, type QualityLevel } from '../components/ui';
+import { truncateFilename } from '../utils/filename';
 
 const VIDEO_FORMATS = ['mp4', 'avi', 'mov', 'mkv', 'flv', 'wmv'];
 const MERGE_MODES = [
@@ -120,7 +121,9 @@ export const VideoMergeScreen: React.FC = () => {
                     <Video className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 dark:text-white truncate">{file.name}</p>
+                    <p className="font-medium text-gray-900 dark:text-white" title={file.name}>
+                      {truncateFilename(file.name)}
+                    </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
                   </div>
                   <button 

@@ -26,3 +26,15 @@ export const useCompressAudio = () => {
   });
 };
 
+export const useMergeAudio = () => {
+  return useMutation<
+    AudioProcessingResponse,
+    Error,
+    { files: File[]; outputFormat: string; quality: string; bitrate: string }
+  >({
+    mutationFn: async ({ files, outputFormat, quality, bitrate }) => {
+      return ApiService.mergeAudio(files, outputFormat, quality, bitrate);
+    },
+  });
+};
+

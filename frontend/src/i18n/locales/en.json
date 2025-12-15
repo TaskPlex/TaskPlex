@@ -820,6 +820,19 @@
       "fileRequired": "Please select an audio file"
     }
   },
+  "audioMerge": {
+    "selectFiles": "Select Audio Files",
+    "dropFiles": "Drop audio files here or click to browse",
+    "addMore": "Add More Files",
+    "outputFormat": "Output Format",
+    "quality": "Quality",
+    "bitrate": "Bitrate",
+    "merging": "Merging...",
+    "mergeBtn": "Merge Audio Files",
+    "successTitle": "Audio Files Merged!",
+    "successMessage": "Your audio files have been combined into one file.",
+    "downloadResult": "Download Merged File"
+  },
   "units": {
     "title": "Unit Converter",
     "from": "From",

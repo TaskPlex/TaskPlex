@@ -94,6 +94,7 @@ const CSVToJSONScreen = createLazyComponent(() => import('./pages/CSVToJSONScree
 const JSONToCSVScreen = createLazyComponent(() => import('./pages/JSONToCSVScreen'), 'JSONToCSVScreen');
 const AudioConvertScreen = createLazyComponent(() => import('./pages/AudioConvertScreen'), 'AudioConvertScreen');
 const AudioCompressScreen = createLazyComponent(() => import('./pages/AudioCompressScreen'), 'AudioCompressScreen');
+const AudioMergeScreen = createLazyComponent(() => import('./pages/AudioMergeScreen'), 'AudioMergeScreen');
 
 // PDF Module - lazy loaded (heavy dependencies like react-pdf)
 const PDFCompress = createLazyComponent(() => import('./pages/pdf/PDFCompress'), 'PDFCompress');
@@ -113,6 +114,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'video-to-gif': VideoToGIFScreen,
   'audio-convert': AudioConvertScreen,
   'audio-compress': AudioCompressScreen,
+  'audio-merge': AudioMergeScreen,
   'video-merge': VideoMergeScreen,
   
   // Image

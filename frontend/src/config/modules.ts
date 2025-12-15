@@ -124,7 +124,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.audio.merge.title',
     descriptionKey: 'modules.audio.merge.description',
     category: 'media',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-pink-600',
   },
   {

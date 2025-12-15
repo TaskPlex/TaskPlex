@@ -216,3 +216,127 @@ def compress_audio(
             message=f"Error compressing audio: {str(e)}",
             filename=output_path.name if output_path else None,
         )
+
+
+def merge_audio(
+    input_paths: list[Path],
+    output_path: Path,
+    output_format: str = "mp3",
+    quality: str = "medium",
+    bitrate: str = "192k",
+) -> AudioProcessingResponse:
+    """
+    Merge multiple audio files into one using FFmpeg concat demuxer
+
+    Args:
+        input_paths: List of paths to input audio files (in order)
+        output_path: Path to save merged audio
+        output_format: Output audio format (mp3, wav, flac, ogg, aac, m4a)
+        quality: Output quality preset (low, medium, high)
+        bitrate: Audio bitrate (e.g., 128k, 192k, 256k, 320k)
+
+    Returns:
+        AudioProcessingResponse with merge results
+    """
+    try:
+        if len(input_paths) < 2:
+            return AudioProcessingResponse(
+                success=False,
+                message="At least 2 audio files are required for merging",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Calculate total original size
+        total_original_size = sum(get_file_size(path) for path in input_paths)
+
+        # Map codecs per format
+        codec_map = {
+            "mp3": "libmp3lame",
+            "wav": "pcm_s16le",
+            "flac": "flac",
+            "ogg": "libvorbis",
+            "aac": "aac",
+            "m4a": "aac",
+        }
+
+        codec = codec_map.get(output_format.lower())
+        if codec is None:
+            return AudioProcessingResponse(
+                success=False,
+                message=f"Unsupported output audio format: {output_format}",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Use concat filter instead of concat demuxer for better compatibility
+        # This method works even when files have different codecs/sample rates
+        # The filter normalizes all inputs before concatenating
+        # Create input streams for all audio files
+        input_streams = [ffmpeg.input(str(path)) for path in input_paths]
+
+        # Extract audio streams (in case some files have video tracks)
+        # Use ['a'] to get the first audio stream from each input
+        audio_streams = [stream["a"] for stream in input_streams]
+
+        # Use concat filter to merge audio streams
+        # The concat filter requires all streams to be passed as a list
+        # n=number of inputs, v=0 (no video), a=1 (audio only)
+        # This syntax is similar to how paletteuse filter works in video_service.py
+        merged_stream = ffmpeg.filter(audio_streams, "concat", n=len(input_paths), v=0, a=1)
+
+        # Build output options
+        output_kwargs = {"acodec": codec}
+
+        # Set bitrate for lossy formats
+        if output_format.lower() in ["mp3", "ogg", "aac", "m4a"]:
+            output_kwargs["b:a"] = bitrate
+
+        # For WAV and FLAC, set sample rate based on quality
+        if output_format.lower() in ["wav", "flac"]:
+            quality_sample_rates = {
+                "low": "22050",
+                "medium": "44100",
+                "high": "48000",
+            }
+            sample_rate = quality_sample_rates.get(quality, "44100")
+            output_kwargs["ar"] = sample_rate
+
+        # For MP3, adjust quality based on preset
+        if output_format.lower() == "mp3":
+            quality_presets = {
+                "low": "7",
+                "medium": "4",
+                "high": "0",
+            }
+            output_kwargs["q:a"] = quality_presets.get(quality, "4")
+
+        stream = ffmpeg.output(merged_stream, str(output_path), **output_kwargs)
+        ffmpeg.run(stream, overwrite_output=True, capture_stdout=True, capture_stderr=True)
+
+        # Get merged file size
+        merged_size = get_file_size(output_path)
+        compression_ratio = calculate_compression_ratio(total_original_size, merged_size)
+
+        return AudioProcessingResponse(
+            success=True,
+            message=f"Successfully merged {len(input_paths)} audio files",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=total_original_size,
+            processed_size=merged_size,
+            compression_ratio=compression_ratio,
+        )
+
+    except ffmpeg.Error as e:
+        error_message = e.stderr.decode() if e.stderr else str(e)
+        return AudioProcessingResponse(
+            success=False,
+            message=f"FFmpeg error: {error_message}",
+            filename=output_path.name if output_path else None,
+        )
+
+    except Exception as e:
+        return AudioProcessingResponse(
+            success=False,
+            message=f"Error merging audio: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )

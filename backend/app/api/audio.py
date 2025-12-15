@@ -8,7 +8,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.audio import AudioProcessingResponse
-from app.services.audio_service import compress_audio, convert_audio
+from app.services.audio_service import compress_audio, convert_audio, merge_audio
 from app.utils.file_handler import delete_file, generate_unique_filename, save_upload_file
 
 router = APIRouter(prefix="/audio", tags=["Audio"])
@@ -185,3 +185,81 @@ async def compress_audio_endpoint(
     finally:
         if input_path:
             delete_file(input_path)
+
+
+@router.post("/merge", response_model=AudioProcessingResponse)
+async def merge_audio_endpoint(
+    files: list[UploadFile] = File(..., description="Audio files to merge (in order)"),
+    output_format: str = Form("mp3", description="Output format (mp3, wav, flac, ogg, aac, m4a)"),
+    quality: str = Form("medium", description="Output quality (low, medium, high)"),
+    bitrate: str = Form("192k", description="Audio bitrate (e.g., 128k, 192k, 256k, 320k)"),
+):
+    """
+    Merge multiple audio files into one
+
+    - **files**: Audio files to merge (in order)
+    - **output_format**: Target format (mp3, wav, flac, ogg, aac, m4a)
+    - **quality**: Output quality preset (low, medium, high)
+    - **bitrate**: Audio bitrate for lossy formats (128k, 192k, 256k, 320k)
+
+    Supported input formats: MP3, WAV, FLAC, OGG, AAC, M4A, WMA, OPUS, MP4, M4V
+    Supported output formats: MP3, WAV, FLAC, OGG, AAC, M4A
+    """
+    if len(files) < 2:
+        raise HTTPException(
+            status_code=400, detail="At least 2 audio files are required for merging"
+        )
+
+    # Validate all files
+    for file in files:
+        if not validate_audio_format(file.filename):
+            raise HTTPException(
+                status_code=400, detail=f"Unsupported audio format: {file.filename}"
+            )
+
+    allowed_output_formats = {"mp3", "wav", "flac", "ogg", "aac", "m4a"}
+    if output_format.lower() not in allowed_output_formats:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported output format. Allowed formats: {', '.join(allowed_output_formats)}",
+        )
+
+    allowed_qualities = {"low", "medium", "high"}
+    if quality.lower() not in allowed_qualities:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid quality. Allowed values: {', '.join(allowed_qualities)}",
+        )
+
+    input_paths = []
+    output_path = None
+
+    try:
+        # Save all uploaded files
+        for file in files:
+            input_path = await save_upload_file(file)
+            input_paths.append(input_path)
+
+        # Build output filename
+        base_name = Path(files[0].filename).stem
+        output_filename = generate_unique_filename(f"{base_name}_merged.{output_format}")
+        output_path = TEMP_DIR / output_filename
+
+        result = merge_audio(
+            input_paths=input_paths,
+            output_path=output_path,
+            output_format=output_format,
+            quality=quality,
+            bitrate=bitrate,
+        )
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up all input files
+        for input_path in input_paths:
+            if input_path:
+                delete_file(input_path)

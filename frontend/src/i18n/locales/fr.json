@@ -832,6 +832,19 @@
       "fileRequired": "Veuillez sélectionner un fichier audio"
     }
   },
+  "audioMerge": {
+    "selectFiles": "Sélectionner des fichiers audio",
+    "dropFiles": "Déposez vos fichiers audio ici ou cliquez pour parcourir",
+    "addMore": "Ajouter plus de fichiers",
+    "outputFormat": "Format de sortie",
+    "quality": "Qualité",
+    "bitrate": "Débit binaire",
+    "merging": "Fusion en cours...",
+    "mergeBtn": "Fusionner les fichiers audio",
+    "successTitle": "Fichiers audio fusionnés !",
+    "successMessage": "Vos fichiers audio ont été combinés en un seul fichier.",
+    "downloadResult": "Télécharger le fichier fusionné"
+  },
   "jsonValidator": {
     "title": "Validateur JSON",
     "description": "Valider la syntaxe et la structure JSON.",
