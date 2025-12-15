@@ -30,7 +30,6 @@ import type {
   LoremIpsumResponse,
   WordCounterResponse,
   AccentRemoverResponse,
-  CaseConverterRequest,
   CaseConverterResponse,
   CaseType,
   KeywordExtractorResponse,
