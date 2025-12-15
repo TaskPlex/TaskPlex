@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
-import { Upload, FileText, FileVideo, FileImage, File } from 'lucide-react';
+import { Upload, FileText, FileVideo, FileImage, File, Music } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export type FileType = 'video' | 'image' | 'pdf' | 'document' | 'any';
+export type FileType = 'video' | 'image' | 'pdf' | 'document' | 'audio' | 'any';
 
 interface FileDropzoneProps {
   file: File | null;
@@ -11,7 +11,7 @@ interface FileDropzoneProps {
   fileType?: FileType;
   labelKey?: string;
   dropLabelKey?: string;
-  color?: 'purple' | 'blue' | 'red' | 'green';
+  color?: 'purple' | 'blue' | 'red' | 'green' | 'pink';
   className?: string;
   disabled?: boolean;
 }
@@ -20,6 +20,7 @@ const iconMap = {
   video: FileVideo,
   image: FileImage,
   pdf: FileText,
+  audio: Music,
   any: File,
   document: FileText,
 };
@@ -29,6 +30,7 @@ const colorClasses = {
   blue: 'text-blue-600 dark:text-blue-400',
   red: 'text-red-600 dark:text-red-400',
   green: 'text-green-600 dark:text-green-400',
+  pink: 'text-pink-600 dark:text-pink-400',
 };
 
 export const FileDropzone: React.FC<FileDropzoneProps> = ({

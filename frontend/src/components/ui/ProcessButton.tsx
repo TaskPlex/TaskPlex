@@ -8,7 +8,7 @@ interface ProcessButtonProps {
   loading?: boolean;
   labelKey: string;
   loadingLabelKey?: string;
-  color?: 'purple' | 'blue' | 'red' | 'green' | 'orange';
+  color?: 'purple' | 'blue' | 'red' | 'green' | 'orange' | 'pink';
   className?: string;
 }
 
@@ -18,6 +18,7 @@ const colorClasses = {
   red: 'bg-red-600 hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-500',
   green: 'bg-green-600 hover:bg-green-700 dark:bg-green-600 dark:hover:bg-green-500',
   orange: 'bg-orange-600 hover:bg-orange-700 dark:bg-orange-600 dark:hover:bg-orange-500',
+  pink: 'bg-pink-600 hover:bg-pink-700 dark:bg-pink-600 dark:hover:bg-pink-500',
 };
 
 export const ProcessButton: React.FC<ProcessButtonProps> = ({

@@ -104,7 +104,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.audio.convert.title',
     descriptionKey: 'modules.audio.convert.description',
     category: 'media',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-pink-600',
   },
   {

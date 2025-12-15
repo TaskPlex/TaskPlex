@@ -52,6 +52,15 @@ export interface ImageProcessingResponse extends ApiResponse {
   dimensions?: ImageDimensions;
 }
 
+// Audio Processing
+export interface AudioProcessingResponse extends ApiResponse {
+  filename: string;
+  download_url?: string;
+  original_size?: number;
+  processed_size?: number;
+  compression_ratio?: number;
+}
+
 export interface ImageDimensions {
   width: number;
   height: number;

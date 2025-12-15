@@ -797,6 +797,24 @@
     "results": "URLs extraídas",
     "placeholder": "Ingresa texto arriba y haz clic en 'Extraer URLs' para ver los resultados"
   },
+  "audioConvert": {
+    "title": "Convertir Audio",
+    "description": "Convierte tus archivos de audio entre diferentes formatos (MP3, WAV, FLAC, OGG, AAC, M4A)",
+    "audioFile": "Archivo de audio",
+    "dragDrop": "Arrastra tu archivo de audio aquí o haz clic para explorar",
+    "outputFormat": "Formato de salida",
+    "quality": "Calidad",
+    "bitrate": "Tasa de bits",
+    "bitrateHint": "Tasa de bits para formatos con pérdida (MP3, OGG, AAC, M4A)",
+    "convert": "Convertir",
+    "converting": "Convirtiendo...",
+    "result": "Resultado",
+    "downloadResult": "Descargar archivo convertido",
+    "previewPlaceholder": "Sube un archivo de audio y selecciona un formato para comenzar",
+    "validation": {
+      "fileRequired": "Por favor selecciona un archivo de audio"
+    }
+  },
   "jsonValidator": {
     "title": "Validador JSON",
     "description": "Validar la sintaxis y estructura JSON.",
