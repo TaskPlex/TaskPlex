@@ -9,6 +9,7 @@ from app.services.image_service import (
     compress_image,
     convert_image,
     create_collage,
+    create_icon,
     extract_colors,
     resize_image,
     rotate_image,
@@ -233,3 +234,78 @@ def test_create_collage_3x3_grid(tmp_path: Path):
     assert result.dimensions["width"] == 2400  # 3 * 800
     assert result.dimensions["height"] == 2400  # 3 * 800
     assert output_path.exists()
+
+
+def test_create_icon_success(tmp_path: Path):
+    """Test creating an icon from an image"""
+    input_path = tmp_path / "input.png"
+    output_path = tmp_path / "output.ico"
+    create_temp_image(input_path, size=(512, 512), color="blue")
+
+    result = create_icon(input_path, output_path, size=256)
+
+    assert result.success is True
+    assert result.filename == "output.ico"
+    assert result.download_url.endswith(".ico")
+    assert result.dimensions == {"width": 256, "height": 256}
+    assert output_path.exists()
+
+    # Verify it's a valid ICO file
+    with Image.open(output_path) as icon:
+        assert icon.format == "ICO"
+        assert icon.size == (256, 256)
+
+
+def test_create_icon_different_sizes(tmp_path: Path):
+    """Test creating icons with different sizes"""
+    input_path = tmp_path / "input.png"
+    create_temp_image(input_path, size=(200, 200), color="green")
+
+    for size in [16, 32, 64, 128, 256]:
+        output_path = tmp_path / f"output_{size}.ico"
+        result = create_icon(input_path, output_path, size=size)
+
+        assert result.success is True
+        assert result.dimensions == {"width": size, "height": size}
+        assert output_path.exists()
+
+
+def test_create_icon_invalid_size_too_small(tmp_path: Path):
+    """Test creating icon with size too small"""
+    input_path = tmp_path / "input.png"
+    output_path = tmp_path / "output.ico"
+    create_temp_image(input_path, size=(100, 100), color="red")
+
+    result = create_icon(input_path, output_path, size=10)
+
+    assert result.success is False
+    assert "Invalid icon size" in result.message
+
+
+def test_create_icon_invalid_size_too_large(tmp_path: Path):
+    """Test creating icon with size too large"""
+    input_path = tmp_path / "input.png"
+    output_path = tmp_path / "output.ico"
+    create_temp_image(input_path, size=(100, 100), color="red")
+
+    result = create_icon(input_path, output_path, size=1024)
+
+    assert result.success is False
+    assert "Invalid icon size" in result.message
+
+
+def test_create_icon_rgba_image(tmp_path: Path):
+    """Test creating icon from RGBA image (with transparency)"""
+    input_path = tmp_path / "input.png"
+    output_path = tmp_path / "output.ico"
+    create_temp_image(input_path, size=(128, 128), color="red", mode="RGBA")
+
+    result = create_icon(input_path, output_path, size=64)
+
+    assert result.success is True
+    assert output_path.exists()
+
+    # Verify ICO was created
+    with Image.open(output_path) as icon:
+        assert icon.format == "ICO"
+        assert icon.size == (64, 64)

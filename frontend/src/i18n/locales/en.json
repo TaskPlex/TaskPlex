@@ -267,6 +267,19 @@
     "original": "Original",
     "downloadResult": "Download Result"
   },
+  "imageToIcon": {
+    "title": "Create Icon",
+    "imageFile": "Image File",
+    "dragDrop": "Drag and drop or click to select",
+    "size": "Icon Size",
+    "sizeHint": "Size in pixels (16-512)",
+    "createIcon": "Create Icon",
+    "processing": "Processing...",
+    "result": "Result",
+    "preview": "Preview will appear here",
+    "original": "Original",
+    "downloadResult": "Download Icon"
+  },
   "extractColors": {
     "title": "Extract Colors",
     "imageFile": "Image File",

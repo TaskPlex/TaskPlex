@@ -14,6 +14,7 @@ from app.services.image_service import (
     compress_image,
     convert_image,
     create_collage,
+    create_icon,
     extract_colors,
     flip_image,
     resize_image,
@@ -489,3 +490,48 @@ async def create_collage_endpoint(
         for input_path in input_paths:
             if input_path:
                 delete_file(input_path)
+
+
+@router.post("/to-icon", response_model=ImageProcessingResponse)
+async def create_icon_endpoint(
+    file: UploadFile = File(..., description="Image file to convert to icon"),
+    size: int = Form(256, description="Icon size in pixels (16-512, default: 256)"),
+):
+    """
+    Convert an image to an ICO file
+
+    Supported formats: JPG, JPEG, PNG, GIF, BMP, WEBP
+    Output: ICO file with specified size
+    """
+    # Validate file format
+    if not validate_image_format(file.filename):
+        raise HTTPException(status_code=400, detail="Unsupported image format")
+
+    # Validate size
+    if size < 16 or size > 512:
+        raise HTTPException(status_code=400, detail="Icon size must be between 16 and 512 pixels")
+
+    input_path = None
+    output_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Create output path
+        base_name = Path(file.filename).stem
+        output_filename = generate_unique_filename(f"{base_name}.ico")
+        output_path = TEMP_DIR / output_filename
+
+        # Create icon
+        result = create_icon(input_path, output_path, size)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input file
+        if input_path:
+            delete_file(input_path)

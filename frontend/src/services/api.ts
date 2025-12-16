@@ -434,6 +434,14 @@ export const ApiService = {
     return response.data;
   },
 
+  createIcon: async (file: File, size: number = 256) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('size', size.toString());
+    const response = await api.post<ImageProcessingResponse>('/image/to-icon', formData);
+    return response.data;
+  },
+
   // Audio
   convertAudio: async (file: File, outputFormat: string, quality: string = 'medium', bitrate: string = '192k') => {
     const formData = new FormData();

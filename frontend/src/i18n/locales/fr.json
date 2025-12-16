@@ -279,6 +279,19 @@
     "original": "Original",
     "downloadResult": "Télécharger le résultat"
   },
+  "imageToIcon": {
+    "title": "Créer icône",
+    "imageFile": "Fichier image",
+    "dragDrop": "Glissez-déposez ou cliquez pour sélectionner",
+    "size": "Taille de l'icône",
+    "sizeHint": "Taille en pixels (16-512)",
+    "createIcon": "Créer l'icône",
+    "processing": "Traitement en cours...",
+    "result": "Résultat",
+    "preview": "L'aperçu apparaîtra ici",
+    "original": "Original",
+    "downloadResult": "Télécharger l'icône"
+  },
   "extractColors": {
     "title": "Extraire les couleurs",
     "imageFile": "Fichier image",

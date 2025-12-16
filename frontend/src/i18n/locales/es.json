@@ -279,6 +279,19 @@
     "original": "Original",
     "downloadResult": "Descargar resultado"
   },
+  "imageToIcon": {
+    "title": "Crear icono",
+    "imageFile": "Archivo de imagen",
+    "dragDrop": "Arrastra y suelta o haz clic para seleccionar",
+    "size": "Tamaño del icono",
+    "sizeHint": "Tamaño en píxeles (16-512)",
+    "createIcon": "Crear icono",
+    "processing": "Procesando...",
+    "result": "Resultado",
+    "preview": "La vista previa aparecerá aquí",
+    "original": "Original",
+    "downloadResult": "Descargar icono"
+  },
   "extractColors": {
     "title": "Extraer colores",
     "imageFile": "Archivo de imagen",

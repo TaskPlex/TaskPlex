@@ -84,3 +84,11 @@ export const useCreateCollage = () => {
   });
 };
 
+export const useCreateIcon = () => {
+  return useMutation<ImageProcessingResponse, Error, { file: File; size?: number }>({
+    mutationFn: async ({ file, size = 256 }) => {
+      return ApiService.createIcon(file, size);
+    },
+  });
+};
+

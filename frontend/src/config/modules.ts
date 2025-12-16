@@ -209,8 +209,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.image.toIcon.title',
     descriptionKey: 'modules.image.toIcon.description',
     category: 'media',
-    status: 'placeholder',
-    color: 'text-blue-500',
+    status: 'implemented',
+    color: 'text-blue-600',
   },
   {
     id: 'image-extract-colors',

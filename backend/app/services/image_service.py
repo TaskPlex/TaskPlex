@@ -712,3 +712,77 @@ def create_collage(
             message=f"Error creating collage: {str(e)}",
             filename=output_path.name if output_path else None,
         )
+
+
+def create_icon(
+    input_path: Path,
+    output_path: Path,
+    size: int = 256,
+) -> ImageProcessingResponse:
+    """
+    Convert an image to an ICO file
+
+    Args:
+        input_path: Path to input image
+        output_path: Path to save ICO file
+        size: Icon size in pixels (default: 256, must be between 16 and 512)
+
+    Returns:
+        ImageProcessingResponse with icon creation results
+    """
+    try:
+        # Validate size
+        if size < 16 or size > 512:
+            return ImageProcessingResponse(
+                success=False,
+                message=f"Invalid icon size: {size}. Size must be between 16 and 512 pixels",
+                filename=output_path.name if output_path else None,
+            )
+
+        # Get original file size
+        original_size = get_file_size(input_path)
+
+        # Open input image
+        with Image.open(input_path) as img:
+            # Convert to RGBA if necessary (ICO format supports transparency)
+            if img.mode not in ("RGBA", "RGB"):
+                if img.mode == "P" and "transparency" in img.info:
+                    img = img.convert("RGBA")
+                elif img.mode == "LA":
+                    # Grayscale with alpha
+                    img = img.convert("RGBA")
+                else:
+                    img = img.convert("RGB")
+                    # Add alpha channel for RGB images (fully opaque)
+                    rgba_img = Image.new("RGBA", img.size, (255, 255, 255, 255))
+                    rgba_img.paste(img)
+                    img = rgba_img
+
+            # Get original dimensions
+            original_dimensions = {"width": img.width, "height": img.height}
+
+            # Resize image to square (ICO files typically use square icons)
+            icon_img = img.resize((size, size), Image.LANCZOS)
+
+            # Save as ICO file
+            icon_img.save(output_path, format="ICO")
+
+        # Get icon file size
+        icon_size = get_file_size(output_path)
+
+        return ImageProcessingResponse(
+            success=True,
+            message=f"Icon created successfully ({size}x{size}px)",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            original_size=original_size,
+            processed_size=icon_size,
+            dimensions={"width": size, "height": size},
+        )
+
+    except Exception as e:
+        return ImageProcessingResponse(
+            success=False,
+            message=f"Error creating icon: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
