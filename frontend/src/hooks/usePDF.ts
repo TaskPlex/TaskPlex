@@ -66,3 +66,27 @@ export const usePasswordPDF = () => {
   });
 };
 
+export const usePDFToImages = () => {
+  return useMutation<
+    PDFProcessingResponse,
+    Error,
+    { file: File; imageFormat?: string; dpi?: number }
+  >({
+    mutationFn: async ({ file, imageFormat = 'png', dpi = 150 }) => {
+      return ApiService.pdfToImages(file, imageFormat, dpi);
+    },
+  });
+};
+
+export const useImagesToPDF = () => {
+  return useMutation<
+    PDFProcessingResponse,
+    Error,
+    { files: File[]; pageSize?: string }
+  >({
+    mutationFn: async ({ files, pageSize }) => {
+      return ApiService.imagesToPDF(files, pageSize);
+    },
+  });
+};
+

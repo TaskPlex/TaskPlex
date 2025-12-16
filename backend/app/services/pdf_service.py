@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import fitz  # PyMuPDF
+from PIL import Image
 from pypdf import PdfReader, PdfWriter
 
 try:
@@ -497,5 +498,179 @@ def extract_text_with_ocr(
         return PDFProcessingResponse(
             success=False,
             message=f"Error performing OCR: {str(e)}",
+            filename=output_path.name if output_path else None,
+        )
+
+
+def pdf_to_images(
+    input_path: Path, output_dir: Path, image_format: str = "png", dpi: int = 150
+) -> PDFProcessingResponse:
+    """
+    Convert PDF pages to images
+
+    Args:
+        input_path: Path to input PDF
+        output_dir: Directory to save image files
+        image_format: Output image format (png, jpg, jpeg)
+        dpi: Resolution in DPI (default: 150)
+
+    Returns:
+        PDFProcessingResponse with conversion results
+    """
+    try:
+        # Open PDF with PyMuPDF
+        doc = fitz.open(input_path)
+        total_pages = len(doc)
+
+        if total_pages == 0:
+            return PDFProcessingResponse(
+                success=False,
+                message="PDF has no pages",
+            )
+
+        # Normalize image format
+        image_format = image_format.lower()
+        if image_format == "jpg":
+            image_format = "jpeg"
+
+        if image_format not in ["png", "jpeg"]:
+            return PDFProcessingResponse(
+                success=False,
+                message=f"Unsupported image format: {image_format}. Use 'png' or 'jpeg'",
+            )
+
+        output_files = []
+        base_name = input_path.stem
+
+        # Convert each page to an image
+        for page_num in range(total_pages):
+            page = doc[page_num]
+
+            # Render page to image (pixmap)
+            # Matrix controls resolution: scale = dpi/72
+            zoom = dpi / 72.0
+            mat = fitz.Matrix(zoom, zoom)
+            pix = page.get_pixmap(matrix=mat)
+
+            # Generate output filename
+            output_filename = f"{base_name}_page_{page_num + 1}.{image_format}"
+            output_path = output_dir / output_filename
+
+            # Save image
+            pix.save(str(output_path))
+
+            output_files.append(output_filename)
+
+        doc.close()
+
+        return PDFProcessingResponse(
+            success=True,
+            message=f"PDF converted to {len(output_files)} images",
+            filenames=output_files,
+            total_pages=total_pages,
+        )
+
+    except Exception as e:
+        return PDFProcessingResponse(
+            success=False,
+            message=f"Error converting PDF to images: {str(e)}",
+        )
+
+
+def images_to_pdf(
+    image_paths: List[Path], output_path: Path, page_size: Optional[str] = None
+) -> PDFProcessingResponse:
+    """
+    Convert multiple images to a single PDF
+
+    Args:
+        image_paths: List of paths to image files
+        output_path: Path to save output PDF
+        page_size: Page size (A4, Letter, etc.) or None to use image size
+
+    Returns:
+        PDFProcessingResponse with conversion results
+    """
+    try:
+        if not image_paths:
+            return PDFProcessingResponse(
+                success=False,
+                message="No images provided",
+            )
+
+        # Open all images
+        images = []
+        for img_path in image_paths:
+            try:
+                img = Image.open(img_path)
+                # Convert to RGB if necessary (PDF doesn't support RGBA)
+                if img.mode in ("RGBA", "LA", "P"):
+                    rgb_img = Image.new("RGB", img.size, (255, 255, 255))
+                    if img.mode == "P":
+                        img = img.convert("RGBA")
+                    if img.mode in ("RGBA", "LA"):
+                        rgb_img.paste(img, mask=img.split()[-1] if img.mode == "RGBA" else None)
+                    else:
+                        rgb_img.paste(img)
+                    img = rgb_img
+                elif img.mode != "RGB":
+                    img = img.convert("RGB")
+
+                images.append(img)
+            except Exception as e:
+                return PDFProcessingResponse(
+                    success=False,
+                    message=f"Error opening image {img_path.name}: {str(e)}",
+                )
+
+        # Save as PDF
+        if images:
+            # If page_size is specified, resize images to fit
+            if page_size:
+                # Common page sizes in pixels at 72 DPI
+                page_sizes = {
+                    "A4": (595, 842),  # 8.27 x 11.69 inches
+                    "Letter": (612, 792),  # 8.5 x 11 inches
+                    "Legal": (612, 1008),  # 8.5 x 14 inches
+                }
+
+                if page_size.upper() in page_sizes:
+                    target_size = page_sizes[page_size.upper()]
+                    resized_images = []
+                    for img in images:
+                        # Resize maintaining aspect ratio
+                        img.thumbnail(target_size, Image.LANCZOS)
+                        # Create new image with target size and paste resized image centered
+                        new_img = Image.new("RGB", target_size, (255, 255, 255))
+                        x_offset = (target_size[0] - img.width) // 2
+                        y_offset = (target_size[1] - img.height) // 2
+                        new_img.paste(img, (x_offset, y_offset))
+                        resized_images.append(new_img)
+                    images = resized_images
+
+            # Save first image and append others
+            images[0].save(
+                output_path,
+                "PDF",
+                resolution=100.0,
+                save_all=True,
+                append_images=images[1:] if len(images) > 1 else [],
+            )
+
+        processed_size = get_file_size(output_path)
+
+        return PDFProcessingResponse(
+            success=True,
+            message=f"Successfully converted {len(images)} images to PDF",
+            filename=output_path.name,
+            download_url=f"/api/v1/download/{output_path.name}",
+            total_pages=len(images),
+            processed_size=processed_size,
+        )
+
+    except Exception as e:
+        return PDFProcessingResponse(
+            success=False,
+            message=f"Error converting images to PDF: {str(e)}",
             filename=output_path.name if output_path else None,
         )

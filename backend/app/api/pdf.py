@@ -16,7 +16,9 @@ from app.services.pdf_service import (
     compress_pdf,
     extract_text_with_ocr,
     get_pdf_info,
+    images_to_pdf,
     merge_pdfs,
+    pdf_to_images,
     remove_password_pdf,
     reorganize_pdf,
     split_pdf,
@@ -28,7 +30,7 @@ from app.utils.file_handler import (
     generate_unique_filename,
     save_upload_file,
 )
-from app.utils.validators import validate_pdf_format
+from app.utils.validators import validate_image_format, validate_pdf_format
 
 router = APIRouter(prefix="/pdf", tags=["PDF"])
 
@@ -362,3 +364,120 @@ async def password_pdf_file(
     finally:
         if input_path:
             delete_file(input_path)
+
+
+@router.post("/to-images", response_model=PDFProcessingResponse)
+async def convert_pdf_to_images(
+    file: UploadFile = File(..., description="PDF file to convert to images"),
+    image_format: str = Form("png", description="Output image format (png or jpeg)"),
+    dpi: int = Form(150, description="Resolution in DPI (default: 150)"),
+):
+    """
+    Convert PDF pages to images
+
+    Supported formats: PNG, JPEG
+    Each page will be converted to a separate image file
+    """
+    if not validate_pdf_format(file.filename):
+        raise HTTPException(status_code=400, detail="File is not a valid PDF")
+
+    if image_format.lower() not in ["png", "jpg", "jpeg"]:
+        raise HTTPException(status_code=400, detail="Invalid image format. Use 'png' or 'jpeg'")
+
+    if dpi < 72 or dpi > 300:
+        raise HTTPException(status_code=400, detail="DPI must be between 72 and 300")
+
+    input_path = None
+    output_dir = None
+
+    try:
+        input_path = await save_upload_file(file)
+
+        # Create output directory
+        dir_name = f"pdf_images_{generate_unique_filename('').replace('.', '')}"
+        output_dir = TEMP_DIR / dir_name
+        output_dir.mkdir(exist_ok=True)
+
+        # Convert PDF to images
+        result = pdf_to_images(input_path, output_dir, image_format.lower(), dpi)
+
+        if not result.success:
+            if output_dir.exists():
+                shutil.rmtree(output_dir)
+            raise HTTPException(status_code=500, detail=result.message)
+
+        # Create ZIP of the directory
+        zip_filename = f"{dir_name}.zip"
+        zip_path = TEMP_DIR / zip_filename
+
+        shutil.make_archive(str(zip_path.with_suffix("")), "zip", output_dir)
+
+        # Cleanup output dir (we only keep the zip)
+        shutil.rmtree(output_dir)
+
+        # Update result with zip info
+        result.filename = zip_filename
+        result.download_url = f"/api/v1/download/{zip_filename}"
+        result.message = f"PDF converted to {len(result.filenames or [])} images (download as ZIP)"
+
+        return result
+
+    finally:
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/images-to-pdf", response_model=PDFProcessingResponse)
+async def convert_images_to_pdf(
+    files: List[UploadFile] = File(..., description="Image files to convert to PDF"),
+    page_size: Optional[str] = Form(
+        None, description="Page size (A4, Letter, Legal) or None to use image size"
+    ),
+):
+    """
+    Convert multiple images to a single PDF
+
+    Supported image formats: JPG, JPEG, PNG, GIF, BMP, WEBP
+    Images will be added to PDF in the order they are uploaded
+    """
+    if len(files) == 0:
+        raise HTTPException(status_code=400, detail="At least one image is required")
+
+    # Validate all files
+    for file in files:
+        if not validate_image_format(file.filename):
+            raise HTTPException(
+                status_code=400, detail=f"File {file.filename} is not a valid image"
+            )
+
+    if page_size and page_size.upper() not in ["A4", "LETTER", "LEGAL"]:
+        raise HTTPException(
+            status_code=400, detail="Invalid page size. Use 'A4', 'Letter', or 'Legal'"
+        )
+
+    input_paths = []
+    output_path = None
+
+    try:
+        # Save all uploaded files
+        for file in files:
+            input_path = await save_upload_file(file)
+            input_paths.append(input_path)
+
+        # Create output path
+        output_filename = generate_unique_filename("images_to_pdf.pdf")
+        output_path = TEMP_DIR / output_filename
+
+        # Convert images to PDF
+        result = images_to_pdf(input_paths, output_path, page_size)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input files
+        for input_path in input_paths:
+            if input_path:
+                delete_file(input_path)

@@ -318,6 +318,23 @@ export const ApiService = {
     return response.data;
   },
 
+  pdfToImages: async (file: File, imageFormat: string = 'png', dpi: number = 150) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('image_format', imageFormat);
+    formData.append('dpi', dpi.toString());
+    const response = await api.post<PDFProcessingResponse>('/pdf/to-images', formData);
+    return response.data;
+  },
+
+  imagesToPDF: async (files: File[], pageSize?: string) => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+    if (pageSize) formData.append('page_size', pageSize);
+    const response = await api.post<PDFProcessingResponse>('/pdf/images-to-pdf', formData);
+    return response.data;
+  },
+
   // Image
   compressImage: async (file: File, quality: string) => {
     const formData = new FormData();

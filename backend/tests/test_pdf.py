@@ -260,3 +260,185 @@ def test_remove_password_from_unprotected_pdf(client, sample_pdf):
     # FastAPI returns error in "detail" field for HTTPException
     error_message = data.get("detail", data.get("message", ""))
     assert "not password-protected" in error_message.lower()
+
+
+def test_pdf_to_images_png(client, sample_pdf):
+    """Test converting PDF to PNG images"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/to-images",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"image_format": "png", "dpi": "150"},
+        )
+
+    assert response.status_code == 200, (
+        f"Expected 200, got {response.status_code}. Response: {response.text}"
+    )
+    data = response.json()
+    assert data["success"] is True
+    assert data["filename"].endswith(".zip")
+    assert "download_url" in data
+    assert data["total_pages"] == 2
+    assert data["filenames"] is not None
+    assert len(data["filenames"]) == 2
+
+
+def test_pdf_to_images_jpeg(client, sample_pdf):
+    """Test converting PDF to JPEG images"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/to-images",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"image_format": "jpeg", "dpi": "200"},
+        )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["filename"].endswith(".zip")
+    assert "download_url" in data
+
+
+def test_pdf_to_images_invalid_format(client, sample_pdf):
+    """Test PDF to images with invalid format"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/to-images",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"image_format": "invalid", "dpi": "150"},
+        )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert "Invalid image format" in data.get("detail", "")
+
+
+def test_pdf_to_images_invalid_dpi(client, sample_pdf):
+    """Test PDF to images with invalid DPI"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/to-images",
+            files={"file": ("test.pdf", f, "application/pdf")},
+            data={"image_format": "png", "dpi": "50"},  # Too low
+        )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert "DPI must be between" in data.get("detail", "")
+
+
+def test_pdf_to_images_invalid_file(client, sample_image):
+    """Test PDF to images with non-PDF file"""
+    with open(sample_image, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/to-images",
+            files={"file": ("test.png", f, "image/png")},
+            data={"image_format": "png", "dpi": "150"},
+        )
+
+    assert response.status_code in [400, 422]
+
+
+def test_images_to_pdf(client, sample_image):
+    """Test converting images to PDF"""
+    import contextlib
+
+    with contextlib.ExitStack() as stack:
+        files = [
+            (
+                "files",
+                ("test1.png", stack.enter_context(open(sample_image, "rb")), "image/png"),
+            ),
+            (
+                "files",
+                ("test2.png", stack.enter_context(open(sample_image, "rb")), "image/png"),
+            ),
+        ]
+
+        response = client.post(
+            "/api/v1/pdf/images-to-pdf",
+            files=files,
+            data={"page_size": ""},  # Auto size
+        )
+
+        assert response.status_code == 200, (
+            f"Expected 200, got {response.status_code}. Response: {response.text}"
+        )
+        data = response.json()
+        assert data["success"] is True
+        assert data["filename"].endswith(".pdf")
+        assert "download_url" in data
+        assert data["total_pages"] == 2
+
+
+def test_images_to_pdf_with_page_size(client, sample_image):
+    """Test converting images to PDF with specific page size"""
+    import contextlib
+
+    with contextlib.ExitStack() as stack:
+        files = [
+            (
+                "files",
+                ("test1.png", stack.enter_context(open(sample_image, "rb")), "image/png"),
+            ),
+        ]
+
+        response = client.post(
+            "/api/v1/pdf/images-to-pdf",
+            files=files,
+            data={"page_size": "A4"},
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] is True
+        assert data["filename"].endswith(".pdf")
+        assert data["total_pages"] == 1
+
+
+def test_images_to_pdf_invalid_page_size(client, sample_image):
+    """Test images to PDF with invalid page size"""
+    import contextlib
+
+    with contextlib.ExitStack() as stack:
+        files = [
+            (
+                "files",
+                ("test1.png", stack.enter_context(open(sample_image, "rb")), "image/png"),
+            ),
+        ]
+
+        response = client.post(
+            "/api/v1/pdf/images-to-pdf",
+            files=files,
+            data={"page_size": "InvalidSize"},
+        )
+
+        assert response.status_code == 400
+        data = response.json()
+        assert "Invalid page size" in data.get("detail", "")
+
+
+def test_images_to_pdf_no_files(client):
+    """Test images to PDF with no files"""
+    response = client.post(
+        "/api/v1/pdf/images-to-pdf",
+        files=[],
+        data={"page_size": ""},
+    )
+
+    assert response.status_code in [400, 422]
+
+
+def test_images_to_pdf_invalid_file(client, sample_pdf):
+    """Test images to PDF with non-image file"""
+    with open(sample_pdf, "rb") as f:
+        response = client.post(
+            "/api/v1/pdf/images-to-pdf",
+            files=[("files", ("test.pdf", f, "application/pdf"))],
+            data={"page_size": ""},
+        )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert "not a valid image" in data.get("detail", "").lower()

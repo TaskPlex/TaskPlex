@@ -293,8 +293,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.pdf.toImages.title',
     descriptionKey: 'modules.pdf.toImages.description',
     category: 'document',
-    status: 'placeholder',
-    color: 'text-red-500',
+    status: 'implemented',
+    color: 'text-red-600',
   },
   {
     id: 'pdf-images-to-pdf',
@@ -303,8 +303,8 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.pdf.imagesToPdf.title',
     descriptionKey: 'modules.pdf.imagesToPdf.description',
     category: 'document',
-    status: 'placeholder',
-    color: 'text-red-500',
+    status: 'implemented',
+    color: 'text-red-600',
   },
   {
     id: 'pdf-password',

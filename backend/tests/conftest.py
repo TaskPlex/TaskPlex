@@ -54,15 +54,21 @@ def sample_pdf(tmp_path):
     Uses pytest's tmp_path fixture which provides a unique temporary directory
     per test, avoiding race conditions in parallel test execution.
     """
-    from reportlab.pdfgen import canvas
+    import fitz  # PyMuPDF
 
     pdf_path = tmp_path / "test_file.pdf"
+    doc = fitz.open()  # Create new PDF
 
-    c = canvas.Canvas(str(pdf_path))
-    c.drawString(100, 750, "Hello World")
-    c.showPage()  # Page 1
-    c.drawString(100, 750, "Page 2")
-    c.save()
+    # Add first page
+    page = doc.new_page()
+    page.insert_text((50, 50), "Hello World")
+
+    # Add second page
+    page = doc.new_page()
+    page.insert_text((50, 50), "Page 2")
+
+    doc.save(pdf_path)
+    doc.close()
 
     # Verify file was created
     assert pdf_path.exists(), f"PDF file was not created at {pdf_path}"

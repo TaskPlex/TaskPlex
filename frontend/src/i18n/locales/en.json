@@ -581,6 +581,31 @@
       "extractedFrom": "Text extracted from {{count}} page(s)",
       "downloadResult": "Download Text File"
     },
+    "toImages": {
+      "title": "PDF to Images",
+      "description": "Convert each page of your PDF to an image",
+      "selectFile": "Select PDF file",
+      "dropFile": "or drop PDF here",
+      "change": "Change",
+      "imageFormat": "Image Format",
+      "dpi": "Resolution (DPI)",
+      "converting": "Converting to images...",
+      "convertBtn": "Convert to Images",
+      "converted": "{{count}} image(s) created",
+      "downloadResult": "Download ZIP"
+    },
+    "imagesToPdf": {
+      "title": "Images to PDF",
+      "description": "Convert multiple images into a single PDF document",
+      "selectFiles": "Select images",
+      "dropFiles": "or drop images here",
+      "addMore": "Add more images",
+      "pageSize": "Page Size",
+      "converting": "Converting to PDF...",
+      "convertBtn": "Convert to PDF",
+      "converted": "{{count}} image(s) converted to PDF",
+      "downloadResult": "Download PDF"
+    },
     "tools": {
       "compress": "Compress PDF",
       "compressDesc": "Reduce file size while optimizing for maximal PDF quality.",
