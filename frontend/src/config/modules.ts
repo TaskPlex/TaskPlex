@@ -765,7 +765,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.text.slugGenerator.title',
     descriptionKey: 'modules.text.slugGenerator.description',
     category: 'text',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-orange-600',
   },
   {

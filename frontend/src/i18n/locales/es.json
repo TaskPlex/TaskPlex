@@ -868,6 +868,22 @@
     "convertedTo": "Convertido a {{type}}",
     "placeholder": "Ingresa texto arriba y selecciona un tipo de mayúsculas para ver el resultado"
   },
+  "slugGenerator": {
+    "title": "Generador de slug",
+    "description": "Generar slugs compatibles con URL a partir de texto",
+    "inputLabel": "Texto a convertir",
+    "inputPlaceholder": "Pega o escribe tu texto aquí...",
+    "inputHint": "El texto se convertirá en un slug compatible con URL (minúsculas, sin acentos, con guiones)",
+    "generate": "Generar slug",
+    "generating": "Generando...",
+    "result": "Resultado",
+    "fromText": "Texto original",
+    "placeholder": "Ingresa texto arriba y haz clic en 'Generar slug' para ver el resultado",
+    "infoTitle": "Acerca de los slugs",
+    "info1": "Un slug es una versión compatible con URL de un texto, utilizada en direcciones web.",
+    "info2": "Los slugs se generan eliminando acentos, convirtiendo a minúsculas y reemplazando espacios con guiones.",
+    "info3": "Ejemplo: 'Mi Super Artículo!' se convierte en 'mi-super-articulo'"
+  },
   "emailExtractor": {
     "title": "Extractor de emails",
     "description": "Extrae direcciones de email de tu texto",

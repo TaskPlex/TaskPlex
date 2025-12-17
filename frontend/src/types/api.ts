@@ -368,6 +368,16 @@ export interface CaseConverterResponse extends ApiResponse {
   case_type?: string;
 }
 
+// Slug Generator
+export interface SlugRequest {
+  text: string;
+}
+
+export interface SlugResponse extends ApiResponse {
+  original_text?: string;
+  slug?: string;
+}
+
 // Text Extractors
 export interface TextExtractorRequest {
   text: string;

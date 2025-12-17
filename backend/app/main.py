@@ -44,6 +44,7 @@ from app.api import (
     qrcode,
     regex,
     security,
+    slug,
     text,
     text_extractor,
     units,
@@ -220,6 +221,7 @@ app.include_router(text_extractor.router, prefix="/api/v1")
 app.include_router(word_counter.router, prefix="/api/v1")
 app.include_router(accent_remover.router, prefix="/api/v1")
 app.include_router(case_converter.router, prefix="/api/v1")
+app.include_router(slug.router, prefix="/api/v1")
 app.include_router(color.router, prefix="/api/v1")
 app.include_router(palette_generator.router, prefix="/api/v1")
 app.include_router(gradient_generator.router, prefix="/api/v1")

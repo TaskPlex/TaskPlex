@@ -868,6 +868,22 @@
     "convertedTo": "Converti en {{type}}",
     "placeholder": "Entrez du texte ci-dessus et sélectionnez un type de casse pour voir le résultat"
   },
+  "slugGenerator": {
+    "title": "Générateur de slug",
+    "description": "Générer des slugs compatibles URL à partir de texte",
+    "inputLabel": "Texte à convertir",
+    "inputPlaceholder": "Collez ou tapez votre texte ici...",
+    "inputHint": "Le texte sera converti en un slug URL-friendly (minuscules, sans accents, avec tirets)",
+    "generate": "Générer le slug",
+    "generating": "Génération...",
+    "result": "Résultat",
+    "fromText": "Texte original",
+    "placeholder": "Entrez du texte ci-dessus et cliquez sur 'Générer le slug' pour voir le résultat",
+    "infoTitle": "À propos des slugs",
+    "info1": "Un slug est une version URL-friendly d'un texte, utilisée dans les adresses web.",
+    "info2": "Les slugs sont générés en supprimant les accents, en convertissant en minuscules et en remplaçant les espaces par des tirets.",
+    "info3": "Exemple : 'Mon Super Article !' devient 'mon-super-article'"
+  },
   "emailExtractor": {
     "title": "Extracteur d'emails",
     "description": "Extrayez les adresses email de votre texte",

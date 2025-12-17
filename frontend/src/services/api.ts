@@ -34,6 +34,7 @@ import type {
   AccentRemoverResponse,
   CaseConverterResponse,
   CaseType,
+  SlugResponse,
   KeywordExtractorResponse,
   EmailExtractorResponse,
   URLExtractorResponse,
@@ -715,6 +716,14 @@ export const ApiService = {
     const response = await api.post<CaseConverterResponse>('/case-converter/convert', {
       text,
       case_type: caseType,
+    });
+    return response.data;
+  },
+
+  // Slug Generator
+  generateSlug: async (text: string) => {
+    const response = await api.post<SlugResponse>('/slug-generator/generate', {
+      text,
     });
     return response.data;
   },
