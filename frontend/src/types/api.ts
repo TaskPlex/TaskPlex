@@ -475,6 +475,15 @@ export interface HashResponse extends ApiResponse {
   salt_used?: string | null;
 }
 
+// File Hash
+export interface FileHashResponse extends ApiResponse {
+  filename: string;
+  algorithm: 'md5' | 'sha1' | 'sha256' | 'sha512';
+  hex_digest: string;
+  base64_digest: string;
+  file_size?: number;
+}
+
 // File Encryption
 export interface EncryptionResponse extends ApiResponse {
   filename: string;

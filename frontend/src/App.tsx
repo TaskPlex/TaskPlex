@@ -75,6 +75,7 @@ const HashGeneratorScreen = createLazyComponent(() => import('./pages/HashGenera
 const PasswordGeneratorScreen = createLazyComponent(() => import('./pages/PasswordGeneratorScreen'), 'PasswordGeneratorScreen');
 const PasswordCheckerScreen = createLazyComponent(() => import('./pages/PasswordCheckerScreen'), 'PasswordCheckerScreen');
 const FileEncryptionScreen = createLazyComponent(() => import('./pages/FileEncryptionScreen'), 'FileEncryptionScreen');
+const FileHashScreen = createLazyComponent(() => import('./pages/FileHashScreen'), 'FileHashScreen');
 const UUIDGeneratorScreen = createLazyComponent(() => import('./pages/UUIDGeneratorScreen'), 'UUIDGeneratorScreen');
 const URLEncoderScreen = createLazyComponent(() => import('./pages/URLEncoderScreen'), 'URLEncoderScreen');
 const Base64Screen = createLazyComponent(() => import('./pages/Base64Screen'), 'Base64Screen');
@@ -190,6 +191,7 @@ const componentMap: Record<string, React.LazyExoticComponent<React.ComponentType
   'password-generator': PasswordGeneratorScreen,
   'password-checker': PasswordCheckerScreen,
   'file-encryption': FileEncryptionScreen,
+  'file-hash': FileHashScreen,
   'uuid-generator': UUIDGeneratorScreen,
   'url-encoder': URLEncoderScreen,
   'base64-encoder': Base64Screen,

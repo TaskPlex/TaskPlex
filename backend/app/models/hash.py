@@ -25,3 +25,15 @@ class HashResponse(BaseModel):
     hex_digest: str
     base64_digest: str
     salt_used: str | None = None
+
+
+class FileHashResponse(BaseModel):
+    """Response payload for file hash generation"""
+
+    success: bool
+    message: str
+    filename: str = ""
+    algorithm: str
+    hex_digest: str
+    base64_digest: str
+    file_size: int | None = None
