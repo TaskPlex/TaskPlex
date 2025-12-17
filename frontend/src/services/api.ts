@@ -97,6 +97,8 @@ export type {
   CaseConverterRequest,
   CaseConverterResponse,
   CaseType,
+  SlugRequest,
+  SlugResponse,
   TextExtractorRequest,
   KeywordExtractorResponse,
   EmailExtractorResponse,
