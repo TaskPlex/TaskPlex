@@ -17,7 +17,7 @@ router = APIRouter(prefix="/security", tags=["Security"])
 @router.post("/encrypt", response_model=EncryptionResponse)
 async def encrypt_file_endpoint(
     file: UploadFile = File(..., description="File to encrypt"),
-    password: str = Form(..., description="Password for encryption"),
+    password: str = Form(default="", description="Password for encryption"),
 ):
     """
     Encrypt a file using AES-256 encryption
@@ -25,7 +25,7 @@ async def encrypt_file_endpoint(
     Supported formats: Any file type
     Output: Encrypted file (.encrypted extension)
     """
-    if not password or len(password) < 1:
+    if not password or len(password.strip()) < 1:
         raise HTTPException(status_code=400, detail="Password cannot be empty")
 
     input_path = None
@@ -57,7 +57,7 @@ async def encrypt_file_endpoint(
 @router.post("/decrypt", response_model=EncryptionResponse)
 async def decrypt_file_endpoint(
     file: UploadFile = File(..., description="Encrypted file to decrypt"),
-    password: str = Form(..., description="Password for decryption"),
+    password: str = Form(default="", description="Password for decryption"),
 ):
     """
     Decrypt a file that was encrypted with the encrypt endpoint
@@ -65,7 +65,7 @@ async def decrypt_file_endpoint(
     Supported formats: Files encrypted with /security/encrypt
     Output: Decrypted file (original format)
     """
-    if not password or len(password) < 1:
+    if not password or len(password.strip()) < 1:
         raise HTTPException(status_code=400, detail="Password cannot be empty")
 
     input_path = None
