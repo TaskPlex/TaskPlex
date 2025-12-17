@@ -42,6 +42,7 @@ import type {
   XMLMinifierResponse,
   TextFormatResponse,
   HashResponse,
+  FileHashResponse,
   EncryptionResponse,
   PasswordGenerateRequest,
   PasswordGenerateResponse,
@@ -108,6 +109,7 @@ export type {
   VideoExtractAudioOptions,
   TextFormatResponse,
   HashResponse,
+  FileHashResponse,
   EncryptionResponse,
   PasswordGenerateRequest,
   PasswordGenerateResponse,
@@ -838,6 +840,20 @@ export const ApiService = {
 
   checkPassword: async (payload: PasswordCheckRequest) => {
     const response = await api.post<PasswordCheckResponse>('/password/check', payload);
+    return response.data;
+  },
+
+  // File Hash
+  hashFile: async (
+    file: File,
+    algorithm: 'md5' | 'sha1' | 'sha256' | 'sha512' = 'sha256',
+    uppercase: boolean = false
+  ) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('algorithm', algorithm);
+    formData.append('uppercase', uppercase.toString());
+    const response = await api.post<FileHashResponse>('/security/file-hash', formData);
     return response.data;
   },
 

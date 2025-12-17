@@ -176,3 +176,69 @@ def test_encrypt_decrypt_roundtrip(client, sample_text_file, tmp_path):
         decrypted_content = f.read()
 
     assert decrypted_content == original_content
+
+
+def test_hash_file_success(client, sample_text_file):
+    """Test hashing a file via API"""
+    with open(sample_text_file, "rb") as f:
+        response = client.post(
+            "/api/v1/security/file-hash",
+            files={"file": ("test.txt", f, "text/plain")},
+            data={"algorithm": "sha256", "uppercase": "false"},
+        )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert "test.txt" in data["filename"]  # Filename may be prefixed with unique identifier
+    assert data["algorithm"] == "sha256"
+    assert len(data["hex_digest"]) == 64
+    assert len(data["base64_digest"]) > 0
+    assert data["file_size"] is not None
+
+
+def test_hash_file_different_algorithms(client, sample_text_file):
+    """Test hashing with different algorithms via API"""
+    algorithms = ["md5", "sha1", "sha256", "sha512"]
+
+    for algo in algorithms:
+        with open(sample_text_file, "rb") as f:
+            response = client.post(
+                "/api/v1/security/file-hash",
+                files={"file": ("test.txt", f, "text/plain")},
+                data={"algorithm": algo, "uppercase": "false"},
+            )
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] is True
+        assert data["algorithm"] == algo
+
+
+def test_hash_file_uppercase(client, sample_text_file):
+    """Test hashing with uppercase option via API"""
+    with open(sample_text_file, "rb") as f:
+        response = client.post(
+            "/api/v1/security/file-hash",
+            files={"file": ("test.txt", f, "text/plain")},
+            data={"algorithm": "sha256", "uppercase": "true"},
+        )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["success"] is True
+    assert data["hex_digest"].isupper()
+
+
+def test_hash_file_invalid_algorithm(client, sample_text_file):
+    """Test hashing with invalid algorithm via API"""
+    with open(sample_text_file, "rb") as f:
+        response = client.post(
+            "/api/v1/security/file-hash",
+            files={"file": ("test.txt", f, "text/plain")},
+            data={"algorithm": "invalid", "uppercase": "false"},
+        )
+
+    assert response.status_code == 400
+    data = response.json()
+    assert "Unsupported algorithm" in data.get("detail", "")

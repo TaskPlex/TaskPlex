@@ -710,7 +710,7 @@ export const MODULES: ModuleDefinition[] = [
     labelKey: 'modules.security.fileHash.title',
     descriptionKey: 'modules.security.fileHash.description',
     category: 'security',
-    status: 'placeholder',
+    status: 'implemented',
     color: 'text-indigo-600',
   },
   {

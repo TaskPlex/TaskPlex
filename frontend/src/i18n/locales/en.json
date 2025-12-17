@@ -217,6 +217,24 @@
     "info2": "The password is required to decrypt the file. Lose it and you won't be able to access the file.",
     "info3": "Encrypted files have the .encrypted extension"
   },
+  "fileHash": {
+    "title": "File Hash",
+    "selectFile": "Select a file",
+    "dropFile": "Drag and drop your file here or click to browse",
+    "algorithm": "Algorithm",
+    "uppercase": "Uppercase hexadecimal",
+    "calculateBtn": "Calculate Hash",
+    "calculating": "Calculating...",
+    "result": "Result",
+    "filename": "Filename",
+    "fileSize": "File Size",
+    "hexDigest": "Hexadecimal Hash",
+    "base64Digest": "Base64 Hash",
+    "infoTitle": "About Checksums",
+    "info1": "A hash (checksum) is a unique fingerprint of a file.",
+    "info2": "Use it to verify file integrity or compare two files.",
+    "info3": "SHA256 is recommended for security, MD5 is faster but less secure."
+  },
   "uuidGenerator": {
     "title": "UUID Generator",
     "description": "Generate UUID v4 identifiers in bulk.",

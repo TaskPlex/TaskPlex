@@ -229,6 +229,24 @@
     "info2": "La contraseña es necesaria para descifrar el archivo. Si la pierdes, no podrás acceder al archivo.",
     "info3": "Los archivos cifrados tienen la extensión .encrypted"
   },
+  "fileHash": {
+    "title": "Hash de archivos",
+    "selectFile": "Seleccionar un archivo",
+    "dropFile": "Arrastra y suelta tu archivo aquí o haz clic para explorar",
+    "algorithm": "Algoritmo",
+    "uppercase": "Hexadecimal en mayúsculas",
+    "calculateBtn": "Calcular hash",
+    "calculating": "Calculando...",
+    "result": "Resultado",
+    "filename": "Nombre del archivo",
+    "fileSize": "Tamaño del archivo",
+    "hexDigest": "Hash hexadecimal",
+    "base64Digest": "Hash Base64",
+    "infoTitle": "Acerca de los checksums",
+    "info1": "Un hash (checksum) es una huella única de un archivo.",
+    "info2": "Úsalo para verificar la integridad de un archivo o comparar dos archivos.",
+    "info3": "SHA256 es recomendado para seguridad, MD5 es más rápido pero menos seguro."
+  },
   "uuidGenerator": {
     "title": "Generador UUID",
     "description": "Genera identificadores UUID v4 en lote.",

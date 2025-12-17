@@ -8,7 +8,9 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 
 from app.config import TEMP_DIR
 from app.models.encryption import EncryptionResponse
+from app.models.hash import FileHashResponse
 from app.services.encryption_service import decrypt_file, encrypt_file
+from app.services.hash_service import hash_file
 from app.utils.file_handler import delete_file, generate_unique_filename, save_upload_file
 
 router = APIRouter(prefix="/security", tags=["Security"])
@@ -94,6 +96,51 @@ async def decrypt_file_endpoint(
                 raise HTTPException(status_code=400, detail=result.message)
             # For other errors (corrupted file, etc.), use 422 (Unprocessable Entity)
             raise HTTPException(status_code=422, detail=result.message)
+
+        return result
+
+    finally:
+        # Clean up input file
+        if input_path:
+            delete_file(input_path)
+
+
+@router.post("/file-hash", response_model=FileHashResponse)
+async def hash_file_endpoint(
+    file: UploadFile = File(..., description="File to calculate hash for"),
+    algorithm: str = Form(
+        default="sha256", description="Hash algorithm (md5, sha1, sha256, sha512)"
+    ),
+    uppercase: bool = Form(default=False, description="Return hex digest in uppercase"),
+):
+    """
+    Calculate hash (checksum) for a file
+
+    Supported formats: Any file type
+    Supported algorithms: MD5, SHA1, SHA256, SHA512
+    """
+    # Validate algorithm
+    algo_lower = algorithm.lower()
+    if algo_lower not in {"md5", "sha1", "sha256", "sha512"}:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported algorithm: {algorithm}. Supported: md5, sha1, sha256, sha512",
+        )
+
+    input_path = None
+
+    try:
+        # Save uploaded file
+        input_path = await save_upload_file(file)
+
+        # Calculate hash
+        result = hash_file(input_path, algo_lower, uppercase)
+
+        if not result.success:
+            raise HTTPException(status_code=500, detail=result.message)
+
+        # Override filename with original filename
+        result.filename = file.filename or "file"
 
         return result
 
