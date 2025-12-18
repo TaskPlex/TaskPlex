@@ -7,7 +7,7 @@ import { useModuleSearch } from '../hooks/useModuleSearch';
 import { getAllModules, type ModuleDefinition } from '../config/modules';
 import { getIcon, type IconName } from '../config/icons';
 import { SearchBar } from '../components/ui/SearchBar';
-import { WavyBackground } from '../components/ui/WavyBackground';
+import { BackgroundLines } from '../components/ui/BackgroundLines';
 
 // Module Card component - memoized for performance
 interface ModuleCardProps {
@@ -123,30 +123,28 @@ export const HomeDashboard: React.FC = () => {
     <div className="min-h-full bg-gray-50/50 dark:bg-gray-900">
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-purple-50 to-transparent dark:from-gray-800/50 dark:to-transparent py-16 px-4 text-center overflow-hidden">
-        {/* Animated wavy background */}
-        <WavyBackground
-          waveWidth={30}
-          blur={6}
-          speed="fast"
-          waveOpacity={0.4}
-        />
-
-        <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
-            {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">{t('common.appName')}</span>
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
-            {t('home.heroSubtitle')}
-          </p>
-          
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto">
-            <SearchBar
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
+        {/* Background Lines */}
+        <BackgroundLines
+          className="absolute inset-0"
+          svgOptions={{ duration: 15 }}
+        >
+          <div className="relative z-10">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
+              {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">{t('common.appName')}</span>
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
+              {t('home.heroSubtitle')}
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto">
+              <SearchBar
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </div>
           </div>
-        </div>
+        </BackgroundLines>
       </div>
 
       {/* Tools Grid */}
