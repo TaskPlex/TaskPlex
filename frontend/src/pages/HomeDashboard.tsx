@@ -121,9 +121,9 @@ export const HomeDashboard: React.FC = () => {
   return (
     <div className="min-h-full bg-gray-50/50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-purple-50 to-transparent dark:from-gray-800/50 dark:to-transparent py-16 px-4 text-center overflow-hidden">
+      <div className="relative bg-gradient-to-b from-purple-50 to-transparent dark:from-gray-800/50 dark:to-transparent py-16 px-4 text-center overflow-hidden backdrop-blur-sm">
         {/* Animated sinusoidal line */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
           <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none">
             {/* Smooth sinusoidal wave using cubic Bezier curves */}
             <path
@@ -131,6 +131,7 @@ export const HomeDashboard: React.FC = () => {
               strokeWidth="2"
               fill="none"
               className="stroke-gray-600/30 dark:stroke-white/40"
+              style={{ filter: 'blur(0.5px)' }}
             >
               <animateTransform
                 attributeName="transform"
