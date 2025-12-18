@@ -60,7 +60,7 @@
   },
   "home": {
     "heroTitle": "Your Universal",
-    "heroSubtitle": "Every tool you need to be productive, in one place. Process videos, images, PDFs and more. 100% Free and Open Source.",
+    "heroSubtitle": "Every tool you need to be productive. 100% local processing, zero data collection, fully open source.",
     "searchPlaceholder": "Search tools... (e.g. PDF, compress, convert)",
     "noResults": "No tools found",
     "noResultsHint": "Try different keywords or check the spelling",
