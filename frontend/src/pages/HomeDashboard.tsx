@@ -90,10 +90,21 @@ export const HomeDashboard: React.FC = () => {
   // Get all modules from registry
   const allModules = getAllModules();
   
-  // Apply search filter (memoized for performance)
+  // Apply search filter and sort favorites first, then alphabetically (memoized for performance)
   const filteredModules = useMemo(() => {
-    return searchModules(allModules, searchQuery);
-  }, [allModules, searchQuery, searchModules]);
+    const filtered = searchModules(allModules, searchQuery);
+    // Sort: favorites first, then alphabetically by title
+    return filtered.sort((a, b) => {
+      const aIsFavorite = isFavorite(a.id);
+      const bIsFavorite = isFavorite(b.id);
+      if (aIsFavorite && !bIsFavorite) return -1;
+      if (!aIsFavorite && bIsFavorite) return 1;
+      // If both are favorites or both are not, sort alphabetically by title
+      const aTitle = t(a.labelKey).toLowerCase();
+      const bTitle = t(b.labelKey).toLowerCase();
+      return aTitle.localeCompare(bTitle);
+    });
+  }, [allModules, searchQuery, searchModules, isFavorite, t]);
   
   // Check if we have no results
   const hasNoResults = searchQuery.trim() !== '' && filteredModules.length === 0;
@@ -128,7 +139,7 @@ export const HomeDashboard: React.FC = () => {
       </div>
 
       {/* Tools Grid */}
-      <div className="max-w-[1400px] mx-auto px-6 py-12">
+      <div className="max-w-[1600px] mx-auto px-2 py-12">
         {hasNoResults ? (
           /* No Results State */
           <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -150,7 +161,7 @@ export const HomeDashboard: React.FC = () => {
           </div>
         ) : (
           /* Modules Grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
             {filteredModules.map((module) => (
               <ModuleCard
                 key={module.id}

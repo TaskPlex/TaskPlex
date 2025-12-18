@@ -1585,10 +1585,6 @@
       "title": "Base64 Decoder",
       "description": "Decode Base64 to text"
     },
-      "base64": {
-        "title": "Base64 Encoder",
-        "description": "Encode and decode Base64"
-      },
       "urlEncoder": {
         "title": "URL Encoder",
         "description": "Encode and decode URLs"

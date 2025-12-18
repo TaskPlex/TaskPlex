@@ -1661,10 +1661,6 @@
         "title": "Decodificador Base64",
         "description": "Decodificar Base64 a texto"
       },
-      "base64": {
-        "title": "Codificador Base64",
-        "description": "Codificar y decodificar Base64"
-      },
       "urlEncoder": {
         "title": "Codificador URL",
         "description": "Codificar y decodificar URLs"

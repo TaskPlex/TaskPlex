@@ -1,29 +1,45 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Star } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { ModuleDefinition } from '../../config/modules';
 import { getIcon, type IconName } from '../../config/icons';
+import { useFavorites } from '../../hooks/useFavorites';
 
 interface NavDropdownProps {
   label: string;
   modules: ModuleDefinition[];
   columns?: 1 | 2;
-  columnLabels?: [string, string];
-  splitByStatus?: boolean;
+  icon?: LucideIcon;
 }
 
 export const NavDropdown: React.FC<NavDropdownProps> = ({
   label,
   modules,
   columns = 1,
-  columnLabels,
-  splitByStatus = false,
+  icon: Icon,
 }) => {
   const { t } = useTranslation();
+  const { isFavorite } = useFavorites();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Sort modules: favorites first, then alphabetically by title
+  const sortedModules = useMemo(() => {
+    return [...modules].sort((a, b) => {
+      const aIsFavorite = isFavorite(a.id);
+      const bIsFavorite = isFavorite(b.id);
+      if (aIsFavorite && !bIsFavorite) return -1;
+      if (!aIsFavorite && bIsFavorite) return 1;
+      // If both are favorites or both are not, sort alphabetically by title
+      const aTitle = t(a.labelKey).toLowerCase();
+      const bTitle = t(b.labelKey).toLowerCase();
+      return aTitle.localeCompare(bTitle);
+    });
+  }, [modules, isFavorite, t]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -38,36 +54,60 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
   }, []);
 
   const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
     }
-    setIsOpen(true);
+    
+    // Clear any pending open timeout
+    if (openTimeoutRef.current) {
+      clearTimeout(openTimeoutRef.current);
+    }
+    
+    // Small delay before opening to let other dropdowns close first
+    openTimeoutRef.current = setTimeout(() => {
+      setIsOpen(true);
+    }, 50);
   };
 
   const handleMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => {
+    // Clear any pending open timeout
+    if (openTimeoutRef.current) {
+      clearTimeout(openTimeoutRef.current);
+      openTimeoutRef.current = null;
+    }
+    
+    // Close immediately when leaving
+    closeTimeoutRef.current = setTimeout(() => {
       setIsOpen(false);
-    }, 150);
+    }, 50);
   };
 
-  // Split modules for two columns if needed
-  const getColumnModules = (): [ModuleDefinition[], ModuleDefinition[]] => {
+  // Split modules into columns (max 2 columns, max 5 items per column)
+  const getColumnModules = (): ModuleDefinition[][] => {
     if (columns === 1) {
-      return [modules, []];
+      return [sortedModules];
     }
     
-    if (splitByStatus) {
-      const implemented = modules.filter(m => m.status === 'implemented');
-      const placeholder = modules.filter(m => m.status === 'placeholder');
-      return [implemented, placeholder];
+    // Maximum 2 columns, 5 items per column
+    const maxItemsPerColumn = 5;
+    const result: ModuleDefinition[][] = [];
+    
+    // First column: up to 5 items
+    const firstColumn = sortedModules.slice(0, maxItemsPerColumn);
+    result.push(firstColumn);
+    
+    // Second column: remaining items (if any)
+    if (sortedModules.length > maxItemsPerColumn) {
+      const secondColumn = sortedModules.slice(maxItemsPerColumn);
+      result.push(secondColumn);
     }
     
-    // Split in half
-    const midpoint = Math.ceil(modules.length / 2);
-    return [modules.slice(0, midpoint), modules.slice(midpoint)];
+    return result;
   };
 
-  const [leftColumn, rightColumn] = getColumnModules();
+  const columnModules = getColumnModules();
 
   const renderModuleLink = (module: ModuleDefinition) => {
     const IconComponent = getIcon(module.icon as IconName);
@@ -77,22 +117,29 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
         key={module.id}
         to={module.path}
         onClick={() => setIsOpen(false)}
-        className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors group"
+        className="flex items-center gap-3 px-3 py-1.5 hover:bg-purple-50 dark:hover:bg-purple-900 rounded-lg transition-all duration-200 group w-full"
       >
-        <IconComponent 
-          size={20} 
-          className={`${module.color} transition-transform group-hover:scale-110`} 
-        />
-        <div className="flex-1 min-w-0">
-          <span className="block text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
-            {t(module.labelKey)}
-          </span>
+        <div className={`flex-shrink-0 p-1 rounded-md bg-gray-50 dark:bg-gray-700/50 group-hover:bg-white dark:group-hover:bg-gray-600 transition-colors`}>
+          <IconComponent 
+            size={16} 
+            className={`${module.color} transition-transform group-hover:scale-110`} 
+          />
         </div>
-        {module.status === 'placeholder' && (
-          <span className="text-[10px] px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 rounded uppercase font-medium">
-            {t('home.comingSoon')}
-          </span>
-        )}
+        <div className="flex-1 min-w-0 overflow-hidden">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="block text-xs font-semibold text-gray-700 dark:text-gray-200 truncate flex-1 min-w-0">
+              {t(module.labelKey)}
+            </span>
+            {isFavorite(module.id) && (
+              <Star size={12} className="text-yellow-500 fill-yellow-500 flex-shrink-0" />
+            )}
+            {module.status === 'placeholder' && (
+              <span className="text-[10px] px-1.5 py-0.5 bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 rounded uppercase font-medium flex-shrink-0">
+                {t('home.comingSoon')}
+              </span>
+            )}
+          </div>
+        </div>
       </Link>
     );
   };
@@ -108,16 +155,18 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center gap-1.5 px-4 py-2 
-          text-sm font-semibold uppercase tracking-wide
-          transition-colors cursor-pointer
+          flex items-center gap-2 px-4 py-2.5 
+          text-sm font-semibold
+          rounded-lg
+          transition-all duration-200 cursor-pointer
           ${isOpen 
-            ? 'text-purple-600 dark:text-purple-400' 
-            : 'text-gray-600 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400'
+            ? 'text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30' 
+            : 'text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
           }
         `}
       >
-        {label}
+        {Icon && <Icon size={18} className={isOpen ? 'text-purple-600 dark:text-purple-400' : ''} />}
+        <span>{label}</span>
         <ChevronDown 
           size={16} 
           className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
@@ -128,48 +177,42 @@ export const NavDropdown: React.FC<NavDropdownProps> = ({
       {isOpen && (
         <div 
           className={`
-            absolute top-full left-0 mt-1
+            absolute top-full left-1/2 -translate-x-1/2 mt-4
             bg-white dark:bg-gray-800
             border border-gray-200 dark:border-gray-700
-            rounded-xl shadow-xl
-            py-3
+            rounded-xl shadow-2xl
+            py-1.5
             z-50
             animate-in fade-in slide-in-from-top-2 duration-200
-            ${columns === 2 ? 'min-w-[500px]' : 'min-w-[280px]'}
+            ${columns === 2 ? 'w-[520px]' : 'w-[256px]'}
+            before:content-[''] before:absolute before:-top-2 before:left-1/2 before:-translate-x-1/2
+            before:w-4 before:h-4 before:bg-white dark:before:bg-gray-800
+            before:border-l before:border-t before:border-gray-200 dark:before:border-gray-700
+            before:rotate-45
           `}
         >
-          {columns === 2 ? (
+          {columns > 1 ? (
             <div className="flex">
-              {/* Left Column */}
-              <div className="flex-1 px-2">
-                {columnLabels && (
-                  <div className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
-                    {columnLabels[0]}
-                  </div>
-                )}
-                <div className="space-y-0.5">
-                  {leftColumn.map(renderModuleLink)}
-                </div>
-              </div>
-              
-              {/* Divider */}
-              <div className="w-px bg-gray-200 dark:bg-gray-700 my-2" />
-              
-              {/* Right Column */}
-              <div className="flex-1 px-2">
-                {columnLabels && (
-                  <div className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
-                    {columnLabels[1]}
-                  </div>
-                )}
-                <div className="space-y-0.5">
-                  {rightColumn.map(renderModuleLink)}
-                </div>
-              </div>
+              {(() => {
+                // Check if any column has more than 5 items
+                const anyColumnHasMoreThan5 = columnModules.some(col => col.length > 5);
+                return columnModules.map((columnModules, colIndex) => (
+                  <React.Fragment key={colIndex}>
+                    {colIndex > 0 && (
+                      <div className="w-px bg-gray-200/50 dark:bg-gray-700/50 my-3" />
+                    )}
+                    <div className="w-[256px] px-1">
+                      <div className={`space-y-0 px-1 pb-1 ${anyColumnHasMoreThan5 ? 'max-h-[190px] overflow-y-auto' : ''}`}>
+                        {columnModules.map(renderModuleLink)}
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ));
+              })()}
             </div>
           ) : (
-            <div className="px-2 space-y-0.5 max-h-[400px] overflow-y-auto">
-              {modules.map(renderModuleLink)}
+            <div className="px-1 space-y-0 max-h-[400px] overflow-y-auto">
+              {sortedModules.map(renderModuleLink)}
             </div>
           )}
         </div>
