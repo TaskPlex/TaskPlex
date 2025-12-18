@@ -1334,8 +1334,10 @@
     "video": "Video",
     "image": "Image",
     "audio": "Audio",
-    "devTools": "Dev Tools",
+    "code": "Code",
     "convert": "Convert",
+    "generators": "Generators",
+    "text": "Text",
     "more": "More Tools",
     "implemented": "Available",
     "comingSoon": "Coming Soon"
@@ -1610,7 +1612,7 @@
         "description": "Convert between HEX, RGB, HSL"
       },
       "loremIpsum": {
-        "title": "Lorem Ipsum",
+        "title": "Lorem Ipsum Generator",
         "description": "Generate placeholder text"
       },
       "codeFormatter": {

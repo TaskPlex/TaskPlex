@@ -1410,8 +1410,10 @@
     "video": "Vidéo",
     "image": "Image",
     "audio": "Audio",
-    "devTools": "Outils Dev",
+    "code": "Code",
     "convert": "Convertir",
+    "generators": "Générateurs",
+    "text": "Texte",
     "more": "Plus d'outils",
     "implemented": "Disponible",
     "comingSoon": "Bientôt"
@@ -1686,7 +1688,7 @@
         "description": "Convertir entre HEX, RGB, HSL"
       },
       "loremIpsum": {
-        "title": "Lorem Ipsum",
+        "title": "Générateur Lorem Ipsum",
         "description": "Générer du texte de remplissage"
       },
       "codeFormatter": {

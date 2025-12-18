@@ -28,19 +28,17 @@ export const Layout: React.FC = () => {
     video: filterByPrefix('video-'),
     image: filterByPrefix('image-'),
     audio: filterByPrefix('audio-'),
-    developer: filterByCategory('developer'),
-    data: filterByCategory('data'),
-    security: filterByCategory('security'),
+    code: filterByCategory('code'),
+    convert: filterByCategory('convert'),
+    generators: filterByCategory('generators'),
     text: filterByCategory('text'),
-    files: filterByCategory('files'),
+    security: filterByCategory('security'),
     design: filterByCategory('design'),
   }), []);
 
-  // More tools = security + text + files + design
+  // More tools = security + design
   const moreToolsModules = useMemo(() => [
     ...navGroups.security,
-    ...navGroups.text,
-    ...navGroups.files,
     ...navGroups.design,
   ], [navGroups]);
 
@@ -50,8 +48,10 @@ export const Layout: React.FC = () => {
     video: Video,
     image: Image,
     audio: Music,
-    developer: Code,
-    data: Database,
+    code: Code,
+    convert: Database,
+    generators: Code,
+    text: Code,
     more: MoreHorizontal,
   };
 
@@ -97,16 +97,28 @@ export const Layout: React.FC = () => {
                   icon={categoryIcons.audio}
                 />
                 <NavDropdown 
-                  label={t('nav.devTools')}
-                  modules={navGroups.developer}
-                  columns={navGroups.developer.length > 5 ? 2 : 1}
-                  icon={categoryIcons.developer}
+                  label={t('nav.code')}
+                  modules={navGroups.code}
+                  columns={navGroups.code.length > 5 ? 2 : 1}
+                  icon={categoryIcons.code}
                 />
                 <NavDropdown 
                   label={t('nav.convert')}
-                  modules={navGroups.data}
-                  columns={navGroups.data.length > 5 ? 2 : 1}
-                  icon={categoryIcons.data}
+                  modules={navGroups.convert}
+                  columns={navGroups.convert.length > 5 ? 2 : 1}
+                  icon={categoryIcons.convert}
+                />
+                <NavDropdown 
+                  label={t('nav.generators')}
+                  modules={navGroups.generators}
+                  columns={navGroups.generators.length > 5 ? 2 : 1}
+                  icon={categoryIcons.generators}
+                />
+                <NavDropdown 
+                  label={t('nav.text')}
+                  modules={navGroups.text}
+                  columns={navGroups.text.length > 5 ? 2 : 1}
+                  icon={categoryIcons.text}
                 />
                 <NavDropdown 
                   label={t('nav.more')}
