@@ -1,14 +1,17 @@
 /**
  * Tests for useFavorites hook
  */
-import { renderHook, act } from '@testing-library/react';
+import { renderHook, act, waitFor } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import React from 'react';
 import { FavoritesProvider, useFavorites } from '../../../contexts/FavoritesContext';
+import { ProfilesProvider } from '../../../contexts/ProfilesContext';
 
 // Wrapper component for the hook
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <FavoritesProvider>{children}</FavoritesProvider>
+  <ProfilesProvider>
+    <FavoritesProvider>{children}</FavoritesProvider>
+  </ProfilesProvider>
 );
 
 describe('useFavorites', () => {
@@ -108,44 +111,55 @@ describe('useFavorites', () => {
     expect(result.current.isCollapsed).toBe(false);
   });
 
-  it('persists favorites to localStorage', () => {
+  it('persists favorites to localStorage', async () => {
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
-    act(() => {
+    await act(async () => {
       result.current.toggleFavorite('pdf-compress');
+      // Wait for localStorage update
+      await new Promise(resolve => setTimeout(resolve, 10));
     });
     
-    const stored = localStorage.getItem('taskplex_favorites');
+    // localStorage key is now scoped by profile (default profile)
+    const stored = localStorage.getItem('taskplex_favorites_profile_default');
     expect(stored).toBe(JSON.stringify(['pdf-compress']));
   });
 
-  it('persists sidebar collapsed state to localStorage', () => {
+  it('persists sidebar collapsed state to localStorage', async () => {
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
-    act(() => {
+    await act(async () => {
       result.current.toggleSidebar();
+      // Wait for localStorage update
+      await new Promise(resolve => setTimeout(resolve, 10));
     });
     
-    const stored = localStorage.getItem('taskplex_sidebar_collapsed');
+    // localStorage key is now scoped by profile (default profile)
+    const stored = localStorage.getItem('taskplex_sidebar_collapsed_profile_default');
     expect(stored).toBe('true');
   });
 
-  it('loads favorites from localStorage on init', () => {
-    // Pre-populate localStorage
-    localStorage.setItem('taskplex_favorites', JSON.stringify(['video-compress', 'pdf-merge']));
+  it('loads favorites from localStorage on init', async () => {
+    // Pre-populate localStorage with profile-scoped key
+    localStorage.setItem('taskplex_favorites_profile_default', JSON.stringify(['video-compress', 'pdf-merge']));
     
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
-    expect(result.current.favorites).toEqual(['video-compress', 'pdf-merge']);
+    await waitFor(() => {
+      expect(result.current.favorites).toEqual(['video-compress', 'pdf-merge']);
+    });
     expect(result.current.isFavorite('video-compress')).toBe(true);
   });
 
-  it('loads sidebar collapsed state from localStorage on init', () => {
-    localStorage.setItem('taskplex_sidebar_collapsed', 'true');
+  it('loads sidebar collapsed state from localStorage on init', async () => {
+    // Pre-populate localStorage with profile-scoped key
+    localStorage.setItem('taskplex_sidebar_collapsed_profile_default', 'true');
     
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
-    expect(result.current.isCollapsed).toBe(true);
+    await waitFor(() => {
+      expect(result.current.isCollapsed).toBe(true);
+    });
   });
 });
 

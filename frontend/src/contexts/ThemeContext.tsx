@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback, type ReactNode } from 'react';
+import { useProfiles } from './ProfilesContext';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -10,7 +11,7 @@ interface ThemeContextType {
   toggleTheme: () => void;
 }
 
-const THEME_STORAGE_KEY = 'taskplex_theme';
+const THEME_STORAGE_KEY_BASE = 'taskplex_theme';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -22,9 +23,12 @@ function getSystemTheme(): 'light' | 'dark' {
 }
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { getProfileStorageKey, currentProfileId } = useProfiles();
+  
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
+      const storageKey = getProfileStorageKey(THEME_STORAGE_KEY_BASE);
+      const stored = localStorage.getItem(storageKey) as Theme | null;
       return stored || 'system';
     }
     return 'system';
@@ -53,6 +57,22 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
+  // Reload theme when profile changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentProfileId) {
+      const storageKey = getProfileStorageKey(THEME_STORAGE_KEY_BASE);
+      const stored = localStorage.getItem(storageKey) as Theme | null;
+      // Use setTimeout to avoid synchronous setState in effect
+      setTimeout(() => {
+        if (stored) {
+          setThemeState(stored);
+        } else {
+          setThemeState('system');
+        }
+      }, 0);
+    }
+  }, [currentProfileId, getProfileStorageKey]);
+
   // Apply theme class to document
   useEffect(() => {
     const root = document.documentElement;
@@ -62,10 +82,15 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     } else {
       root.classList.remove('dark');
     }
+  }, [resolvedTheme]);
 
-    // Persist theme preference
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  }, [resolvedTheme, theme]);
+  // Save theme to localStorage (scoped to profile)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentProfileId) {
+      const storageKey = getProfileStorageKey(THEME_STORAGE_KEY_BASE);
+      localStorage.setItem(storageKey, theme);
+    }
+  }, [theme, currentProfileId, getProfileStorageKey]);
 
   const setTheme = useCallback((newTheme: Theme) => {
     setThemeState(newTheme);

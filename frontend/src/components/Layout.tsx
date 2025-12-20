@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
 import { getAllModules, type ModuleDefinition } from '../config/modules';
 import { NavDropdown } from './ui/NavDropdown';
+import { useProfileLanguage } from '../hooks/useProfileLanguage';
+import { ProfileSelector } from './ui/ProfileSelector';
 
 // Get all available modules from the registry
 const ALL_MODULES = getAllModules();
@@ -20,6 +22,8 @@ const filterByCategory = (category: string): ModuleDefinition[] =>
 export const Layout: React.FC = () => {
   const { t } = useTranslation();
   const { resolvedTheme, toggleTheme } = useTheme();
+  // Initialize profile language hook to sync language with profile
+  useProfileLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Organize modules for nav dropdowns
@@ -130,6 +134,9 @@ export const Layout: React.FC = () => {
 
               {/* Right Actions */}
               <div className="flex items-center gap-2">
+                {/* Profile Selector */}
+                <ProfileSelector />
+
                 {/* Theme Toggle */}
                 <button 
                   onClick={toggleTheme}
