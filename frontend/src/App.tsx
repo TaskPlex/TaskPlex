@@ -8,6 +8,8 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 import { FavoritesProvider } from './contexts/FavoritesContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { DownloadNotificationProvider } from './contexts/DownloadNotificationContext';
+import { HotkeysProvider } from './contexts/HotkeysContext';
+import { ProfilesProvider } from './contexts/ProfilesContext';
 import { DownloadNotifications } from './components/ui';
 import { getAllModules } from './config/modules';
 
@@ -222,39 +224,43 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <FavoritesProvider>
-            <DownloadNotificationProvider>
-              <BrowserRouter>
-                <Suspense fallback={<LoadingFallback />}>
-                  <Routes>
-                    <Route path="/" element={<Layout />}>
-                      <Route index element={<HomeDashboard />} />
-                      
-                      {/* Dynamically generate routes from module registry */}
-                      {allModules.map((module) => {
-                        // Get the component for this module (either implemented or placeholder)
-                        const Component = componentMap[module.id] || PlaceholderScreen;
+        <ProfilesProvider>
+          <ThemeProvider>
+            <FavoritesProvider>
+              <DownloadNotificationProvider>
+                <BrowserRouter>
+                  <HotkeysProvider>
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Routes>
+                      <Route path="/" element={<Layout />}>
+                        <Route index element={<HomeDashboard />} />
                         
-                        return (
-                          <Route 
-                            key={module.id} 
-                            path={module.path} 
-                            element={<Component />} 
-                          />
-                        );
-                      })}
+                        {/* Dynamically generate routes from module registry */}
+                        {allModules.map((module) => {
+                          // Get the component for this module (either implemented or placeholder)
+                          const Component = componentMap[module.id] || PlaceholderScreen;
+                          
+                          return (
+                            <Route 
+                              key={module.id} 
+                              path={module.path} 
+                              element={<Component />} 
+                            />
+                          );
+                        })}
 
-                      <Route path="settings" element={<SettingsScreen />} />
-                    </Route>
-                  </Routes>
-                </Suspense>
-              </BrowserRouter>
-              {/* Download notifications toast */}
-              <DownloadNotifications />
-            </DownloadNotificationProvider>
-          </FavoritesProvider>
-        </ThemeProvider>
+                        <Route path="settings" element={<SettingsScreen />} />
+                      </Route>
+                    </Routes>
+                  </Suspense>
+                  {/* Download notifications toast */}
+                  <DownloadNotifications />
+                  </HotkeysProvider>
+                </BrowserRouter>
+              </DownloadNotificationProvider>
+            </FavoritesProvider>
+          </ThemeProvider>
+        </ProfilesProvider>
         {/* Devtools only in development */}
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

@@ -1,9 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
+import { useProfiles } from './ProfilesContext';
 
-const FAVORITES_STORAGE_KEY = 'taskplex_favorites';
-const SIDEBAR_COLLAPSED_KEY = 'taskplex_sidebar_collapsed';
+const FAVORITES_STORAGE_KEY_BASE = 'taskplex_favorites';
+const SIDEBAR_COLLAPSED_KEY_BASE = 'taskplex_sidebar_collapsed';
 
 interface FavoritesContextType {
   favorites: string[];
@@ -16,9 +17,12 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const { getProfileStorageKey, currentProfileId } = useProfiles();
+  
   const [favorites, setFavorites] = useState<string[]>(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
+      const storageKey = getProfileStorageKey(FAVORITES_STORAGE_KEY_BASE);
+      const stored = localStorage.getItem(storageKey);
       return stored ? JSON.parse(stored) : [];
     }
     return [];
@@ -26,23 +30,42 @@ export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({ children 
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(SIDEBAR_COLLAPSED_KEY);
+      const storageKey = getProfileStorageKey(SIDEBAR_COLLAPSED_KEY_BASE);
+      const stored = localStorage.getItem(storageKey);
       return stored ? JSON.parse(stored) : false;
     }
     return false;
   });
 
+  // Reload favorites and sidebar state when profile changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
+    if (typeof window !== 'undefined' && currentProfileId) {
+      const favoritesKey = getProfileStorageKey(FAVORITES_STORAGE_KEY_BASE);
+      const collapsedKey = getProfileStorageKey(SIDEBAR_COLLAPSED_KEY_BASE);
+      
+      const storedFavorites = localStorage.getItem(favoritesKey);
+      const storedCollapsed = localStorage.getItem(collapsedKey);
+      
+      setFavorites(storedFavorites ? JSON.parse(storedFavorites) : []);
+      setIsCollapsed(storedCollapsed ? JSON.parse(storedCollapsed) : false);
     }
-  }, [favorites]);
+  }, [currentProfileId, getProfileStorageKey]);
 
+  // Save favorites to localStorage (scoped to profile)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(SIDEBAR_COLLAPSED_KEY, JSON.stringify(isCollapsed));
+    if (typeof window !== 'undefined' && currentProfileId) {
+      const storageKey = getProfileStorageKey(FAVORITES_STORAGE_KEY_BASE);
+      localStorage.setItem(storageKey, JSON.stringify(favorites));
     }
-  }, [isCollapsed]);
+  }, [favorites, currentProfileId, getProfileStorageKey]);
+
+  // Save sidebar collapsed state to localStorage (scoped to profile)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && currentProfileId) {
+      const storageKey = getProfileStorageKey(SIDEBAR_COLLAPSED_KEY_BASE);
+      localStorage.setItem(storageKey, JSON.stringify(isCollapsed));
+    }
+  }, [isCollapsed, currentProfileId, getProfileStorageKey]);
 
   const toggleFavorite = (moduleId: string) => {
     setFavorites((prev) =>

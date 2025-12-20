@@ -25,6 +25,15 @@
     "themeDark": "Sombre",
     "themeSystem": "Système"
   },
+  "profiles": {
+    "title": "Profils",
+    "create": "Créer un profil",
+    "namePlaceholder": "Nom du profil...",
+    "selectAvatar": "Choisir un avatar",
+    "delete": "Supprimer",
+    "deleteConfirm": "Êtes-vous sûr de vouloir supprimer ce profil ? Toutes ses données seront perdues.",
+    "switch": "Changer de profil"
+  },
   "download": {
     "inProgress": "Téléchargement...",
     "completed": "Téléchargement terminé",
@@ -107,7 +116,18 @@
     "system": "Système",
     "about": "À propos",
     "version": "Version",
-    "description": "TaskPlex est une suite d'utilitaires puissante, moderne et open-source pour traiter des vidéos, images et PDF."
+    "description": "TaskPlex est une suite d'utilitaires puissante, moderne et open-source pour traiter des vidéos, images et PDF.",
+    "hotkeys": {
+      "title": "Raccourcis clavier",
+      "description": "Configurez les raccourcis clavier pour accéder rapidement aux fonctionnalités",
+      "default": "Raccourcis par défaut",
+      "modules": "Raccourcis modules",
+      "addModule": "Ajouter un raccourci pour un module",
+      "selectModule": "Sélectionner un module...",
+      "remove": "Supprimer",
+      "recording": "Enregistrement... Appuyez sur Échap pour annuler",
+      "pressCombination": "Appuyez sur une combinaison de touches..."
+    }
   },
   "languages": {
     "en": "Anglais",
