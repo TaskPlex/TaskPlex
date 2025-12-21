@@ -45,7 +45,7 @@ export const Layout: React.FC = () => {
     ...navGroups.security,
     ...navGroups.design,
   ], [navGroups]);
-
+  
   // Category icons mapping
   const categoryIcons = {
     pdf: FileText,
@@ -72,7 +72,7 @@ export const Layout: React.FC = () => {
                 <span className="font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 transition-all leading-none">
                   TaskPlex
                 </span>
-              </Link>
+                </Link>
 
               {/* Desktop Navigation - Centered */}
               <nav className="hidden md:flex items-center gap-1 flex-1 justify-center">
@@ -181,7 +181,7 @@ export const Layout: React.FC = () => {
                 <MobileNavLink to="/audio/convert" label={t('nav.audio')} icon={<Music size={20} />} onClick={() => setMobileMenuOpen(false)} />
                 <MobileNavLink to="/dev/regex" label={t('nav.devTools')} icon={<Code size={20} />} onClick={() => setMobileMenuOpen(false)} />
                 <div className="pt-2 border-t border-gray-200 dark:border-gray-700 mt-2">
-                  <MobileNavLink to="/settings" label={t('common.settings')} icon={<Settings size={20} />} onClick={() => setMobileMenuOpen(false)} />
+                <MobileNavLink to="/settings" label={t('common.settings')} icon={<Settings size={20} />} onClick={() => setMobileMenuOpen(false)} />
                 </div>
               </nav>
             </div>

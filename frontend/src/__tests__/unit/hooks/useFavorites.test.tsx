@@ -10,7 +10,7 @@ import { ProfilesProvider } from '../../../contexts/ProfilesContext';
 // Wrapper component for the hook
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <ProfilesProvider>
-    <FavoritesProvider>{children}</FavoritesProvider>
+  <FavoritesProvider>{children}</FavoritesProvider>
   </ProfilesProvider>
 );
 
@@ -146,7 +146,7 @@ describe('useFavorites', () => {
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
     await waitFor(() => {
-      expect(result.current.favorites).toEqual(['video-compress', 'pdf-merge']);
+    expect(result.current.favorites).toEqual(['video-compress', 'pdf-merge']);
     });
     expect(result.current.isFavorite('video-compress')).toBe(true);
   });
@@ -158,7 +158,7 @@ describe('useFavorites', () => {
     const { result } = renderHook(() => useFavorites(), { wrapper });
     
     await waitFor(() => {
-      expect(result.current.isCollapsed).toBe(true);
+    expect(result.current.isCollapsed).toBe(true);
     });
   });
 });

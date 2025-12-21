@@ -225,41 +225,41 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ProfilesProvider>
-          <ThemeProvider>
-            <FavoritesProvider>
-              <DownloadNotificationProvider>
-                <BrowserRouter>
+        <ThemeProvider>
+          <FavoritesProvider>
+            <DownloadNotificationProvider>
+              <BrowserRouter>
                   <HotkeysProvider>
-                  <Suspense fallback={<LoadingFallback />}>
-                    <Routes>
-                      <Route path="/" element={<Layout />}>
-                        <Route index element={<HomeDashboard />} />
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    <Route path="/" element={<Layout />}>
+                      <Route index element={<HomeDashboard />} />
+                      
+                      {/* Dynamically generate routes from module registry */}
+                      {allModules.map((module) => {
+                        // Get the component for this module (either implemented or placeholder)
+                        const Component = componentMap[module.id] || PlaceholderScreen;
                         
-                        {/* Dynamically generate routes from module registry */}
-                        {allModules.map((module) => {
-                          // Get the component for this module (either implemented or placeholder)
-                          const Component = componentMap[module.id] || PlaceholderScreen;
-                          
-                          return (
-                            <Route 
-                              key={module.id} 
-                              path={module.path} 
-                              element={<Component />} 
-                            />
-                          );
-                        })}
+                        return (
+                          <Route 
+                            key={module.id} 
+                            path={module.path} 
+                            element={<Component />} 
+                          />
+                        );
+                      })}
 
-                        <Route path="settings" element={<SettingsScreen />} />
-                      </Route>
-                    </Routes>
-                  </Suspense>
-                  {/* Download notifications toast */}
-                  <DownloadNotifications />
+                      <Route path="settings" element={<SettingsScreen />} />
+                    </Route>
+                  </Routes>
+                </Suspense>
+              {/* Download notifications toast */}
+              <DownloadNotifications />
                   </HotkeysProvider>
                 </BrowserRouter>
-              </DownloadNotificationProvider>
-            </FavoritesProvider>
-          </ThemeProvider>
+            </DownloadNotificationProvider>
+          </FavoritesProvider>
+        </ThemeProvider>
         </ProfilesProvider>
         {/* Devtools only in development */}
         <ReactQueryDevtools initialIsOpen={false} />

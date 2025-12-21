@@ -146,19 +146,19 @@ export const HomeDashboard: React.FC = () => {
         </div>
 
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
-            {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">{t('common.appName')}</span>
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
-            {t('home.heroSubtitle')}
-          </p>
-          
-          {/* Search Bar */}
-          <div className="max-w-xl mx-auto">
-            <SearchBar
-              value={searchQuery}
-              onChange={handleSearchChange}
-            />
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
+          {t('home.heroTitle')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 dark:from-purple-400 dark:to-blue-400">{t('common.appName')}</span>
+        </h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
+          {t('home.heroSubtitle')}
+        </p>
+        
+        {/* Search Bar */}
+        <div className="max-w-xl mx-auto">
+          <SearchBar
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
           </div>
         </div>
       </div>

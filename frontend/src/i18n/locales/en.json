@@ -1606,7 +1606,7 @@
     "base64Decode": {
       "title": "Base64 Decoder",
       "description": "Decode Base64 to text"
-    },
+      },
       "urlEncoder": {
         "title": "URL Encoder",
         "description": "Encode and decode URLs"

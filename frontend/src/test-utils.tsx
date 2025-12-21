@@ -18,13 +18,13 @@ export const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <QueryClientProvider client={queryClient}>
       <ProfilesProvider>
-        <FavoritesProvider>
-          <DownloadNotificationProvider>
-            <BrowserRouter>
-              {ui}
-            </BrowserRouter>
-          </DownloadNotificationProvider>
-        </FavoritesProvider>
+      <FavoritesProvider>
+        <DownloadNotificationProvider>
+          <BrowserRouter>
+            {ui}
+          </BrowserRouter>
+        </DownloadNotificationProvider>
+      </FavoritesProvider>
       </ProfilesProvider>
     </QueryClientProvider>
   );
