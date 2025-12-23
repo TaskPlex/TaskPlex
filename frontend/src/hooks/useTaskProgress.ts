@@ -8,7 +8,20 @@
  */
 import { useState, useCallback, useRef } from 'react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+// Detect if running in Tauri and use appropriate API URL
+const getApiUrl = (): string => {
+  // Check if running in Tauri
+  const isTauri = typeof window !== 'undefined' && 
+    ('__TAURI_INTERNALS__' in window || '__TAURI__' in window);
+  
+  // In Tauri, use port 8001 (sidecar backend), otherwise use 8000 (Docker/web)
+  if (isTauri) {
+    return import.meta.env.VITE_API_URL || 'http://localhost:8001/api/v1';
+  }
+  return import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+};
+
+const API_URL = getApiUrl();
 
 export type TaskStatus = 'idle' | 'uploading' | 'processing' | 'completed' | 'error';
 

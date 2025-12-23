@@ -138,8 +138,21 @@ export type {
   JSONToCSVResponse,
 } from '../types/api';
 
+// Detect if running in Tauri and use appropriate API URL
+const getApiUrl = (): string => {
+  // Check if running in Tauri
+  const isTauri = typeof window !== 'undefined' && 
+    ('__TAURI_INTERNALS__' in window || '__TAURI__' in window);
+  
+  // In Tauri, use port 8001 (sidecar backend), otherwise use 8000 (Docker/web)
+  if (isTauri) {
+    return import.meta.env.VITE_API_URL || 'http://localhost:8001/api/v1';
+  }
+  return import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+};
+
 // API URL from environment variable with fallback
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_URL = getApiUrl();
 
 // Base URL for downloads (without /api/v1)
 const BASE_URL = API_URL.replace('/api/v1', '');
@@ -149,7 +162,31 @@ const api = axios.create({
   // No timeout for file uploads - let the request complete naturally
   // Don't set Content-Type header here - let axios set it automatically
   // This is important for multipart/form-data (file uploads)
+  timeout: 30000, // 30 seconds timeout for regular requests
 });
+
+// Add retry interceptor for network errors in Tauri
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const isTauri = typeof window !== 'undefined' && 
+      ('__TAURI_INTERNALS__' in window || '__TAURI__' in window);
+    
+    // Only retry network errors in Tauri (sidecar may need time to start)
+    if (isTauri && error.code === 'ERR_NETWORK' && error.config && !error.config.__retryCount) {
+      error.config.__retryCount = error.config.__retryCount || 0;
+      error.config.__retryCount += 1;
+      
+      // Wait before retrying (backend may be starting)
+      if (error.config.__retryCount <= 3) {
+        await new Promise(resolve => setTimeout(resolve, 2000 * error.config.__retryCount));
+        return api.request(error.config);
+      }
+    }
+    
+    return Promise.reject(error);
+  }
+);
 
 // Type for async task response
 interface TaskResponse {
