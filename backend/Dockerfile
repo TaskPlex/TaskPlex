@@ -4,9 +4,15 @@ FROM python:3.11-slim
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Installer les dépendances système nécessaires (ffmpeg pour la vidéo/audio)
+# Installer les dépendances système nécessaires
 RUN apt-get update && apt-get install -y \
     ffmpeg \
+    tesseract-ocr \
+    tesseract-ocr-eng \
+    tesseract-ocr-fra \
+    tesseract-ocr-spa \
+    poppler-utils \
+    libzbar0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copier les fichiers de dépendances
