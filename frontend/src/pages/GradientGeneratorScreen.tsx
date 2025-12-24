@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Layers, Pipette, Copy, Check, Download, Code, RefreshCw, Plus, X } from 'lucide-react';
 import { useGradientGenerator } from '../hooks/useGradientGenerator';
 import { ErrorAlert, ProcessButton } from '../components/ui';
+import { ColorWheel } from '../components/ui/ColorWheel';
 import { ApiService } from '../services/api';
 import { useDownload } from '../hooks/useDownload';
 import type { GradientType } from '../services/api';
@@ -23,6 +24,7 @@ export const GradientGeneratorScreen: React.FC = () => {
   const [height, setHeight] = useState(600);
   const [angle, setAngle] = useState(0);
   const [copied, setCopied] = useState<string | null>(null);
+  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
 
   const generateMutation = useGradientGenerator();
   const result = generateMutation.data;
@@ -62,6 +64,23 @@ export const GradientGeneratorScreen: React.FC = () => {
       setColors(newColors);
     },
     [colors]
+  );
+
+  const handleColorWheelSelect = useCallback(
+    (color: string, index?: number) => {
+      if (index !== undefined && index !== null) {
+        // Clic sur un point existant - juste sélectionner
+        setSelectedColorIndex(index);
+      } else if (selectedColorIndex !== null && selectedColorIndex >= 0 && selectedColorIndex < colors.length) {
+        // Mettre à jour la couleur sélectionnée
+        handleColorChange(selectedColorIndex, color);
+      } else if (colors.length < 10) {
+        // Ajouter une nouvelle couleur
+        setColors([...colors, color]);
+        setSelectedColorIndex(colors.length);
+      }
+    },
+    [colors, selectedColorIndex, handleColorChange]
   );
 
   const handleCopy = useCallback(async (value: string) => {
@@ -115,19 +134,36 @@ export const GradientGeneratorScreen: React.FC = () => {
                     type="color"
                     value={color}
                     onChange={(e) => handleColorChange(index, e.target.value)}
-                    className="w-12 h-10 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 cursor-pointer"
+                    onClick={() => setSelectedColorIndex(index)}
+                    className={`w-12 h-10 rounded-lg border-2 cursor-pointer transition ${
+                      selectedColorIndex === index
+                        ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-200 dark:ring-blue-800'
+                        : 'border-gray-200 dark:border-gray-700'
+                    } bg-white dark:bg-gray-900`}
                   />
                   <input
                     type="text"
                     value={color}
                     onChange={(e) => handleColorChange(index, e.target.value)}
-                    className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                    onClick={() => setSelectedColorIndex(index)}
+                    className={`flex-1 px-3 py-2 rounded-lg border-2 font-mono text-sm transition ${
+                      selectedColorIndex === index
+                        ? 'border-blue-500 dark:border-blue-400 ring-2 ring-blue-200 dark:ring-blue-800'
+                        : 'border-gray-200 dark:border-gray-700'
+                    } bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     placeholder="#000000"
                   />
                   {colors.length > 2 && (
                     <button
                       type="button"
-                      onClick={() => handleRemoveColor(index)}
+                      onClick={() => {
+                        handleRemoveColor(index);
+                        if (selectedColorIndex === index) {
+                          setSelectedColorIndex(null);
+                        } else if (selectedColorIndex !== null && selectedColorIndex > index) {
+                          setSelectedColorIndex(selectedColorIndex - 1);
+                        }
+                      }}
                       className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-red-50 dark:hover:bg-red-900/20 transition"
                     >
                       <X className="w-4 h-4" />
@@ -146,6 +182,23 @@ export const GradientGeneratorScreen: React.FC = () => {
                 </button>
               )}
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+              {t('modules.design.gradientGenerator.colorWheelLabel')}
+            </label>
+            <div className="flex justify-center bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+              <ColorWheel
+                colors={colors}
+                onColorSelect={handleColorWheelSelect}
+                size={250}
+                selectedIndex={selectedColorIndex}
+              />
+            </div>
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-2">
+              {t('modules.design.gradientGenerator.colorWheelHelp')}
+            </p>
           </div>
 
           <div className="space-y-2">
