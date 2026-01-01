@@ -36,7 +36,7 @@ jobs:
 
       - name: Upload pip-audit report
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: pip-audit-report
           path: backend/pip-audit-report.json
