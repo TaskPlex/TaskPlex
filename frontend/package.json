@@ -35,7 +35,7 @@
     "@tanstack/react-query-devtools": "^5.91.1",
     "@tauri-apps/plugin-os": "^2.3.2",
     "@tauri-apps/plugin-shell": "^2.3.3",
-    "autoprefixer": "^10.4.22",
+    "autoprefixer": "^10.4.23",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
     "i18next": "^25.6.3",
